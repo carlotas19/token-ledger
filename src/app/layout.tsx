@@ -15,7 +15,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Token Ledger — AI Gateway token economics benchmark",
+  title: "Token Ledger: AI Gateway token economics benchmark",
   description:
     "A public benchmark that measures how many tokens each AI Gateway model spends to resolve a support ticket, and what that costs per successful outcome.",
   openGraph: {

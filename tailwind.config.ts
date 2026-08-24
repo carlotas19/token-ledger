@@ -38,7 +38,7 @@ const config: Config = {
       animation: {
         "fade-in": "fadeIn 1s ease-out forwards",
         "slide-up": "slideUp 0.7s ease-out forwards",
-        pulse-soft: "pulseSoft 2.4s ease-in-out infinite",
+        "pulse-soft": "pulseSoft 2.4s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
