@@ -45,13 +45,9 @@ export const SCHEMA_STATEMENTS = [
 ];
 
 export async function applySchema() {
-  const { getPool } = await import("@/lib/db");
-  const pool = getPool();
-  try {
-    for (const statement of SCHEMA_STATEMENTS) {
-      await pool.query(statement);
-    }
-  } finally {
-    await pool.end();
+  const { getSql } = await import("./db");
+  const sql = getSql();
+  for (const statement of SCHEMA_STATEMENTS) {
+    await sql.query(statement);
   }
 }

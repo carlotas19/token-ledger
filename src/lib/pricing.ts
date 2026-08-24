@@ -18,10 +18,7 @@ interface ModelsJson {
 }
 
 export async function fetchModelCatalog(): Promise<ModelCatalogEntry[]> {
-  const response = await fetch("https://neon.com/models.json", {
-    next: { revalidate: 3600 },
-  });
-
+  const response = await fetch("https://neon.com/models.json");
   if (!response.ok) {
     throw new Error(`Failed to fetch model catalog: ${response.status}`);
   }
@@ -66,7 +63,10 @@ export function providerLabel(provider: string): string {
     meta: "Meta",
     alibaba: "Alibaba",
     moonshot: "Moonshot AI",
+    moonshotai: "Moonshot AI",
     zhipu: "Zhipu AI",
+    zhipuai: "Zhipu AI",
+    thinkingmachines: "Thinking Machines",
     thinking_machines: "Thinking Machines",
   };
   return labels[provider] ?? provider;

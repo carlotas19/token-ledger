@@ -1,3 +1,4 @@
+import "./env";
 import { applySchema } from "../src/lib/schema";
 
 async function migrate() {

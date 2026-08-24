@@ -1,13 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { BenchmarkSummary } from "@/lib/types";
+import type { BenchmarkSummary, Tab } from "@/lib/types";
 import { TabNav } from "@/components/TabNav";
 import { LedgerDashboard } from "@/components/LedgerDashboard";
 import { Report } from "@/components/Report";
 import { Methodology } from "@/components/Methodology";
 import { NeonBadge } from "@/components/NeonBadge";
-import type { Tab } from "@/lib/types";
 
 interface LedgerAppProps {
   benchmark: BenchmarkSummary;

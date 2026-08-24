@@ -48,7 +48,7 @@ export async function buildAggregates(
       ms.model_name,
       ms.provider,
       ms.open_weights,
-      COUNT(*)::int AS attempts,
+      COUNT(ir.id)::int AS attempts,
       SUM(CASE WHEN ir.passed THEN 1 ELSE 0 END)::int AS successes,
       COALESCE(SUM(ir.total_tokens), 0)::int AS total_tokens,
       COALESCE(SUM(ir.prompt_tokens), 0)::int AS input_tokens,
@@ -59,7 +59,7 @@ export async function buildAggregates(
         SUM(CASE WHEN ir.passed THEN ir.estimated_cost_usd ELSE 0 END),
         0
       )::float AS success_cost_usd,
-      ARRAY_AGG(ir.latency_ms) AS latencies
+      ARRAY_REMOVE(ARRAY_AGG(ir.latency_ms), NULL) AS latencies
     FROM model_snapshots ms
     LEFT JOIN inference_runs ir
       ON ir.benchmark_run_id = ms.benchmark_run_id
@@ -74,7 +74,7 @@ export async function buildAggregates(
     const successes = Number(row.successes ?? 0);
     const totalCostUsd = Number(row.total_cost_usd ?? 0);
     const successCostUsd = Number(row.success_cost_usd ?? 0);
-    const latencies = (row.latencies as number[] | null)?.filter(Boolean) ?? [];
+    const latencies = (row.latencies as number[] | null) ?? [];
     const passRate = attempts > 0 ? successes / attempts : 0;
     const costPerSuccessUsd = successes > 0 ? successCostUsd / successes : null;
     const costPerThousandSuccessesUsd =

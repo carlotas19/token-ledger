@@ -1,16 +1,20 @@
-import { tickets } from "@/data/tickets";
+import "./env";
+import { tickets, buildUserPrompt } from "../src/data/tickets";
 import {
   createGatewayClient,
   extractTextContent,
   listEnabledModels,
   parseModelResponse,
   SYSTEM_PROMPT,
-} from "@/lib/gateway";
-import { gradeResponse } from "@/lib/grader";
-import { estimateCostUsd, fetchModelCatalog, providerLabel } from "@/lib/pricing";
-import { getSql } from "@/lib/db";
+} from "../src/lib/gateway";
+import { gradeResponse } from "../src/lib/grader";
+import {
+  estimateCostUsd,
+  fetchModelCatalog,
+  providerLabel,
+} from "../src/lib/pricing";
+import { getSql } from "../src/lib/db";
 import { applySchema } from "../src/lib/schema";
-import { buildUserPrompt } from "@/data/tickets";
 import { execSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 
@@ -18,7 +22,6 @@ interface RunOptions {
   sample?: boolean;
   modelLimit?: number;
 }
-
 
 function gitCommit(): string | null {
   try {
@@ -41,8 +44,22 @@ export async function runBenchmark(options: RunOptions = {}) {
     enabledModelIds.includes(model.id),
   );
 
+  if (selectedModels.length === 0) {
+    selectedModels = catalog.filter((model) =>
+      enabledModelIds.some(
+        (id) => id === model.id || id.replace(/^databricks-/, "") === model.id,
+      ),
+    );
+  }
+
   if (options.modelLimit) {
     selectedModels = selectedModels.slice(0, options.modelLimit);
+  }
+
+  if (selectedModels.length === 0) {
+    throw new Error(
+      `No catalog models matched enabled Gateway models. Enabled: ${enabledModelIds.join(", ") || "(none)"}`,
+    );
   }
 
   await sql`
