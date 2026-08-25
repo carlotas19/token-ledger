@@ -1,0 +1,2067 @@
+[
+  {
+    "id": "t-01-1",
+    "scenario": "Unexpected invoice line",
+    "variant": "direct",
+    "category": "billing",
+    "customerMessage": "I was charged $42 this month but expected the Launch plan minimum. Can you explain the invoice?",
+    "accountContext": "Plan: Launch. Active projects: 3. Storage: 2.1 GB. Compute usage: 38 CU-hours.",
+    "policyNotes": "Explain compute and storage separately. Do not issue credits without billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "storage"
+      ],
+      "mustNotMention": [
+        "full refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-01-2",
+    "scenario": "Unexpected invoice line",
+    "variant": "urgent",
+    "category": "billing",
+    "customerMessage": "I was charged $42 this month but expected the Launch plan minimum. Can you explain the invoice? This is blocking our team today.",
+    "accountContext": "Plan: Launch. Active projects: 3. Storage: 2.1 GB. Compute usage: 38 CU-hours.",
+    "policyNotes": "Explain compute and storage separately. Do not issue credits without billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "storage"
+      ],
+      "mustNotMention": [
+        "full refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-01-3",
+    "scenario": "Unexpected invoice line",
+    "variant": "frustrated",
+    "category": "billing",
+    "customerMessage": "I was charged $42 this month but expected the Launch plan minimum. Can you explain the invoice? We have already spent too much time on this.",
+    "accountContext": "Plan: Launch. Active projects: 3. Storage: 2.1 GB. Compute usage: 38 CU-hours.",
+    "policyNotes": "Explain compute and storage separately. Do not issue credits without billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "storage"
+      ],
+      "mustNotMention": [
+        "full refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-01-4",
+    "scenario": "Unexpected invoice line",
+    "variant": "next_steps",
+    "category": "billing",
+    "customerMessage": "I was charged $42 this month but expected the Launch plan minimum. Can you explain the invoice? Please give us the next concrete step.",
+    "accountContext": "Plan: Launch. Active projects: 3. Storage: 2.1 GB. Compute usage: 38 CU-hours.",
+    "policyNotes": "Explain compute and storage separately. Do not issue credits without billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "storage"
+      ],
+      "mustNotMention": [
+        "full refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-01-5",
+    "scenario": "Unexpected invoice line",
+    "variant": "nontechnical",
+    "category": "billing",
+    "customerMessage": "I was charged $42 this month but expected the Launch plan minimum. Can you explain the invoice? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Plan: Launch. Active projects: 3. Storage: 2.1 GB. Compute usage: 38 CU-hours.",
+    "policyNotes": "Explain compute and storage separately. Do not issue credits without billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "storage"
+      ],
+      "mustNotMention": [
+        "full refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-02-1",
+    "scenario": "Password reset loop",
+    "variant": "direct",
+    "category": "access",
+    "customerMessage": "I still get an invalid password error after resetting through email.",
+    "accountContext": "User verified. SSO not enabled. No security holds.",
+    "policyNotes": "Offer password reset guidance. Do not escalate unless the reset fails again.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reset_password",
+        "reply_only"
+      ],
+      "mustMention": [
+        "reset"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-02-2",
+    "scenario": "Password reset loop",
+    "variant": "urgent",
+    "category": "access",
+    "customerMessage": "I still get an invalid password error after resetting through email. This is blocking our team today.",
+    "accountContext": "User verified. SSO not enabled. No security holds.",
+    "policyNotes": "Offer password reset guidance. Do not escalate unless the reset fails again.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reset_password",
+        "reply_only"
+      ],
+      "mustMention": [
+        "reset"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-02-3",
+    "scenario": "Password reset loop",
+    "variant": "frustrated",
+    "category": "access",
+    "customerMessage": "I still get an invalid password error after resetting through email. We have already spent too much time on this.",
+    "accountContext": "User verified. SSO not enabled. No security holds.",
+    "policyNotes": "Offer password reset guidance. Do not escalate unless the reset fails again.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reset_password",
+        "reply_only"
+      ],
+      "mustMention": [
+        "reset"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-02-4",
+    "scenario": "Password reset loop",
+    "variant": "next_steps",
+    "category": "access",
+    "customerMessage": "I still get an invalid password error after resetting through email. Please give us the next concrete step.",
+    "accountContext": "User verified. SSO not enabled. No security holds.",
+    "policyNotes": "Offer password reset guidance. Do not escalate unless the reset fails again.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reset_password",
+        "reply_only"
+      ],
+      "mustMention": [
+        "reset"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-02-5",
+    "scenario": "Password reset loop",
+    "variant": "nontechnical",
+    "category": "access",
+    "customerMessage": "I still get an invalid password error after resetting through email. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "User verified. SSO not enabled. No security holds.",
+    "policyNotes": "Offer password reset guidance. Do not escalate unless the reset fails again.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reset_password",
+        "reply_only"
+      ],
+      "mustMention": [
+        "reset"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-03-1",
+    "scenario": "Annual prepay refund",
+    "variant": "direct",
+    "category": "refund",
+    "customerMessage": "We prepaid annually but are shutting down. Please refund the unused months.",
+    "accountContext": "Annual contract started 45 days ago.",
+    "policyNotes": "Annual refunds require manager review. Never promise an amount.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved",
+        "full refund"
+      ]
+    }
+  },
+  {
+    "id": "t-03-2",
+    "scenario": "Annual prepay refund",
+    "variant": "urgent",
+    "category": "refund",
+    "customerMessage": "We prepaid annually but are shutting down. Please refund the unused months. This is blocking our team today.",
+    "accountContext": "Annual contract started 45 days ago.",
+    "policyNotes": "Annual refunds require manager review. Never promise an amount.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved",
+        "full refund"
+      ]
+    }
+  },
+  {
+    "id": "t-03-3",
+    "scenario": "Annual prepay refund",
+    "variant": "frustrated",
+    "category": "refund",
+    "customerMessage": "We prepaid annually but are shutting down. Please refund the unused months. We have already spent too much time on this.",
+    "accountContext": "Annual contract started 45 days ago.",
+    "policyNotes": "Annual refunds require manager review. Never promise an amount.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved",
+        "full refund"
+      ]
+    }
+  },
+  {
+    "id": "t-03-4",
+    "scenario": "Annual prepay refund",
+    "variant": "next_steps",
+    "category": "refund",
+    "customerMessage": "We prepaid annually but are shutting down. Please refund the unused months. Please give us the next concrete step.",
+    "accountContext": "Annual contract started 45 days ago.",
+    "policyNotes": "Annual refunds require manager review. Never promise an amount.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved",
+        "full refund"
+      ]
+    }
+  },
+  {
+    "id": "t-03-5",
+    "scenario": "Annual prepay refund",
+    "variant": "nontechnical",
+    "category": "refund",
+    "customerMessage": "We prepaid annually but are shutting down. Please refund the unused months. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Annual contract started 45 days ago.",
+    "policyNotes": "Annual refunds require manager review. Never promise an amount.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved",
+        "full refund"
+      ]
+    }
+  },
+  {
+    "id": "t-04-1",
+    "scenario": "Credential leak",
+    "variant": "direct",
+    "category": "security",
+    "customerMessage": "Our database password appeared in a public gist.",
+    "accountContext": "Production branch active. The gist is confirmed public.",
+    "policyNotes": "Treat this as a security incident. Recommend rotation and escalate.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-04-2",
+    "scenario": "Credential leak",
+    "variant": "urgent",
+    "category": "security",
+    "customerMessage": "Our database password appeared in a public gist. This is blocking our team today.",
+    "accountContext": "Production branch active. The gist is confirmed public.",
+    "policyNotes": "Treat this as a security incident. Recommend rotation and escalate.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-04-3",
+    "scenario": "Credential leak",
+    "variant": "frustrated",
+    "category": "security",
+    "customerMessage": "Our database password appeared in a public gist. We have already spent too much time on this.",
+    "accountContext": "Production branch active. The gist is confirmed public.",
+    "policyNotes": "Treat this as a security incident. Recommend rotation and escalate.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-04-4",
+    "scenario": "Credential leak",
+    "variant": "next_steps",
+    "category": "security",
+    "customerMessage": "Our database password appeared in a public gist. Please give us the next concrete step.",
+    "accountContext": "Production branch active. The gist is confirmed public.",
+    "policyNotes": "Treat this as a security incident. Recommend rotation and escalate.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-04-5",
+    "scenario": "Credential leak",
+    "variant": "nontechnical",
+    "category": "security",
+    "customerMessage": "Our database password appeared in a public gist. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Production branch active. The gist is confirmed public.",
+    "policyNotes": "Treat this as a security incident. Recommend rotation and escalate.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-05-1",
+    "scenario": "Preview branch auth",
+    "variant": "direct",
+    "category": "feature",
+    "customerMessage": "Can preview branches inherit auth configuration for Vercel previews?",
+    "accountContext": "Neon-managed Vercel integration. Auth enabled on production.",
+    "policyNotes": "Explain branch behavior. No account changes.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "branch"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-05-2",
+    "scenario": "Preview branch auth",
+    "variant": "urgent",
+    "category": "feature",
+    "customerMessage": "Can preview branches inherit auth configuration for Vercel previews? This is blocking our team today.",
+    "accountContext": "Neon-managed Vercel integration. Auth enabled on production.",
+    "policyNotes": "Explain branch behavior. No account changes.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "branch"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-05-3",
+    "scenario": "Preview branch auth",
+    "variant": "frustrated",
+    "category": "feature",
+    "customerMessage": "Can preview branches inherit auth configuration for Vercel previews? We have already spent too much time on this.",
+    "accountContext": "Neon-managed Vercel integration. Auth enabled on production.",
+    "policyNotes": "Explain branch behavior. No account changes.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "branch"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-05-4",
+    "scenario": "Preview branch auth",
+    "variant": "next_steps",
+    "category": "feature",
+    "customerMessage": "Can preview branches inherit auth configuration for Vercel previews? Please give us the next concrete step.",
+    "accountContext": "Neon-managed Vercel integration. Auth enabled on production.",
+    "policyNotes": "Explain branch behavior. No account changes.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "branch"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-05-5",
+    "scenario": "Preview branch auth",
+    "variant": "nontechnical",
+    "category": "feature",
+    "customerMessage": "Can preview branches inherit auth configuration for Vercel previews? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Neon-managed Vercel integration. Auth enabled on production.",
+    "policyNotes": "Explain branch behavior. No account changes.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "branch"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-06-1",
+    "scenario": "Free plan transfer cap",
+    "variant": "direct",
+    "category": "billing",
+    "customerMessage": "My Free plan project stopped serving traffic after a traffic spike.",
+    "accountContext": "Public network transfer this month: 5.4 GB.",
+    "policyNotes": "The Free plan includes 5 GB public network transfer per project per month.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "5 gb"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-06-2",
+    "scenario": "Free plan transfer cap",
+    "variant": "urgent",
+    "category": "billing",
+    "customerMessage": "My Free plan project stopped serving traffic after a traffic spike. This is blocking our team today.",
+    "accountContext": "Public network transfer this month: 5.4 GB.",
+    "policyNotes": "The Free plan includes 5 GB public network transfer per project per month.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "5 gb"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-06-3",
+    "scenario": "Free plan transfer cap",
+    "variant": "frustrated",
+    "category": "billing",
+    "customerMessage": "My Free plan project stopped serving traffic after a traffic spike. We have already spent too much time on this.",
+    "accountContext": "Public network transfer this month: 5.4 GB.",
+    "policyNotes": "The Free plan includes 5 GB public network transfer per project per month.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "5 gb"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-06-4",
+    "scenario": "Free plan transfer cap",
+    "variant": "next_steps",
+    "category": "billing",
+    "customerMessage": "My Free plan project stopped serving traffic after a traffic spike. Please give us the next concrete step.",
+    "accountContext": "Public network transfer this month: 5.4 GB.",
+    "policyNotes": "The Free plan includes 5 GB public network transfer per project per month.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "5 gb"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-06-5",
+    "scenario": "Free plan transfer cap",
+    "variant": "nontechnical",
+    "category": "billing",
+    "customerMessage": "My Free plan project stopped serving traffic after a traffic spike. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Public network transfer this month: 5.4 GB.",
+    "policyNotes": "The Free plan includes 5 GB public network transfer per project per month.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "5 gb"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-07-1",
+    "scenario": "MFA lockout",
+    "variant": "direct",
+    "category": "access",
+    "customerMessage": "I lost my authenticator app and cannot sign in.",
+    "accountContext": "MFA enabled. Identity verified by billing email.",
+    "policyNotes": "Guide through MFA recovery. Escalate only if identity cannot be verified.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "recovery"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-07-2",
+    "scenario": "MFA lockout",
+    "variant": "urgent",
+    "category": "access",
+    "customerMessage": "I lost my authenticator app and cannot sign in. This is blocking our team today.",
+    "accountContext": "MFA enabled. Identity verified by billing email.",
+    "policyNotes": "Guide through MFA recovery. Escalate only if identity cannot be verified.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "recovery"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-07-3",
+    "scenario": "MFA lockout",
+    "variant": "frustrated",
+    "category": "access",
+    "customerMessage": "I lost my authenticator app and cannot sign in. We have already spent too much time on this.",
+    "accountContext": "MFA enabled. Identity verified by billing email.",
+    "policyNotes": "Guide through MFA recovery. Escalate only if identity cannot be verified.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "recovery"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-07-4",
+    "scenario": "MFA lockout",
+    "variant": "next_steps",
+    "category": "access",
+    "customerMessage": "I lost my authenticator app and cannot sign in. Please give us the next concrete step.",
+    "accountContext": "MFA enabled. Identity verified by billing email.",
+    "policyNotes": "Guide through MFA recovery. Escalate only if identity cannot be verified.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "recovery"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-07-5",
+    "scenario": "MFA lockout",
+    "variant": "nontechnical",
+    "category": "access",
+    "customerMessage": "I lost my authenticator app and cannot sign in. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "MFA enabled. Identity verified by billing email.",
+    "policyNotes": "Guide through MFA recovery. Escalate only if identity cannot be verified.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "recovery"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-08-1",
+    "scenario": "Service credit request",
+    "variant": "direct",
+    "category": "billing",
+    "customerMessage": "There was a confirmed 20-minute outage. Can we get service credits?",
+    "accountContext": "Scale plan. Incident confirmed.",
+    "policyNotes": "Acknowledge the incident. Credits require billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "issue_credit"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "credit approved",
+        "$100"
+      ]
+    }
+  },
+  {
+    "id": "t-08-2",
+    "scenario": "Service credit request",
+    "variant": "urgent",
+    "category": "billing",
+    "customerMessage": "There was a confirmed 20-minute outage. Can we get service credits? This is blocking our team today.",
+    "accountContext": "Scale plan. Incident confirmed.",
+    "policyNotes": "Acknowledge the incident. Credits require billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "issue_credit"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "credit approved",
+        "$100"
+      ]
+    }
+  },
+  {
+    "id": "t-08-3",
+    "scenario": "Service credit request",
+    "variant": "frustrated",
+    "category": "billing",
+    "customerMessage": "There was a confirmed 20-minute outage. Can we get service credits? We have already spent too much time on this.",
+    "accountContext": "Scale plan. Incident confirmed.",
+    "policyNotes": "Acknowledge the incident. Credits require billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "issue_credit"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "credit approved",
+        "$100"
+      ]
+    }
+  },
+  {
+    "id": "t-08-4",
+    "scenario": "Service credit request",
+    "variant": "next_steps",
+    "category": "billing",
+    "customerMessage": "There was a confirmed 20-minute outage. Can we get service credits? Please give us the next concrete step.",
+    "accountContext": "Scale plan. Incident confirmed.",
+    "policyNotes": "Acknowledge the incident. Credits require billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "issue_credit"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "credit approved",
+        "$100"
+      ]
+    }
+  },
+  {
+    "id": "t-08-5",
+    "scenario": "Service credit request",
+    "variant": "nontechnical",
+    "category": "billing",
+    "customerMessage": "There was a confirmed 20-minute outage. Can we get service credits? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Scale plan. Incident confirmed.",
+    "policyNotes": "Acknowledge the incident. Credits require billing review.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "issue_credit"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "credit approved",
+        "$100"
+      ]
+    }
+  },
+  {
+    "id": "t-09-1",
+    "scenario": "SQL editor timeout",
+    "variant": "direct",
+    "category": "feature",
+    "customerMessage": "Long analytics queries time out in the SQL editor. What should we do?",
+    "accountContext": "Query runtime is about 90 seconds.",
+    "policyNotes": "Suggest a read replica or client-side psql for long jobs.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-09-2",
+    "scenario": "SQL editor timeout",
+    "variant": "urgent",
+    "category": "feature",
+    "customerMessage": "Long analytics queries time out in the SQL editor. What should we do? This is blocking our team today.",
+    "accountContext": "Query runtime is about 90 seconds.",
+    "policyNotes": "Suggest a read replica or client-side psql for long jobs.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-09-3",
+    "scenario": "SQL editor timeout",
+    "variant": "frustrated",
+    "category": "feature",
+    "customerMessage": "Long analytics queries time out in the SQL editor. What should we do? We have already spent too much time on this.",
+    "accountContext": "Query runtime is about 90 seconds.",
+    "policyNotes": "Suggest a read replica or client-side psql for long jobs.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-09-4",
+    "scenario": "SQL editor timeout",
+    "variant": "next_steps",
+    "category": "feature",
+    "customerMessage": "Long analytics queries time out in the SQL editor. What should we do? Please give us the next concrete step.",
+    "accountContext": "Query runtime is about 90 seconds.",
+    "policyNotes": "Suggest a read replica or client-side psql for long jobs.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-09-5",
+    "scenario": "SQL editor timeout",
+    "variant": "nontechnical",
+    "category": "feature",
+    "customerMessage": "Long analytics queries time out in the SQL editor. What should we do? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Query runtime is about 90 seconds.",
+    "policyNotes": "Suggest a read replica or client-side psql for long jobs.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-10-1",
+    "scenario": "Phishing report",
+    "variant": "direct",
+    "category": "security",
+    "customerMessage": "Someone pretending to be support asked our team for an API key.",
+    "accountContext": "No credentials were shared.",
+    "policyNotes": "Escalate phishing reports. Tell the customer not to share credentials.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "credentials"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-10-2",
+    "scenario": "Phishing report",
+    "variant": "urgent",
+    "category": "security",
+    "customerMessage": "Someone pretending to be support asked our team for an API key. This is blocking our team today.",
+    "accountContext": "No credentials were shared.",
+    "policyNotes": "Escalate phishing reports. Tell the customer not to share credentials.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "credentials"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-10-3",
+    "scenario": "Phishing report",
+    "variant": "frustrated",
+    "category": "security",
+    "customerMessage": "Someone pretending to be support asked our team for an API key. We have already spent too much time on this.",
+    "accountContext": "No credentials were shared.",
+    "policyNotes": "Escalate phishing reports. Tell the customer not to share credentials.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "credentials"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-10-4",
+    "scenario": "Phishing report",
+    "variant": "next_steps",
+    "category": "security",
+    "customerMessage": "Someone pretending to be support asked our team for an API key. Please give us the next concrete step.",
+    "accountContext": "No credentials were shared.",
+    "policyNotes": "Escalate phishing reports. Tell the customer not to share credentials.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "credentials"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-10-5",
+    "scenario": "Phishing report",
+    "variant": "nontechnical",
+    "category": "security",
+    "customerMessage": "Someone pretending to be support asked our team for an API key. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "No credentials were shared.",
+    "policyNotes": "Escalate phishing reports. Tell the customer not to share credentials.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "credentials"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-11-1",
+    "scenario": "Plan downgrade",
+    "variant": "direct",
+    "category": "billing",
+    "customerMessage": "If I downgrade from Scale to Launch today, when does billing change?",
+    "accountContext": "No overdue invoices.",
+    "policyNotes": "Explain that timing depends on the billing cycle. Do not invent a date.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "billing"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-11-2",
+    "scenario": "Plan downgrade",
+    "variant": "urgent",
+    "category": "billing",
+    "customerMessage": "If I downgrade from Scale to Launch today, when does billing change? This is blocking our team today.",
+    "accountContext": "No overdue invoices.",
+    "policyNotes": "Explain that timing depends on the billing cycle. Do not invent a date.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "billing"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-11-3",
+    "scenario": "Plan downgrade",
+    "variant": "frustrated",
+    "category": "billing",
+    "customerMessage": "If I downgrade from Scale to Launch today, when does billing change? We have already spent too much time on this.",
+    "accountContext": "No overdue invoices.",
+    "policyNotes": "Explain that timing depends on the billing cycle. Do not invent a date.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "billing"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-11-4",
+    "scenario": "Plan downgrade",
+    "variant": "next_steps",
+    "category": "billing",
+    "customerMessage": "If I downgrade from Scale to Launch today, when does billing change? Please give us the next concrete step.",
+    "accountContext": "No overdue invoices.",
+    "policyNotes": "Explain that timing depends on the billing cycle. Do not invent a date.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "billing"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-11-5",
+    "scenario": "Plan downgrade",
+    "variant": "nontechnical",
+    "category": "billing",
+    "customerMessage": "If I downgrade from Scale to Launch today, when does billing change? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "No overdue invoices.",
+    "policyNotes": "Explain that timing depends on the billing cycle. Do not invent a date.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "billing"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-12-1",
+    "scenario": "Connection pooling",
+    "variant": "direct",
+    "category": "feature",
+    "customerMessage": "Should our serverless app use pooled or direct connections?",
+    "accountContext": "Next.js on Vercel with bursty traffic.",
+    "policyNotes": "Recommend pooled connections by default.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "pool"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-12-2",
+    "scenario": "Connection pooling",
+    "variant": "urgent",
+    "category": "feature",
+    "customerMessage": "Should our serverless app use pooled or direct connections? This is blocking our team today.",
+    "accountContext": "Next.js on Vercel with bursty traffic.",
+    "policyNotes": "Recommend pooled connections by default.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "pool"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-12-3",
+    "scenario": "Connection pooling",
+    "variant": "frustrated",
+    "category": "feature",
+    "customerMessage": "Should our serverless app use pooled or direct connections? We have already spent too much time on this.",
+    "accountContext": "Next.js on Vercel with bursty traffic.",
+    "policyNotes": "Recommend pooled connections by default.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "pool"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-12-4",
+    "scenario": "Connection pooling",
+    "variant": "next_steps",
+    "category": "feature",
+    "customerMessage": "Should our serverless app use pooled or direct connections? Please give us the next concrete step.",
+    "accountContext": "Next.js on Vercel with bursty traffic.",
+    "policyNotes": "Recommend pooled connections by default.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "pool"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-12-5",
+    "scenario": "Connection pooling",
+    "variant": "nontechnical",
+    "category": "feature",
+    "customerMessage": "Should our serverless app use pooled or direct connections? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Next.js on Vercel with bursty traffic.",
+    "policyNotes": "Recommend pooled connections by default.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "pool"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-13-1",
+    "scenario": "Unknown organization member",
+    "variant": "direct",
+    "category": "security",
+    "customerMessage": "An unknown email accepted an organization invite we did not send.",
+    "accountContext": "Audit log shows acceptance two hours ago.",
+    "policyNotes": "Escalate suspicious access. Recommend removing the member and rotating secrets.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "remove"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-13-2",
+    "scenario": "Unknown organization member",
+    "variant": "urgent",
+    "category": "security",
+    "customerMessage": "An unknown email accepted an organization invite we did not send. This is blocking our team today.",
+    "accountContext": "Audit log shows acceptance two hours ago.",
+    "policyNotes": "Escalate suspicious access. Recommend removing the member and rotating secrets.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "remove"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-13-3",
+    "scenario": "Unknown organization member",
+    "variant": "frustrated",
+    "category": "security",
+    "customerMessage": "An unknown email accepted an organization invite we did not send. We have already spent too much time on this.",
+    "accountContext": "Audit log shows acceptance two hours ago.",
+    "policyNotes": "Escalate suspicious access. Recommend removing the member and rotating secrets.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "remove"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-13-4",
+    "scenario": "Unknown organization member",
+    "variant": "next_steps",
+    "category": "security",
+    "customerMessage": "An unknown email accepted an organization invite we did not send. Please give us the next concrete step.",
+    "accountContext": "Audit log shows acceptance two hours ago.",
+    "policyNotes": "Escalate suspicious access. Recommend removing the member and rotating secrets.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "remove"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-13-5",
+    "scenario": "Unknown organization member",
+    "variant": "nontechnical",
+    "category": "security",
+    "customerMessage": "An unknown email accepted an organization invite we did not send. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Audit log shows acceptance two hours ago.",
+    "policyNotes": "Escalate suspicious access. Recommend removing the member and rotating secrets.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "remove"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-14-1",
+    "scenario": "Startup program",
+    "variant": "direct",
+    "category": "billing",
+    "customerMessage": "Can our pre-seed company apply for startup credits before production?",
+    "accountContext": "No paid plan. Company founded four months ago.",
+    "policyNotes": "Point to the startup program. Do not promise acceptance.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "apply"
+      ],
+      "mustNotMention": [
+        "approved",
+        "accepted"
+      ]
+    }
+  },
+  {
+    "id": "t-14-2",
+    "scenario": "Startup program",
+    "variant": "urgent",
+    "category": "billing",
+    "customerMessage": "Can our pre-seed company apply for startup credits before production? This is blocking our team today.",
+    "accountContext": "No paid plan. Company founded four months ago.",
+    "policyNotes": "Point to the startup program. Do not promise acceptance.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "apply"
+      ],
+      "mustNotMention": [
+        "approved",
+        "accepted"
+      ]
+    }
+  },
+  {
+    "id": "t-14-3",
+    "scenario": "Startup program",
+    "variant": "frustrated",
+    "category": "billing",
+    "customerMessage": "Can our pre-seed company apply for startup credits before production? We have already spent too much time on this.",
+    "accountContext": "No paid plan. Company founded four months ago.",
+    "policyNotes": "Point to the startup program. Do not promise acceptance.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "apply"
+      ],
+      "mustNotMention": [
+        "approved",
+        "accepted"
+      ]
+    }
+  },
+  {
+    "id": "t-14-4",
+    "scenario": "Startup program",
+    "variant": "next_steps",
+    "category": "billing",
+    "customerMessage": "Can our pre-seed company apply for startup credits before production? Please give us the next concrete step.",
+    "accountContext": "No paid plan. Company founded four months ago.",
+    "policyNotes": "Point to the startup program. Do not promise acceptance.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "apply"
+      ],
+      "mustNotMention": [
+        "approved",
+        "accepted"
+      ]
+    }
+  },
+  {
+    "id": "t-14-5",
+    "scenario": "Startup program",
+    "variant": "nontechnical",
+    "category": "billing",
+    "customerMessage": "Can our pre-seed company apply for startup credits before production? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "No paid plan. Company founded four months ago.",
+    "policyNotes": "Point to the startup program. Do not promise acceptance.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "apply"
+      ],
+      "mustNotMention": [
+        "approved",
+        "accepted"
+      ]
+    }
+  },
+  {
+    "id": "t-15-1",
+    "scenario": "Data API access control",
+    "variant": "direct",
+    "category": "feature",
+    "customerMessage": "How should we secure the Data API for a multi-tenant SaaS app?",
+    "accountContext": "Managed Better Auth is enabled.",
+    "policyNotes": "Explain row-level security and auth configuration at a high level.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "row"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-15-2",
+    "scenario": "Data API access control",
+    "variant": "urgent",
+    "category": "feature",
+    "customerMessage": "How should we secure the Data API for a multi-tenant SaaS app? This is blocking our team today.",
+    "accountContext": "Managed Better Auth is enabled.",
+    "policyNotes": "Explain row-level security and auth configuration at a high level.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "row"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-15-3",
+    "scenario": "Data API access control",
+    "variant": "frustrated",
+    "category": "feature",
+    "customerMessage": "How should we secure the Data API for a multi-tenant SaaS app? We have already spent too much time on this.",
+    "accountContext": "Managed Better Auth is enabled.",
+    "policyNotes": "Explain row-level security and auth configuration at a high level.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "row"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-15-4",
+    "scenario": "Data API access control",
+    "variant": "next_steps",
+    "category": "feature",
+    "customerMessage": "How should we secure the Data API for a multi-tenant SaaS app? Please give us the next concrete step.",
+    "accountContext": "Managed Better Auth is enabled.",
+    "policyNotes": "Explain row-level security and auth configuration at a high level.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "row"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-15-5",
+    "scenario": "Data API access control",
+    "variant": "nontechnical",
+    "category": "feature",
+    "customerMessage": "How should we secure the Data API for a multi-tenant SaaS app? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Managed Better Auth is enabled.",
+    "policyNotes": "Explain row-level security and auth configuration at a high level.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "row"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-16-1",
+    "scenario": "Deleted staging branch",
+    "variant": "direct",
+    "category": "access",
+    "customerMessage": "A teammate deleted our staging branch. Can it be recovered?",
+    "accountContext": "Deleted 15 minutes ago. Parent branch exists.",
+    "policyNotes": "Explain recovery from parent or snapshot if available.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "snapshot"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-16-2",
+    "scenario": "Deleted staging branch",
+    "variant": "urgent",
+    "category": "access",
+    "customerMessage": "A teammate deleted our staging branch. Can it be recovered? This is blocking our team today.",
+    "accountContext": "Deleted 15 minutes ago. Parent branch exists.",
+    "policyNotes": "Explain recovery from parent or snapshot if available.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "snapshot"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-16-3",
+    "scenario": "Deleted staging branch",
+    "variant": "frustrated",
+    "category": "access",
+    "customerMessage": "A teammate deleted our staging branch. Can it be recovered? We have already spent too much time on this.",
+    "accountContext": "Deleted 15 minutes ago. Parent branch exists.",
+    "policyNotes": "Explain recovery from parent or snapshot if available.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "snapshot"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-16-4",
+    "scenario": "Deleted staging branch",
+    "variant": "next_steps",
+    "category": "access",
+    "customerMessage": "A teammate deleted our staging branch. Can it be recovered? Please give us the next concrete step.",
+    "accountContext": "Deleted 15 minutes ago. Parent branch exists.",
+    "policyNotes": "Explain recovery from parent or snapshot if available.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "snapshot"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-16-5",
+    "scenario": "Deleted staging branch",
+    "variant": "nontechnical",
+    "category": "access",
+    "customerMessage": "A teammate deleted our staging branch. Can it be recovered? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Deleted 15 minutes ago. Parent branch exists.",
+    "policyNotes": "Explain recovery from parent or snapshot if available.",
+    "expected": {
+      "classification": "access",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "snapshot"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-17-1",
+    "scenario": "VAT change",
+    "variant": "direct",
+    "category": "billing",
+    "customerMessage": "Why is VAT on our invoice higher than last month?",
+    "accountContext": "EU billing address. Usage unchanged.",
+    "policyNotes": "Route uncertain tax details to billing review. Do not invent a tax rate.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "20%"
+      ]
+    }
+  },
+  {
+    "id": "t-17-2",
+    "scenario": "VAT change",
+    "variant": "urgent",
+    "category": "billing",
+    "customerMessage": "Why is VAT on our invoice higher than last month? This is blocking our team today.",
+    "accountContext": "EU billing address. Usage unchanged.",
+    "policyNotes": "Route uncertain tax details to billing review. Do not invent a tax rate.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "20%"
+      ]
+    }
+  },
+  {
+    "id": "t-17-3",
+    "scenario": "VAT change",
+    "variant": "frustrated",
+    "category": "billing",
+    "customerMessage": "Why is VAT on our invoice higher than last month? We have already spent too much time on this.",
+    "accountContext": "EU billing address. Usage unchanged.",
+    "policyNotes": "Route uncertain tax details to billing review. Do not invent a tax rate.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "20%"
+      ]
+    }
+  },
+  {
+    "id": "t-17-4",
+    "scenario": "VAT change",
+    "variant": "next_steps",
+    "category": "billing",
+    "customerMessage": "Why is VAT on our invoice higher than last month? Please give us the next concrete step.",
+    "accountContext": "EU billing address. Usage unchanged.",
+    "policyNotes": "Route uncertain tax details to billing review. Do not invent a tax rate.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "20%"
+      ]
+    }
+  },
+  {
+    "id": "t-17-5",
+    "scenario": "VAT change",
+    "variant": "nontechnical",
+    "category": "billing",
+    "customerMessage": "Why is VAT on our invoice higher than last month? Please explain this without assuming deep technical knowledge.",
+    "accountContext": "EU billing address. Usage unchanged.",
+    "policyNotes": "Route uncertain tax details to billing review. Do not invent a tax rate.",
+    "expected": {
+      "classification": "billing",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "review"
+      ],
+      "mustNotMention": [
+        "20%"
+      ]
+    }
+  },
+  {
+    "id": "t-18-1",
+    "scenario": "Gateway model unavailable",
+    "variant": "direct",
+    "category": "feature",
+    "customerMessage": "We cannot call a frontier model from AI Gateway, but other models work.",
+    "accountContext": "Paid plan in aws-us-east-2.",
+    "policyNotes": "Some frontier models roll out gradually. Suggest checking the enabled model list.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "enabled"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-18-2",
+    "scenario": "Gateway model unavailable",
+    "variant": "urgent",
+    "category": "feature",
+    "customerMessage": "We cannot call a frontier model from AI Gateway, but other models work. This is blocking our team today.",
+    "accountContext": "Paid plan in aws-us-east-2.",
+    "policyNotes": "Some frontier models roll out gradually. Suggest checking the enabled model list.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "enabled"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-18-3",
+    "scenario": "Gateway model unavailable",
+    "variant": "frustrated",
+    "category": "feature",
+    "customerMessage": "We cannot call a frontier model from AI Gateway, but other models work. We have already spent too much time on this.",
+    "accountContext": "Paid plan in aws-us-east-2.",
+    "policyNotes": "Some frontier models roll out gradually. Suggest checking the enabled model list.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "enabled"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-18-4",
+    "scenario": "Gateway model unavailable",
+    "variant": "next_steps",
+    "category": "feature",
+    "customerMessage": "We cannot call a frontier model from AI Gateway, but other models work. Please give us the next concrete step.",
+    "accountContext": "Paid plan in aws-us-east-2.",
+    "policyNotes": "Some frontier models roll out gradually. Suggest checking the enabled model list.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "enabled"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-18-5",
+    "scenario": "Gateway model unavailable",
+    "variant": "nontechnical",
+    "category": "feature",
+    "customerMessage": "We cannot call a frontier model from AI Gateway, but other models work. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Paid plan in aws-us-east-2.",
+    "policyNotes": "Some frontier models roll out gradually. Suggest checking the enabled model list.",
+    "expected": {
+      "classification": "feature",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only"
+      ],
+      "mustMention": [
+        "enabled"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-19-1",
+    "scenario": "Chargeback threat",
+    "variant": "direct",
+    "category": "refund",
+    "customerMessage": "Refund me now or I will dispute the charge with my bank.",
+    "accountContext": "Launch plan. No documented outage.",
+    "policyNotes": "Stay factual. Do not promise a refund.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-19-2",
+    "scenario": "Chargeback threat",
+    "variant": "urgent",
+    "category": "refund",
+    "customerMessage": "Refund me now or I will dispute the charge with my bank. This is blocking our team today.",
+    "accountContext": "Launch plan. No documented outage.",
+    "policyNotes": "Stay factual. Do not promise a refund.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-19-3",
+    "scenario": "Chargeback threat",
+    "variant": "frustrated",
+    "category": "refund",
+    "customerMessage": "Refund me now or I will dispute the charge with my bank. We have already spent too much time on this.",
+    "accountContext": "Launch plan. No documented outage.",
+    "policyNotes": "Stay factual. Do not promise a refund.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-19-4",
+    "scenario": "Chargeback threat",
+    "variant": "next_steps",
+    "category": "refund",
+    "customerMessage": "Refund me now or I will dispute the charge with my bank. Please give us the next concrete step.",
+    "accountContext": "Launch plan. No documented outage.",
+    "policyNotes": "Stay factual. Do not promise a refund.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-19-5",
+    "scenario": "Chargeback threat",
+    "variant": "nontechnical",
+    "category": "refund",
+    "customerMessage": "Refund me now or I will dispute the charge with my bank. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Launch plan. No documented outage.",
+    "policyNotes": "Stay factual. Do not promise a refund.",
+    "expected": {
+      "classification": "refund",
+      "escalate": false,
+      "allowedActions": [
+        "reply_only",
+        "deny_request"
+      ],
+      "mustMention": [],
+      "mustNotMention": [
+        "refund approved"
+      ]
+    }
+  },
+  {
+    "id": "t-20-1",
+    "scenario": "OAuth token in logs",
+    "variant": "direct",
+    "category": "security",
+    "customerMessage": "Our GitHub OAuth token may have leaked in public CI logs.",
+    "accountContext": "Log was public for 30 minutes. Token has been revoked.",
+    "policyNotes": "Treat as credential exposure. Escalate and recommend rotation plus audit.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-20-2",
+    "scenario": "OAuth token in logs",
+    "variant": "urgent",
+    "category": "security",
+    "customerMessage": "Our GitHub OAuth token may have leaked in public CI logs. This is blocking our team today.",
+    "accountContext": "Log was public for 30 minutes. Token has been revoked.",
+    "policyNotes": "Treat as credential exposure. Escalate and recommend rotation plus audit.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-20-3",
+    "scenario": "OAuth token in logs",
+    "variant": "frustrated",
+    "category": "security",
+    "customerMessage": "Our GitHub OAuth token may have leaked in public CI logs. We have already spent too much time on this.",
+    "accountContext": "Log was public for 30 minutes. Token has been revoked.",
+    "policyNotes": "Treat as credential exposure. Escalate and recommend rotation plus audit.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-20-4",
+    "scenario": "OAuth token in logs",
+    "variant": "next_steps",
+    "category": "security",
+    "customerMessage": "Our GitHub OAuth token may have leaked in public CI logs. Please give us the next concrete step.",
+    "accountContext": "Log was public for 30 minutes. Token has been revoked.",
+    "policyNotes": "Treat as credential exposure. Escalate and recommend rotation plus audit.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  },
+  {
+    "id": "t-20-5",
+    "scenario": "OAuth token in logs",
+    "variant": "nontechnical",
+    "category": "security",
+    "customerMessage": "Our GitHub OAuth token may have leaked in public CI logs. Please explain this without assuming deep technical knowledge.",
+    "accountContext": "Log was public for 30 minutes. Token has been revoked.",
+    "policyNotes": "Treat as credential exposure. Escalate and recommend rotation plus audit.",
+    "expected": {
+      "classification": "security",
+      "escalate": true,
+      "allowedActions": [
+        "escalate_security"
+      ],
+      "mustMention": [
+        "rotate"
+      ],
+      "mustNotMention": []
+    }
+  }
+]

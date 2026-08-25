@@ -77,6 +77,8 @@ export interface ModelAggregate {
   modelName: string;
   provider: string;
   openWeights: boolean;
+  branchId?: string;
+  branchName?: string;
   attempts: number;
   successes: number;
   passRate: number;
@@ -84,7 +86,8 @@ export interface ModelAggregate {
   inputTokens: number;
   outputTokens: number;
   reasoningTokens: number;
-  totalCostUsd: number;
+  totalCostUsd: number | null;
+  tokensPerSuccess?: number | null;
   costPerSuccessUsd: number | null;
   medianLatencyMs: number;
   costPerThousandSuccessesUsd: number | null;

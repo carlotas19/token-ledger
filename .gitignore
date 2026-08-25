@@ -10,6 +10,8 @@
 
 # testing
 /coverage
+.pycache/
+/benchmark/results/
 
 # next.js
 /.next/

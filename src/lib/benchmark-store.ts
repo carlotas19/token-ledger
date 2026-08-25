@@ -55,10 +55,6 @@ export async function buildAggregates(
       COALESCE(SUM(ir.completion_tokens), 0)::int AS output_tokens,
       COALESCE(SUM(ir.reasoning_tokens), 0)::int AS reasoning_tokens,
       COALESCE(SUM(ir.estimated_cost_usd), 0)::float AS total_cost_usd,
-      COALESCE(
-        SUM(CASE WHEN ir.passed THEN ir.estimated_cost_usd ELSE 0 END),
-        0
-      )::float AS success_cost_usd,
       ARRAY_REMOVE(ARRAY_AGG(ir.latency_ms), NULL) AS latencies
     FROM model_snapshots ms
     LEFT JOIN inference_runs ir
@@ -66,19 +62,18 @@ export async function buildAggregates(
       AND ir.model_id = ms.model_id
     WHERE ms.benchmark_run_id = ${benchmarkRunId}
     GROUP BY ms.model_id, ms.model_name, ms.provider, ms.open_weights
-    ORDER BY success_cost_usd ASC NULLS LAST, total_cost_usd ASC
+    ORDER BY ms.model_id ASC
   `;
 
   return rows.map((row) => {
     const attempts = Number(row.attempts ?? 0);
     const successes = Number(row.successes ?? 0);
     const totalCostUsd = Number(row.total_cost_usd ?? 0);
-    const successCostUsd = Number(row.success_cost_usd ?? 0);
     const latencies = (row.latencies as number[] | null) ?? [];
     const passRate = attempts > 0 ? successes / attempts : 0;
-    const costPerSuccessUsd = successes > 0 ? successCostUsd / successes : null;
+    const costPerSuccessUsd = successes > 0 ? totalCostUsd / successes : null;
     const costPerThousandSuccessesUsd =
-      successes > 0 ? (successCostUsd / successes) * 1000 : null;
+      successes > 0 ? (totalCostUsd / successes) * 1000 : null;
 
     return {
       modelId: String(row.model_id),
@@ -93,6 +88,8 @@ export async function buildAggregates(
       outputTokens: Number(row.output_tokens ?? 0),
       reasoningTokens: Number(row.reasoning_tokens ?? 0),
       totalCostUsd,
+      tokensPerSuccess:
+        successes > 0 ? Number(row.total_tokens ?? 0) / successes : null,
       costPerSuccessUsd,
       medianLatencyMs: median(latencies),
       costPerThousandSuccessesUsd,

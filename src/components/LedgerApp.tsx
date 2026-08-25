@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 import type { BenchmarkSummary, Tab } from "@/lib/types";
 import { TabNav } from "@/components/TabNav";
-import { LedgerDashboard } from "@/components/LedgerDashboard";
-import { Report } from "@/components/Report";
-import { Methodology } from "@/components/Methodology";
+import { SimpleLedger } from "@/components/SimpleLedger";
+import { SimpleReport } from "@/components/SimpleReport";
+import { DetailedMethodology } from "@/components/DetailedMethodology";
 import { NeonBadge } from "@/components/NeonBadge";
 
 interface LedgerAppProps {
@@ -36,12 +36,16 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
             Token Ledger
           </h1>
           <p className="mt-4 max-w-3xl animate-fade-in text-lg leading-relaxed text-ledger-cream/75">
-            Every business now manages revenue flows and token flows. This benchmark
-            runs one support-ticket task across the Neon AI Gateway catalog and ranks
-            models by cost per successful resolution, not leaderboard trivia.
+            Every business now manages revenue flows and token flows. There is
+            significant room for cost savings when picking efficient models. This
+            benchmark simulates one representative task and ranks models by how much
+            it costs to complete.
+          </p>
+          <p className="mt-5 max-w-3xl text-sm text-ledger-muted">
+            The task we simulate: using an LLM to reply to 100 support tickets.
           </p>
           {headline && (
-            <p className="mt-5 max-w-3xl text-sm text-ledger-muted">
+            <p className="mt-3 max-w-3xl text-sm text-ledger-muted">
               Current run leader on unit economics:{" "}
               <span className="font-mono text-neon-green">{headline.modelId}</span>{" "}
               at{" "}
@@ -63,9 +67,11 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
       </header>
 
       <main>
-        {activeTab === "ledger" && <LedgerDashboard benchmark={benchmark} />}
-        {activeTab === "report" && <Report benchmark={benchmark} />}
-        {activeTab === "methodology" && <Methodology benchmark={benchmark} />}
+        {activeTab === "ledger" && <SimpleLedger benchmark={benchmark} />}
+        {activeTab === "report" && <SimpleReport benchmark={benchmark} />}
+        {activeTab === "methodology" && (
+          <DetailedMethodology benchmark={benchmark} />
+        )}
       </main>
 
       <footer className="border-t border-ledger-border px-6 py-8">

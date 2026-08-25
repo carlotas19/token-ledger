@@ -1,8 +1,11 @@
 import { LedgerApp } from "@/components/LedgerApp";
 import { getLatestBenchmark } from "@/lib/benchmark-store";
-import { demoBenchmark } from "@/data/demo-benchmark";
+import latestBenchmark from "@/data/latest-benchmark.json";
+import type { BenchmarkSummary } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+const publishedBenchmark =
+  latestBenchmark as unknown as BenchmarkSummary;
 
 export default async function HomePage() {
   let benchmark = null;
@@ -13,5 +16,9 @@ export default async function HomePage() {
     benchmark = null;
   }
 
-  return <LedgerApp benchmark={benchmark ?? demoBenchmark} />;
+  return (
+    <LedgerApp
+      benchmark={benchmark ?? publishedBenchmark}
+    />
+  );
 }
