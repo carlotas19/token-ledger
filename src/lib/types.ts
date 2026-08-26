@@ -1,4 +1,4 @@
-export type Tab = "ledger" | "report" | "methodology";
+export type Tab = "benchmark" | "report";
 
 export interface Ticket {
   id: string;

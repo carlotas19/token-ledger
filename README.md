@@ -1,8 +1,11 @@
-# Token Ledger
+# Tokenomics, measured
 
-Public benchmark app for Neon AI Gateway token economics.
+Public AI model cost benchmark built with Neon AI Gateway.
 
-Token Ledger runs one repeatable business task across the AI Gateway catalog, measures provider-reported token usage, grades successful outcomes with deterministic checks, and ranks models by estimated cost per 1,000 successful resolutions.
+The benchmark sends the same 100-ticket support workload to every enabled text
+model, measures provider-reported token usage, and grades each response with
+deterministic checks. Every model attempts all 100 tasks. A completion is a
+response that passes every format and policy check.
 
 ## Stack
 
@@ -30,13 +33,19 @@ npm install
 npm run db:migrate
 ```
 
-5. Run a sample benchmark:
+5. Generate the 100-ticket workload:
 
 ```bash
-npm run benchmark:sample
+python3 scripts/generate-workload.py
 ```
 
-6. Start the app:
+6. Run the full benchmark. The runner requires the Neon CLI:
+
+```bash
+python3 scripts/run-benchmark.py
+```
+
+7. Start the app:
 
 ```bash
 npm run dev
@@ -44,17 +53,28 @@ npm run dev
 
 ## Benchmark task
 
-v1 uses synthetic support-ticket resolution. Each model receives the same customer message, account context, and policy notes, then must return JSON with classification, action, escalation, and a customer reply.
+The workload contains 20 support scenarios, each expressed in five language
+variants. Each model receives the same customer message, account context, and
+policy notes, then must return JSON with a classification, action, escalation
+decision, and customer reply.
 
-Primary metric:
+The response passes when it:
 
-`estimated cost per 1,000 successful resolutions`
+- Parses as the required JSON shape
+- Matches the expected classification and permitted action
+- Makes the correct escalation decision
+- Includes required policy terms
+- Avoids forbidden claims
+- Keeps the customer reply between 1 and 120 words
+
+The primary metrics are total tokens and estimated cost across all 100 attempts
+divided by the number of responses that passed. Failed responses remain in the
+totals because those tokens were spent.
 
 ## App sections
 
-- **Ledger**: efficiency frontier, token anatomy, leaderboard
-- **Report**: thesis, business calculator, analysis notes
-- **Methodology**: workload, scoring, infrastructure, limits, reproducibility
+- **Benchmark**: cost-token chart and ordered result tables
+- **Report**: thesis, findings, complete methodology, and limits
 
 ## Neon project
 
@@ -64,5 +84,6 @@ Primary metric:
 
 ## Notes
 
-- AI Gateway inference is free during beta. Dollar figures in the app are estimates from catalog per-token rates at snapshot time.
-- The UI falls back to demo data until the first benchmark run is stored in Postgres.
+- Dollar figures are estimates from catalog per-token rates at snapshot time.
+- The published aggregate is in `src/data/latest-benchmark.json`.
+- Raw responses and checkpoints stay local under `benchmark/results/`.

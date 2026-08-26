@@ -10,6 +10,7 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
+import type { TooltipProps } from "recharts";
 import type { BenchmarkSummary, ModelAggregate } from "@/lib/types";
 
 interface SimpleLedgerProps {
@@ -43,97 +44,122 @@ function rankClass(index: number, length: number) {
 export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
   const tokenRanking = rankModels(benchmark.aggregates, tokensPerCompletion);
   const priceRanking = rankModels(benchmark.aggregates, costPerCompletion);
+  const tokenLeader = tokenRanking[0];
+  const tokenLast = tokenRanking[tokenRanking.length - 1];
+  const priceLeader = priceRanking[0];
+  const priceLast = priceRanking[priceRanking.length - 1];
   const chartData = benchmark.aggregates
     .map((model) => ({
-      model: model.modelId,
+      model: model.modelName,
       provider: model.provider,
       tokens: tokensPerCompletion(model),
       price: costPerCompletion(model),
       completed: model.successes,
+      attempted: model.attempts,
     }))
     .filter((model) => model.tokens != null && model.price != null);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12 lg:px-0">
-      <section className="grid gap-4 sm:grid-cols-3">
-        <Stat label="Support tickets per model" value={String(benchmark.ticketCount)} />
-        <Stat label="Models tested" value={String(benchmark.modelCount)} />
-        <Stat label="Neon branches" value={String(benchmark.modelCount)} />
-      </section>
-
-      <section className="mt-10 rounded-2xl border border-ledger-border bg-ledger-panel/75 p-5 md:p-8">
+      <section className="rounded-2xl border border-ledger-border bg-ledger-panel/75 p-5 md:p-8">
         <h2 className="text-2xl font-light text-ledger-cream">
-          Tokens and price per completed ticket
+          Cost and tokens per completed task
         </h2>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ledger-muted">
-          Each point is one model. Further left means fewer tokens per completed
-          ticket. Lower means a lower estimated price. Failed attempts remain in
-          both totals, because those tokens were still spent.
+        <div className="mt-3 grid gap-3 text-sm leading-relaxed text-ledger-cream/75 lg:grid-cols-2">
+          <p>
+            <span className="font-mono text-neon-green">
+              {tokenLeader?.modelName}
+            </span>{" "}
+            used the fewest tokens per completed task.{" "}
+            <span className="font-mono text-neon-green">
+              {priceLeader?.modelName}
+            </span>{" "}
+            had the lowest estimated cost.
+          </p>
+          <p>
+            <span className="font-mono text-red-300">
+              {tokenLast?.modelName}
+            </span>{" "}
+            used the most tokens per completed task.{" "}
+            <span className="font-mono text-red-300">
+              {priceLast?.modelName}
+            </span>{" "}
+            had the highest estimated cost among priced models.
+          </p>
+        </div>
+        <div className="mt-5 rounded-lg border border-ledger-border bg-ledger-charcoal/70 px-4 py-3 text-sm leading-relaxed text-ledger-muted">
+          Every model attempted all 100 tasks. “Completed” means the response
+          passed every deterministic policy and format check. The metric divides
+          all tokens and cost from the 100 attempts by the number that passed, so
+          failed attempts still count against efficiency.
+        </div>
+        <p className="mt-6 text-xs text-ledger-muted">
+          Bottom-left is better. Bubble size represents tasks completed. Both
+          axes use a logarithmic scale so the outliers do not hide the rest.
         </p>
-        <div className="mt-6 h-[420px]">
+        <p className="mt-4 text-xs uppercase tracking-[0.16em] text-ledger-muted">
+          Estimated cost per completed task
+        </p>
+        <div className="mt-2 h-[460px]">
           <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart margin={{ top: 10, right: 25, bottom: 35, left: 15 }}>
+            <ScatterChart margin={{ top: 15, right: 25, bottom: 22, left: 30 }}>
               <CartesianGrid stroke="rgba(127,145,136,0.14)" />
               <XAxis
                 type="number"
                 dataKey="tokens"
-                name="Tokens per completion"
+                name="Tokens per completed task"
+                scale="log"
+                domain={["auto", "auto"]}
                 stroke="#7f9188"
                 tick={{ fill: "#7f9188", fontSize: 12 }}
-                label={{
-                  value: "tokens per completed ticket",
-                  fill: "#7f9188",
-                  position: "insideBottom",
-                  offset: -20,
-                }}
+                tickFormatter={(value) =>
+                  Number(value).toLocaleString(undefined, {
+                    maximumFractionDigits: 0,
+                  })
+                }
               />
               <YAxis
                 type="number"
                 dataKey="price"
-                name="Price per completion"
+                name="Estimated cost per completed task"
+                scale="log"
+                domain={["auto", "auto"]}
                 stroke="#7f9188"
                 tick={{ fill: "#7f9188", fontSize: 12 }}
-                tickFormatter={(value) => `$${Number(value).toFixed(3)}`}
-                label={{
-                  value: "estimated $ per completed ticket",
-                  fill: "#7f9188",
-                  angle: -90,
-                  position: "insideLeft",
-                }}
+                width={72}
+                tickFormatter={(value) => `$${Number(value).toFixed(4)}`}
               />
-              <ZAxis type="number" dataKey="completed" range={[80, 240]} />
+              <ZAxis
+                type="number"
+                dataKey="completed"
+                name="Tasks completed"
+                range={[70, 260]}
+              />
               <Tooltip
                 cursor={{ strokeDasharray: "3 3" }}
-                formatter={(value, name) => {
-                  if (name === "Price per completion") {
-                    return [`$${Number(value).toFixed(6)}`, name];
-                  }
-                  return [Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 }), name];
-                }}
-                contentStyle={{
-                  background: "#121a16",
-                  border: "1px solid #243028",
-                  borderRadius: 12,
-                }}
+                content={<ChartTooltip />}
               />
               <Scatter data={chartData} fill="#00E599" />
             </ScatterChart>
           </ResponsiveContainer>
         </div>
+        <p className="mt-2 text-center text-xs uppercase tracking-[0.16em] text-ledger-muted">
+          Tokens per completed task
+        </p>
       </section>
 
       <section className="mt-10 grid gap-6 lg:grid-cols-2">
         <RankingTable
-          title="Fewest tokens per completion"
-          description="Ordered from least to most total tokens spent per completed ticket."
+          title="Fewest tokens per completed task"
+          description="All tokens from 100 attempts divided by responses that passed."
           models={tokenRanking}
           value={(model) =>
             `${Math.round(tokensPerCompletion(model) ?? 0).toLocaleString()} tokens`
           }
         />
         <RankingTable
-          title="Lowest price per completion"
-          description="Ordered from lowest to highest estimated price per completed ticket."
+          title="Lowest cost per completed task"
+          description="Estimated cost of 100 attempts divided by responses that passed."
           models={priceRanking}
           value={(model) => `$${(costPerCompletion(model) ?? 0).toFixed(6)}`}
         />
@@ -141,17 +167,42 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
 
       <p className="mt-6 text-xs leading-relaxed text-ledger-muted">
         Green marks the top three. Red marks the bottom three. Models without
-        published pricing stay in the token table but are omitted from the price ranking.
+        published pricing stay in the token table but are omitted from the cost ranking.
       </p>
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function ChartTooltip({
+  active,
+  payload,
+}: TooltipProps<number, string>) {
+  if (!active || !payload?.[0]) return null;
+  const point = payload[0].payload as {
+    model: string;
+    tokens: number;
+    price: number;
+    completed: number;
+    attempted: number;
+  };
+
   return (
-    <div className="rounded-xl border border-ledger-border bg-ledger-panel/70 px-5 py-5">
-      <p className="text-xs uppercase tracking-[0.18em] text-ledger-muted">{label}</p>
-      <p className="mt-2 font-mono text-2xl text-ledger-cream">{value}</p>
+    <div className="min-w-64 rounded-xl border border-[#405148] bg-[#070b09] p-4 text-xs shadow-2xl">
+      <p className="font-mono text-sm text-neon-green">{point.model}</p>
+      <dl className="mt-3 grid grid-cols-[1fr_auto] gap-x-5 gap-y-2">
+        <dt className="text-ledger-muted">Tokens per completed task</dt>
+        <dd className="font-mono text-ledger-cream">
+          {Math.round(point.tokens).toLocaleString()}
+        </dd>
+        <dt className="text-ledger-muted">Estimated cost per completed task</dt>
+        <dd className="font-mono text-ledger-cream">
+          ${point.price.toFixed(6)}
+        </dd>
+        <dt className="text-ledger-muted">Responses passed</dt>
+        <dd className="font-mono text-ledger-cream">
+          {point.completed}/{point.attempted}
+        </dd>
+      </dl>
     </div>
   );
 }
@@ -183,7 +234,7 @@ function RankingTable({
                 {model.modelId}
               </span>
               <span className="text-xs text-ledger-muted">
-                {model.successes}/{model.attempts} tickets completed
+                {model.successes}/{model.attempts} responses passed
               </span>
             </span>
             <span className="font-mono text-sm text-ledger-cream">{value(model)}</span>

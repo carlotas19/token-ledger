@@ -7,15 +7,14 @@ interface TabNavProps {
 
 export function TabNav({ activeTab, onTabChange }: TabNavProps) {
   const tabs: { id: Tab; label: string }[] = [
-    { id: "ledger", label: "Ledger" },
+    { id: "benchmark", label: "Benchmark" },
     { id: "report", label: "Report" },
-    { id: "methodology", label: "Methodology" },
   ];
 
   return (
     <nav
       className="flex items-center gap-8 border-b border-ledger-border"
-      aria-label="Token Ledger sections"
+      aria-label="Tokenomics benchmark sections"
     >
       {tabs.map((tab) => (
         <button

@@ -35,16 +35,16 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
     <article className="mx-auto max-w-4xl px-6 py-12 lg:px-0">
       <header>
         <p className="text-sm uppercase tracking-[0.3em] text-ledger-muted">
-          Methodology
+          Reproduce the benchmark
         </p>
         <h2 className="mt-3 text-4xl font-light text-ledger-cream">
-          How the benchmark works
+          How we ran the test
         </h2>
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-ledger-cream/75">
           We created one Neon project, one isolated branch per model, and a fixed
           set of 100 synthetic support tickets. Every model receives the same
-          task contract. We then count all tokens spent and estimate the price of
-          each completed ticket.
+          workload and task contract. Each ticket is one task. We count all
+          tokens spent and estimate the price of each response that passes.
         </p>
       </header>
 
@@ -101,10 +101,12 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
           </p>
         </Section>
 
-        <Section title="When a ticket is complete">
+        <Section title="How a task passes">
           <p>
-            A ticket is complete only when every deterministic check below
-            passes. There is no model-as-judge score.
+            Every model receives all 100 tickets. A response counts as a completed
+            task only when every deterministic check below passes. A result such
+            as 73/100 means the model returned 100 responses and 73 passed all
+            checks. There is no model-as-judge score.
           </p>
           <ol className="list-decimal space-y-2 pl-5">
             <li>The response parses as JSON with all four required fields.</li>
@@ -116,10 +118,11 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
             <li>No forbidden promise, amount, or claim appears.</li>
           </ol>
           <p>
-            Failed attempts do not count as completed tickets. Their tokens and
-            estimated price still count in the model total. We calculate tokens
-            per completion as total tokens across all 100 attempts divided by
-            completed tickets. Price per completion uses the same denominator.
+            Failed responses do not count as completed tasks. Their tokens and
+            estimated price still count in the model total. Tokens per completed
+            task equals total tokens across all 100 attempts divided by responses
+            that passed. Estimated cost per completed task uses the same
+            denominator.
           </p>
         </Section>
 
@@ -164,7 +167,7 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
 
         <Section title="Request settings">
           <ul className="list-disc space-y-2 pl-5">
-            <li>One request per ticket, 100 requests per model</li>
+            <li>One request per task, 100 requests per model</li>
             <li>Maximum output: 2,048 tokens</li>
             <li>No temperature override, because some catalog models do not expose it</li>
             <li>Chat Completions for compatible text models</li>

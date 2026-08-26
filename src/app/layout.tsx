@@ -15,13 +15,13 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Token Ledger: AI Gateway token economics benchmark",
+  title: "Tokenomics, measured: AI model cost benchmark",
   description:
-    "A public benchmark that measures how many tokens each AI Gateway model spends to resolve a support ticket, and what that costs per successful outcome.",
+    "A public benchmark measuring the tokens, estimated cost, and completion rate of a 100-ticket support workload across AI Gateway models.",
   openGraph: {
-    title: "Token Ledger",
+    title: "Tokenomics, measured",
     description:
-      "Token economics for production AI: cost per successful task across the Neon AI Gateway catalog.",
+      "What a fixed 100-ticket workload costs across the Neon AI Gateway catalog.",
     type: "website",
   },
 };
