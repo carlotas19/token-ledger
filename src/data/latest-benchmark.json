@@ -28,7 +28,17 @@
       "totalTokens": 33793,
       "totalCostUsd": 0.008941,
       "tokensPerSuccess": 528.015625,
-      "costPerSuccessUsd": 0.000139703125
+      "costPerSuccessUsd": 0.000139703125,
+      "failedChecks": {
+        "required_terms": 14,
+        "classification": 12,
+        "escalation": 10,
+        "action": 7
+      },
+      "medianOutputTokens": 109.0,
+      "maxOutputTokensUsed": 142,
+      "outputCapHits": 0,
+      "medianVisibleWords": 65.0
     },
     {
       "modelId": "meta-llama-3-1-8b-instruct",
@@ -46,7 +56,17 @@
       "totalTokens": 28261,
       "totalCostUsd": 0.0065524500000000005,
       "tokensPerSuccess": 831.2058823529412,
-      "costPerSuccessUsd": 0.00019271911764705884
+      "costPerSuccessUsd": 0.00019271911764705884,
+      "failedChecks": {
+        "classification": 34,
+        "action": 33,
+        "required_terms": 17,
+        "escalation": 3
+      },
+      "medianOutputTokens": 73.0,
+      "maxOutputTokensUsed": 127,
+      "outputCapHits": 0,
+      "medianVisibleWords": 44.5
     },
     {
       "modelId": "qwen3-next-80b-a3b-instruct",
@@ -64,7 +84,17 @@
       "totalTokens": 29313,
       "totalCostUsd": 0.01356135,
       "tokensPerSuccess": 480.5409836065574,
-      "costPerSuccessUsd": 0.0002223172131147541
+      "costPerSuccessUsd": 0.0002223172131147541,
+      "failedChecks": {
+        "classification": 23,
+        "escalation": 10,
+        "action": 7,
+        "required_terms": 7
+      },
+      "medianOutputTokens": 84.5,
+      "maxOutputTokensUsed": 116,
+      "outputCapHits": 0,
+      "medianVisibleWords": 55.0
     },
     {
       "modelId": "gpt-oss-20b",
@@ -82,7 +112,19 @@
       "totalTokens": 62068,
       "totalCostUsd": 0.012227549999999998,
       "tokensPerSuccess": 1149.4074074074074,
-      "costPerSuccessUsd": 0.0002264361111111111
+      "costPerSuccessUsd": 0.0002264361111111111,
+      "failedChecks": {
+        "classification": 22,
+        "escalation": 15,
+        "required_terms": 11,
+        "action": 7,
+        "reply_length": 3,
+        "valid_json": 1
+      },
+      "medianOutputTokens": 293.0,
+      "maxOutputTokensUsed": 1172,
+      "outputCapHits": 0,
+      "medianVisibleWords": 72.5
     },
     {
       "modelId": "llama-4-maverick",
@@ -100,7 +142,17 @@
       "totalTokens": 28708,
       "totalCostUsd": 0.022562,
       "tokensPerSuccess": 470.62295081967216,
-      "costPerSuccessUsd": 0.0003698688524590164
+      "costPerSuccessUsd": 0.0003698688524590164,
+      "failedChecks": {
+        "required_terms": 15,
+        "classification": 15,
+        "escalation": 10,
+        "action": 7
+      },
+      "medianOutputTokens": 80.0,
+      "maxOutputTokensUsed": 119,
+      "outputCapHits": 0,
+      "medianVisibleWords": 48.0
     },
     {
       "modelId": "gemini-3-1-flash-lite",
@@ -118,7 +170,17 @@
       "totalTokens": 45601,
       "totalCostUsd": 0.023833,
       "tokensPerSuccess": 712.515625,
-      "costPerSuccessUsd": 0.000372390625
+      "costPerSuccessUsd": 0.000372390625,
+      "failedChecks": {
+        "classification": 18,
+        "escalation": 10,
+        "action": 9,
+        "required_terms": 2
+      },
+      "medianOutputTokens": 121.5,
+      "maxOutputTokensUsed": 174,
+      "outputCapHits": 0,
+      "medianVisibleWords": 82.0
     },
     {
       "modelId": "gpt-oss-120b",
@@ -136,7 +198,18 @@
       "totalTokens": 57873,
       "totalCostUsd": 0.022216049999999998,
       "tokensPerSuccess": 997.8103448275862,
-      "costPerSuccessUsd": 0.0003830353448275862
+      "costPerSuccessUsd": 0.0003830353448275862,
+      "failedChecks": {
+        "classification": 28,
+        "required_terms": 11,
+        "escalation": 7,
+        "action": 4,
+        "forbidden_terms": 2
+      },
+      "medianOutputTokens": 288.0,
+      "maxOutputTokensUsed": 660,
+      "outputCapHits": 0,
+      "medianVisibleWords": 66.5
     },
     {
       "modelId": "gemini-3-5-flash-lite",
@@ -154,7 +227,17 @@
       "totalTokens": 31297,
       "totalCostUsd": 0.0304365,
       "tokensPerSuccess": 447.1,
-      "costPerSuccessUsd": 0.00043480714285714284
+      "costPerSuccessUsd": 0.00043480714285714284,
+      "failedChecks": {
+        "classification": 12,
+        "required_terms": 11,
+        "escalation": 10,
+        "action": 6
+      },
+      "medianOutputTokens": 94.0,
+      "maxOutputTokensUsed": 136,
+      "outputCapHits": 0,
+      "medianVisibleWords": 59.0
     },
     {
       "modelId": "meta-llama-3-3-70b-instruct",
@@ -172,7 +255,17 @@
       "totalTokens": 28779,
       "totalCostUsd": 0.0206185,
       "tokensPerSuccess": 612.3191489361702,
-      "costPerSuccessUsd": 0.00043869148936170215
+      "costPerSuccessUsd": 0.00043869148936170215,
+      "failedChecks": {
+        "classification": 23,
+        "action": 18,
+        "escalation": 11,
+        "required_terms": 7
+      },
+      "medianOutputTokens": 61.0,
+      "maxOutputTokensUsed": 91,
+      "outputCapHits": 0,
+      "medianVisibleWords": 33.0
     },
     {
       "modelId": "gemini-3-flash",
@@ -190,7 +283,16 @@
       "totalTokens": 72990,
       "totalCostUsd": 0.046646,
       "tokensPerSuccess": 1042.7142857142858,
-      "costPerSuccessUsd": 0.0006663714285714286
+      "costPerSuccessUsd": 0.0006663714285714286,
+      "failedChecks": {
+        "classification": 13,
+        "escalation": 12,
+        "required_terms": 11
+      },
+      "medianOutputTokens": 116.5,
+      "maxOutputTokensUsed": 192,
+      "outputCapHits": 0,
+      "medianVisibleWords": 77.0
     },
     {
       "modelId": "claude-haiku-4-5",
@@ -208,7 +310,17 @@
       "totalTokens": 36561,
       "totalCostUsd": 0.089245,
       "tokensPerSuccess": 500.83561643835617,
-      "costPerSuccessUsd": 0.0012225342465753426
+      "costPerSuccessUsd": 0.0012225342465753426,
+      "failedChecks": {
+        "action": 15,
+        "escalation": 15,
+        "classification": 12,
+        "required_terms": 3
+      },
+      "medianOutputTokens": 127.0,
+      "maxOutputTokensUsed": 206,
+      "outputCapHits": 0,
+      "medianVisibleWords": 73.5
     },
     {
       "modelId": "gemini-3-6-flash",
@@ -226,7 +338,16 @@
       "totalTokens": 62463,
       "totalCostUsd": 0.11925,
       "tokensPerSuccess": 821.8815789473684,
-      "costPerSuccessUsd": 0.001569078947368421
+      "costPerSuccessUsd": 0.001569078947368421,
+      "failedChecks": {
+        "escalation": 10,
+        "classification": 10,
+        "required_terms": 7
+      },
+      "medianOutputTokens": 106.0,
+      "maxOutputTokensUsed": 193,
+      "outputCapHits": 0,
+      "medianVisibleWords": 68.0
     },
     {
       "modelId": "gemini-3-5-flash",
@@ -244,7 +365,16 @@
       "totalTokens": 59996,
       "totalCostUsd": 0.141819,
       "tokensPerSuccess": 895.4626865671642,
-      "costPerSuccessUsd": 0.0021167014925373134
+      "costPerSuccessUsd": 0.0021167014925373134,
+      "failedChecks": {
+        "classification": 18,
+        "escalation": 13,
+        "required_terms": 7
+      },
+      "medianOutputTokens": 114.5,
+      "maxOutputTokensUsed": 193,
+      "outputCapHits": 0,
+      "medianVisibleWords": 74.0
     },
     {
       "modelId": "gemini-3-1-pro",
@@ -262,7 +392,16 @@
       "totalTokens": 72277,
       "totalCostUsd": 0.20258,
       "tokensPerSuccess": 1047.4927536231885,
-      "costPerSuccessUsd": 0.0029359420289855075
+      "costPerSuccessUsd": 0.0029359420289855075,
+      "failedChecks": {
+        "escalation": 15,
+        "classification": 10,
+        "required_terms": 9
+      },
+      "medianOutputTokens": 129.0,
+      "maxOutputTokensUsed": 196,
+      "outputCapHits": 0,
+      "medianVisibleWords": 87.0
     },
     {
       "modelId": "glm-5-2",
@@ -280,7 +419,17 @@
       "totalTokens": 62921,
       "totalCostUsd": 0.21580240000000003,
       "tokensPerSuccess": 925.3088235294117,
-      "costPerSuccessUsd": 0.0031735647058823532
+      "costPerSuccessUsd": 0.0031735647058823532,
+      "failedChecks": {
+        "classification": 14,
+        "escalation": 13,
+        "required_terms": 6,
+        "valid_json": 1
+      },
+      "medianOutputTokens": 298.0,
+      "maxOutputTokensUsed": 2048,
+      "outputCapHits": 1,
+      "medianVisibleWords": 82.0
     },
     {
       "modelId": "inkling",
@@ -298,7 +447,15 @@
       "totalTokens": 74148,
       "totalCostUsd": 0.23626465,
       "tokensPerSuccess": 1029.8333333333333,
-      "costPerSuccessUsd": 0.003281453472222222
+      "costPerSuccessUsd": 0.003281453472222222,
+      "failedChecks": {
+        "classification": 19,
+        "escalation": 10
+      },
+      "medianOutputTokens": 477.0,
+      "maxOutputTokensUsed": 1484,
+      "outputCapHits": 0,
+      "medianVisibleWords": 65.0
     },
     {
       "modelId": "claude-sonnet-4-6",
@@ -316,7 +473,18 @@
       "totalTokens": 37535,
       "totalCostUsd": 0.281145,
       "tokensPerSuccess": 551.9852941176471,
-      "costPerSuccessUsd": 0.004134485294117647
+      "costPerSuccessUsd": 0.004134485294117647,
+      "failedChecks": {
+        "action": 16,
+        "escalation": 10,
+        "classification": 10,
+        "required_terms": 5,
+        "forbidden_terms": 1
+      },
+      "medianOutputTokens": 140.0,
+      "maxOutputTokensUsed": 266,
+      "outputCapHits": 0,
+      "medianVisibleWords": 83.0
     },
     {
       "modelId": "claude-sonnet-4-5",
@@ -334,7 +502,18 @@
       "totalTokens": 39106,
       "totalCostUsd": 0.30591,
       "tokensPerSuccess": 641.0819672131148,
-      "costPerSuccessUsd": 0.005014918032786885
+      "costPerSuccessUsd": 0.005014918032786885,
+      "failedChecks": {
+        "action": 24,
+        "escalation": 20,
+        "classification": 9,
+        "required_terms": 7,
+        "reply_length": 3
+      },
+      "medianOutputTokens": 151.5,
+      "maxOutputTokensUsed": 318,
+      "outputCapHits": 0,
+      "medianVisibleWords": 92.5
     },
     {
       "modelId": "claude-opus-4-6",
@@ -352,7 +531,19 @@
       "totalTokens": 40804,
       "totalCostUsd": 0.5503,
       "tokensPerSuccess": 536.8947368421053,
-      "costPerSuccessUsd": 0.007240789473684211
+      "costPerSuccessUsd": 0.007240789473684211,
+      "failedChecks": {
+        "action": 15,
+        "escalation": 11,
+        "required_terms": 7,
+        "classification": 3,
+        "forbidden_terms": 1,
+        "reply_length": 1
+      },
+      "medianOutputTokens": 168.0,
+      "maxOutputTokensUsed": 322,
+      "outputCapHits": 0,
+      "medianVisibleWords": 106.0
     },
     {
       "modelId": "claude-opus-4-5",
@@ -370,7 +561,18 @@
       "totalTokens": 40336,
       "totalCostUsd": 0.5406,
       "tokensPerSuccess": 560.2222222222222,
-      "costPerSuccessUsd": 0.007508333333333333
+      "costPerSuccessUsd": 0.007508333333333333,
+      "failedChecks": {
+        "action": 15,
+        "escalation": 10,
+        "classification": 9,
+        "required_terms": 7,
+        "forbidden_terms": 1
+      },
+      "medianOutputTokens": 166.5,
+      "maxOutputTokensUsed": 213,
+      "outputCapHits": 0,
+      "medianVisibleWords": 102.0
     },
     {
       "modelId": "claude-sonnet-5",
@@ -388,7 +590,17 @@
       "totalTokens": 65780,
       "totalCostUsd": 0.4062,
       "tokensPerSuccess": 1265.0,
-      "costPerSuccessUsd": 0.007811538461538462
+      "costPerSuccessUsd": 0.007811538461538462,
+      "failedChecks": {
+        "classification": 19,
+        "required_terms": 14,
+        "escalation": 13,
+        "action": 6
+      },
+      "medianOutputTokens": 323.0,
+      "maxOutputTokensUsed": 836,
+      "outputCapHits": 0,
+      "medianVisibleWords": 80.5
     },
     {
       "modelId": "claude-opus-4-7",
@@ -406,7 +618,17 @@
       "totalTokens": 51907,
       "totalCostUsd": 0.658675,
       "tokensPerSuccess": 720.9305555555555,
-      "costPerSuccessUsd": 0.00914826388888889
+      "costPerSuccessUsd": 0.00914826388888889,
+      "failedChecks": {
+        "action": 14,
+        "escalation": 13,
+        "classification": 11,
+        "required_terms": 3
+      },
+      "medianOutputTokens": 198.5,
+      "maxOutputTokensUsed": 280,
+      "outputCapHits": 0,
+      "medianVisibleWords": 92.0
     },
     {
       "modelId": "claude-opus-4-8",
@@ -424,7 +646,18 @@
       "totalTokens": 53925,
       "totalCostUsd": 0.719125,
       "tokensPerSuccess": 770.3571428571429,
-      "costPerSuccessUsd": 0.010273214285714287
+      "costPerSuccessUsd": 0.010273214285714287,
+      "failedChecks": {
+        "classification": 12,
+        "valid_json": 10,
+        "action": 4,
+        "required_terms": 4,
+        "escalation": 3
+      },
+      "medianOutputTokens": 190.5,
+      "maxOutputTokensUsed": 668,
+      "outputCapHits": 0,
+      "medianVisibleWords": 91.0
     },
     {
       "modelId": "qwen35-122b-a10b",
@@ -442,7 +675,17 @@
       "totalTokens": 200839,
       "totalCostUsd": 0.3971275000000001,
       "tokensPerSuccess": 5738.257142857143,
-      "costPerSuccessUsd": 0.011346500000000002
+      "costPerSuccessUsd": 0.011346500000000002,
+      "failedChecks": {
+        "valid_json": 50,
+        "classification": 9,
+        "escalation": 3,
+        "required_terms": 3
+      },
+      "medianOutputTokens": 2042.0,
+      "maxOutputTokensUsed": 2048,
+      "outputCapHits": 50,
+      "medianVisibleWords": 70.0
     },
     {
       "modelId": "kimi-k3",
@@ -460,7 +703,18 @@
       "totalTokens": 83827,
       "totalCostUsd": 0.907125,
       "tokensPerSuccess": 1180.661971830986,
-      "costPerSuccessUsd": 0.012776408450704225
+      "costPerSuccessUsd": 0.012776408450704225,
+      "failedChecks": {
+        "escalation": 13,
+        "classification": 12,
+        "required_terms": 3,
+        "reply_length": 1,
+        "forbidden_terms": 1
+      },
+      "medianOutputTokens": 497.5,
+      "maxOutputTokensUsed": 1398,
+      "outputCapHits": 0,
+      "medianVisibleWords": 104.0
     },
     {
       "modelId": "claude-opus-5",
@@ -478,7 +732,17 @@
       "totalTokens": 65614,
       "totalCostUsd": 1.01135,
       "tokensPerSuccess": 950.927536231884,
-      "costPerSuccessUsd": 0.014657246376811595
+      "costPerSuccessUsd": 0.014657246376811595,
+      "failedChecks": {
+        "classification": 17,
+        "escalation": 10,
+        "required_terms": 4,
+        "reply_length": 1
+      },
+      "medianOutputTokens": 335.5,
+      "maxOutputTokensUsed": 636,
+      "outputCapHits": 0,
+      "medianVisibleWords": 109.0
     },
     {
       "modelId": "claude-fable-5",
@@ -496,7 +760,17 @@
       "totalTokens": 57010,
       "totalCostUsd": 1.5925,
       "tokensPerSuccess": 838.3823529411765,
-      "costPerSuccessUsd": 0.023419117647058823
+      "costPerSuccessUsd": 0.023419117647058823,
+      "failedChecks": {
+        "escalation": 14,
+        "valid_json": 10,
+        "classification": 6,
+        "required_terms": 2
+      },
+      "medianOutputTokens": 245.5,
+      "maxOutputTokensUsed": 486,
+      "outputCapHits": 0,
+      "medianVisibleWords": 93.0
     },
     {
       "modelId": "claude-opus-4-1",
@@ -514,9 +788,21 @@
       "totalTokens": 38245,
       "totalCostUsd": 1.464975,
       "tokensPerSuccess": 626.9672131147541,
-      "costPerSuccessUsd": 0.024015983606557375
+      "costPerSuccessUsd": 0.024015983606557375,
+      "failedChecks": {
+        "escalation": 15,
+        "classification": 15,
+        "required_terms": 12,
+        "forbidden_terms": 3,
+        "valid_json": 1,
+        "action": 1
+      },
+      "medianOutputTokens": 146.5,
+      "maxOutputTokensUsed": 294,
+      "outputCapHits": 0,
+      "medianVisibleWords": 92.0
     }
   ],
-  "pricingSnapshotAt": "2026-08-28T13:59:05.082361+00:00",
+  "pricingSnapshotAt": "2026-08-28T15:19:05.137633+00:00",
   "pricingSource": "https://neon.com/docs/ai-gateway/models#available-models"
 }

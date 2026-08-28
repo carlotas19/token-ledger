@@ -1,4 +1,4 @@
-export type Tab = "benchmark" | "report" | "reproduce";
+export type Tab = "results" | "report" | "reproduce";
 
 export interface Ticket {
   id: string;
@@ -91,6 +91,11 @@ export interface ModelAggregate {
   costPerSuccessUsd: number | null;
   medianLatencyMs: number;
   costPerThousandSuccessesUsd: number | null;
+  failedChecks?: Record<string, number>;
+  medianOutputTokens?: number;
+  maxOutputTokensUsed?: number;
+  outputCapHits?: number;
+  medianVisibleWords?: number;
 }
 
 export interface BenchmarkSummary {

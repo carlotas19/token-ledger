@@ -7,7 +7,7 @@ interface TabNavProps {
 
 export function TabNav({ activeTab, onTabChange }: TabNavProps) {
   const tabs: { id: Tab; label: string }[] = [
-    { id: "benchmark", label: "Benchmark" },
+    { id: "results", label: "Results" },
     { id: "report", label: "Report" },
     { id: "reproduce", label: "Reproduce the benchmark" },
   ];

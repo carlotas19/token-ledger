@@ -7,12 +7,14 @@ import concurrent.futures
 import json
 import os
 import re
+import statistics
 import subprocess
 import threading
 import time
 import urllib.error
 import urllib.request
 import uuid
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -335,6 +337,13 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
     priced = [run["estimatedCostUsd"] for run in runs if run["estimatedCostUsd"] is not None]
     total_cost = sum(priced) if len(priced) == len(runs) else None
     success_count = len(completed)
+    output_tokens = [run["usage"]["outputTokens"] for run in runs]
+    failed_checks = Counter(
+        check["id"]
+        for run in runs
+        for check in run["checks"]
+        if not check["passed"]
+    )
     return {
         "modelId": model["id"],
         "modelName": model["name"],
@@ -349,6 +358,13 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
         "totalCostUsd": total_cost,
         "tokensPerSuccess": totals["totalTokens"] / success_count if success_count else None,
         "costPerSuccessUsd": total_cost / success_count if total_cost is not None and success_count else None,
+        "failedChecks": dict(failed_checks.most_common()),
+        "medianOutputTokens": statistics.median(output_tokens) if output_tokens else 0,
+        "maxOutputTokensUsed": max(output_tokens, default=0),
+        "outputCapHits": sum(tokens >= MAX_OUTPUT_TOKENS for tokens in output_tokens),
+        "medianVisibleWords": statistics.median(
+            len(run["rawResponse"].split()) for run in runs
+        ) if runs else 0,
     }
 
 

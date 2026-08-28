@@ -46,10 +46,20 @@ function rankClass(index: number, length: number) {
 export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
   const tokenRanking = rankModels(benchmark.aggregates, tokensPerCompletion);
   const priceRanking = rankModels(benchmark.aggregates, costPerCompletion);
-  const tokenLeader = tokenRanking[0];
-  const tokenLast = tokenRanking[tokenRanking.length - 1];
-  const priceLeader = priceRanking[0];
-  const priceLast = priceRanking[priceRanking.length - 1];
+  const workloadTokenRanking = rankModels(
+    benchmark.aggregates,
+    (model) => model.totalTokens,
+  );
+  const workloadPriceRanking = rankModels(
+    benchmark.aggregates,
+    (model) => model.totalCostUsd,
+  );
+  const workloadTokenLeader = workloadTokenRanking[0];
+  const workloadTokenLast =
+    workloadTokenRanking[workloadTokenRanking.length - 1];
+  const workloadPriceLeader = workloadPriceRanking[0];
+  const workloadPriceLast =
+    workloadPriceRanking[workloadPriceRanking.length - 1];
   const chartData = benchmark.aggregates
     .map((model) => ({
       model: model.modelName,
@@ -80,26 +90,27 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
         <div className="grid items-center gap-6 lg:grid-cols-[12rem_minmax(0,1fr)_12rem]">
           <div className="space-y-4">
             <OutcomeCallout
-              label="Fewest tokens per completed ticket"
-              model={tokenLeader?.modelName}
-              value={`${Math.round(tokensPerCompletion(tokenLeader) ?? 0).toLocaleString()} tokens`}
+              label="Lowest workload token use"
+              model={workloadTokenLeader?.modelName}
+              value={`${Math.round(workloadTokenLeader?.totalTokens ?? 0).toLocaleString()} tokens`}
               tone="best"
             />
             <OutcomeCallout
-              label="Lowest cost per completed ticket"
-              model={priceLeader?.modelName}
-              value={`$${(costPerCompletion(priceLeader) ?? 0).toFixed(6)}`}
+              label="Lowest 100-ticket workload cost"
+              model={workloadPriceLeader?.modelName}
+              value={`$${(workloadPriceLeader?.totalCostUsd ?? 0).toFixed(6)}`}
               tone="best"
             />
           </div>
 
           <div>
-            <p className="text-xs uppercase tracking-[0.16em] text-ledger-muted">
-              Published cost for the full 100-ticket workload
-            </p>
-            <div className="mt-2 h-[460px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart margin={{ top: 15, right: 20, bottom: 22, left: 25 }}>
+            <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2">
+              <p className="rotate-180 text-center text-[10px] uppercase tracking-[0.14em] text-ledger-muted [writing-mode:vertical-rl]">
+                Published cost for the full 100-ticket workload
+              </p>
+              <div className="h-[460px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ScatterChart margin={{ top: 15, right: 20, bottom: 22, left: 25 }}>
                   <CartesianGrid stroke="rgba(127,145,136,0.14)" />
                   <XAxis
                     type="number"
@@ -130,15 +141,23 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                     type="number"
                     dataKey="completed"
                     name="Tickets completed"
-                    range={[70, 260]}
+                    domain={[30, 80]}
+                    range={[40, 1800]}
                   />
                   <Tooltip
                     cursor={{ strokeDasharray: "3 3" }}
                     content={<ChartTooltip />}
                   />
-                  <Scatter data={chartData} fill="#00E599" />
-                </ScatterChart>
-              </ResponsiveContainer>
+                    <Scatter
+                      data={chartData}
+                      fill="#00E599"
+                      fillOpacity={0.7}
+                      stroke="#74ffd0"
+                      strokeWidth={1}
+                    />
+                  </ScatterChart>
+                </ResponsiveContainer>
+              </div>
             </div>
             <p className="mt-2 text-center text-xs uppercase tracking-[0.16em] text-ledger-muted">
               Total tokens for the full 100-ticket workload
@@ -150,21 +169,21 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
 
           <div className="space-y-4">
             <OutcomeCallout
-              label="Most tokens per completed ticket"
-              model={tokenLast?.modelName}
-              value={`${Math.round(tokensPerCompletion(tokenLast) ?? 0).toLocaleString()} tokens`}
+              label="Highest workload token use"
+              model={workloadTokenLast?.modelName}
+              value={`${Math.round(workloadTokenLast?.totalTokens ?? 0).toLocaleString()} tokens`}
               tone="worst"
             />
             <OutcomeCallout
-              label="Highest cost per completed ticket"
-              model={priceLast?.modelName}
-              value={`$${(costPerCompletion(priceLast) ?? 0).toFixed(6)}`}
+              label="Highest 100-ticket workload cost"
+              model={workloadPriceLast?.modelName}
+              value={`$${(workloadPriceLast?.totalCostUsd ?? 0).toFixed(6)}`}
               tone="worst"
             />
           </div>
         </div>
         <p className="mt-6 text-center text-xs leading-relaxed text-ledger-muted">
-          Bubble size shows how many responses passed. Prices use the{" "}
+          Bubble area shows how many responses passed. Prices use the{" "}
           <a
             href={
               benchmark.pricingSource ??

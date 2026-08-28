@@ -13,7 +13,7 @@ interface LedgerAppProps {
 }
 
 export function LedgerApp({ benchmark }: LedgerAppProps) {
-  const [activeTab, setActiveTab] = useState<Tab>("benchmark");
+  const [activeTab, setActiveTab] = useState<Tab>("results");
   const isDemo = benchmark.id === "demo";
 
   const leaders = useMemo(() => {
@@ -104,11 +104,6 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
               />
             )}
           </div>
-          <p className="mt-3 max-w-3xl text-xs leading-relaxed text-ledger-muted">
-            Token cost measures efficiency. Pass rate is a separate quality
-            signal: how often the model produced a response the application
-            could use.
-          </p>
           {isDemo && (
             <p className="mt-3 rounded-md border border-neon-green/20 bg-neon-green/5 px-3 py-2 text-sm text-neon-green">
               Showing demo data until the first benchmark run is stored in Lakebase Postgres.
@@ -121,7 +116,7 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
       </header>
 
       <main>
-        {activeTab === "benchmark" && <SimpleLedger benchmark={benchmark} />}
+        {activeTab === "results" && <SimpleLedger benchmark={benchmark} />}
         {activeTab === "report" && <SimpleReport benchmark={benchmark} />}
         {activeTab === "reproduce" && (
           <DetailedMethodology benchmark={benchmark} />
