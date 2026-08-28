@@ -1,4 +1,4 @@
-export type Tab = "benchmark" | "report";
+export type Tab = "benchmark" | "report" | "reproduce";
 
 export interface Ticket {
   id: string;
@@ -103,6 +103,8 @@ export interface BenchmarkSummary {
   completedAt: string | null;
   gitCommit: string | null;
   catalogSnapshotAt: string;
+  pricingSnapshotAt?: string;
+  pricingSource?: string;
   aggregates: ModelAggregate[];
 }
 

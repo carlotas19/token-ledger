@@ -5,6 +5,7 @@ import type { BenchmarkSummary, Tab } from "@/lib/types";
 import { TabNav } from "@/components/TabNav";
 import { SimpleLedger } from "@/components/SimpleLedger";
 import { SimpleReport } from "@/components/SimpleReport";
+import { DetailedMethodology } from "@/components/DetailedMethodology";
 import { NeonBadge } from "@/components/NeonBadge";
 
 interface LedgerAppProps {
@@ -27,7 +28,22 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
         (a.tokensPerSuccess ?? a.totalTokens / a.successes) -
         (b.tokensPerSuccess ?? b.totalTokens / b.successes),
     );
-    return { cost: priced[0], tokens: byTokens[0] };
+    const byPassRate = [...benchmark.aggregates].sort(
+      (a, b) => b.passRate - a.passRate,
+    );
+    const topPassRate = byPassRate[0]?.passRate;
+    const completionLeaders = byPassRate.filter(
+      (model) => model.passRate === topPassRate,
+    );
+    return {
+      cost: priced[0],
+      tokens: byTokens[0],
+      completion: completionLeaders[0],
+      completionNames: completionLeaders
+        .map((model) => model.modelName)
+        .join(" + "),
+      completionCount: completionLeaders.length,
+    };
   }, [benchmark.aggregates]);
 
   return (
@@ -36,7 +52,7 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
         <div className="mx-auto max-w-6xl">
           <div className="flex items-start justify-between gap-6">
             <p className="animate-fade-in text-sm uppercase tracking-[0.35em] text-ledger-muted">
-              The AI model cost benchmark
+              A small, practical benchmark of AI models
             </p>
             <a
               href="https://github.com/carlotas19/token-ledger"
@@ -53,34 +69,46 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
             Tokenomics, measured
           </h1>
           <p className="mt-4 max-w-3xl animate-fade-in text-lg leading-relaxed text-ledger-cream/75">
-            Every business now manages revenue flows and token flows. Model
-            choice changes both the token bill and the number of usable results.
-            We ran the same support workload across the AI Gateway catalog to
-            measure the difference.
+            Some models are cheaper than others. But do they actually save you
+            money? We ran a simulated support workload through 28 open-weight
+            and frontier models on Neon AI Gateway, then measured how many tokens
+            and dollars it took to produce usable answers.
           </p>
-          <p className="mt-5 max-w-3xl text-sm text-ledger-muted">
-            The workload: use an LLM to reply to 100 support tickets. Each ticket
-            is one task. Every model attempted all 100.
-          </p>
-          <div className="mt-6 grid max-w-3xl gap-3 sm:grid-cols-2">
+          <div className="mt-6 grid max-w-5xl gap-3 sm:grid-cols-3">
             {leaders.cost && (
               <Leader
-                label="Lowest estimated cost"
+                label="Lowest cost per completed ticket"
                 model={leaders.cost.modelName}
-                value={`$${(Number(leaders.cost.costPerSuccessUsd) * 1000).toFixed(2)} per 1,000 completed tasks`}
+                value={`$${Number(leaders.cost.costPerSuccessUsd).toFixed(6)} at published AI Gateway prices`}
               />
             )}
             {leaders.tokens && (
               <Leader
-                label="Fewest tokens"
+                label="Fewest tokens per completed ticket"
                 model={leaders.tokens.modelName}
                 value={`${Math.round(
                   leaders.tokens.tokensPerSuccess ??
                     leaders.tokens.totalTokens / leaders.tokens.successes,
-                ).toLocaleString()} per completed task`}
+                ).toLocaleString()} tokens`}
+              />
+            )}
+            {leaders.completion && (
+              <Leader
+                label={
+                  leaders.completionCount > 1
+                    ? "Joint-highest pass rate"
+                    : "Highest pass rate"
+                }
+                model={leaders.completionNames}
+                value={`${(leaders.completion.passRate * 100).toFixed(0)}% of responses passed every check`}
               />
             )}
           </div>
+          <p className="mt-3 max-w-3xl text-xs leading-relaxed text-ledger-muted">
+            Token cost measures efficiency. Pass rate is a separate quality
+            signal: how often the model produced a response the application
+            could use.
+          </p>
           {isDemo && (
             <p className="mt-3 rounded-md border border-neon-green/20 bg-neon-green/5 px-3 py-2 text-sm text-neon-green">
               Showing demo data until the first benchmark run is stored in Lakebase Postgres.
@@ -95,13 +123,18 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
       <main>
         {activeTab === "benchmark" && <SimpleLedger benchmark={benchmark} />}
         {activeTab === "report" && <SimpleReport benchmark={benchmark} />}
+        {activeTab === "reproduce" && (
+          <DetailedMethodology benchmark={benchmark} />
+        )}
       </main>
 
       <footer className="border-t border-ledger-border px-6 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-3 sm:flex-row sm:gap-5">
           <p className="text-sm tracking-wide text-ledger-muted">
-            Tokenomics, measured · Neon AI Gateway benchmark · Verified{" "}
-            {new Date(benchmark.catalogSnapshotAt).toLocaleDateString()}
+            Tokenomics, measured · Neon AI Gateway benchmark · Prices verified{" "}
+            {new Date(
+              benchmark.pricingSnapshotAt ?? benchmark.catalogSnapshotAt,
+            ).toLocaleDateString()}
           </p>
         </div>
       </footer>

@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "tsx scripts/migrate.ts",
-    "benchmark": "tsx scripts/run-benchmark.ts",
-    "benchmark:sample": "tsx scripts/run-benchmark.ts --sample"
+    "workload:generate": "python3 scripts/generate-workload.py",
+    "benchmark": "python3 scripts/run-benchmark.py",
+    "pricing:refresh": "python3 scripts/refresh-pricing.py"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",

@@ -22,6 +22,7 @@ WORKLOAD_PATH = ROOT / "benchmark" / "workload.json"
 CHECKPOINT_PATH = ROOT / "benchmark" / "results" / "checkpoint.json"
 RAW_PATH = ROOT / "benchmark" / "results" / "latest.json"
 SUMMARY_PATH = ROOT / "src" / "data" / "latest-benchmark.json"
+PRICING_SOURCE = "https://neon.com/docs/ai-gateway/models#available-models"
 
 PROJECT_ID = "silent-violet-94567844"
 PARENT_BRANCH = "br-young-snow-ax2vm8ck"
@@ -351,6 +352,22 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
     }
 
 
+def refresh_aggregate_price(summary: dict[str, Any], model: dict[str, Any]) -> None:
+    cost = model.get("cost")
+    if not cost or cost.get("input") is None or cost.get("output") is None:
+        summary["totalCostUsd"] = None
+        summary["costPerSuccessUsd"] = None
+        return
+    total_cost = (
+        summary["inputTokens"] * float(cost["input"])
+        + summary["outputTokens"] * float(cost["output"])
+    ) / 1_000_000
+    summary["totalCostUsd"] = total_cost
+    summary["costPerSuccessUsd"] = (
+        total_cost / summary["successes"] if summary["successes"] else None
+    )
+
+
 def save_checkpoint(state: dict[str, Any]) -> None:
     CHECKPOINT_PATH.parent.mkdir(parents=True, exist_ok=True)
     CHECKPOINT_PATH.write_text(json.dumps(state, indent=2) + "\n")
@@ -410,6 +427,8 @@ def main() -> None:
             "startedAt": datetime.now(timezone.utc).isoformat(),
             "completedAt": None,
             "catalogSnapshotAt": datetime.now(timezone.utc).isoformat(),
+            "pricingSnapshotAt": datetime.now(timezone.utc).isoformat(),
+            "pricingSource": PRICING_SOURCE,
             "projectId": PROJECT_ID,
             "parentBranchId": PARENT_BRANCH,
             "maxOutputTokens": MAX_OUTPUT_TOKENS,
@@ -440,6 +459,10 @@ def main() -> None:
 
     state["benchmark"]["status"] = "completed"
     state["benchmark"]["completedAt"] = datetime.now(timezone.utc).isoformat()
+    state["benchmark"]["pricingSnapshotAt"] = datetime.now(timezone.utc).isoformat()
+    state["benchmark"]["pricingSource"] = PRICING_SOURCE
+    for summary in state["models"]:
+        refresh_aggregate_price(summary, catalog[summary["modelId"]])
     state["models"].sort(
         key=lambda model: (
             model["costPerSuccessUsd"] is None,

@@ -43,8 +43,8 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-ledger-cream/75">
           We created one Neon project, one isolated branch per model, and a fixed
           set of 100 synthetic support tickets. Every model receives the same
-          workload and task contract. Each ticket is one task. We count all
-          tokens spent and estimate the price of each response that passes.
+          workload and response contract. We count all tokens spent and calculate
+          the price of the full workload and each response that passes.
         </p>
       </header>
 
@@ -101,10 +101,10 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
           </p>
         </Section>
 
-        <Section title="How a task passes">
+        <Section title="How a ticket passes">
           <p>
             Every model receives all 100 tickets. A response counts as a completed
-            task only when every deterministic check below passes. A result such
+            ticket only when every deterministic check below passes. A result such
             as 73/100 means the model returned 100 responses and 73 passed all
             checks. There is no model-as-judge score.
           </p>
@@ -118,10 +118,10 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
             <li>No forbidden promise, amount, or claim appears.</li>
           </ol>
           <p>
-            Failed responses do not count as completed tasks. Their tokens and
-            estimated price still count in the model total. Tokens per completed
-            task equals total tokens across all 100 attempts divided by responses
-            that passed. Estimated cost per completed task uses the same
+            Failed responses do not count as completed tickets. Their tokens and
+            calculated price still count in the model total. Tokens per completed
+            ticket equals total tokens across all 100 attempts divided by responses
+            that passed. Cost per completed ticket uses the same
             denominator.
           </p>
         </Section>
@@ -167,7 +167,7 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
 
         <Section title="Request settings">
           <ul className="list-disc space-y-2 pl-5">
-            <li>One request per task, 100 requests per model</li>
+            <li>One request per ticket, 100 requests per model</li>
             <li>Maximum output: 2,048 tokens</li>
             <li>No temperature override, because some catalog models do not expose it</li>
             <li>Chat Completions for compatible text models</li>
@@ -179,32 +179,23 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
 
         <Section title="Pricing">
           <p>
-            Each run snapshots the public model catalog and its input/output
-            price per million tokens. Proprietary models use their published lab
-            rates. Open-weight models use the Databricks Foundation Model API
-            pay-per-token rate surfaced by the catalog. The source snapshot is{" "}
+            Each run snapshots the published Neon AI Gateway input and output
+            prices per million tokens from the{" "}
             <a
-              href="https://neon.com/models.json"
+              href="https://neon.com/docs/ai-gateway/models#available-models"
               target="_blank"
               rel="noopener noreferrer"
               className="text-neon-green underline decoration-neon-green/30 underline-offset-4"
             >
-              neon.com/models.json
+              available models table
             </a>
-            , with Databricks pay-per-token behavior described in the{" "}
-            <a
-              href="https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neon-green underline decoration-neon-green/30 underline-offset-4"
-            >
-              Foundation Model API reference
-            </a>
-            .
+            . Workload cost equals input tokens multiplied by the input rate plus
+            output tokens multiplied by the output rate. Both products are divided
+            by one million.
           </p>
           <p>
-            AI Gateway inference is free during beta. Prices shown here are
-            estimates from the public rates, not charges observed on a Neon invoice.
+            AI Gateway inference is free during beta. Dollar values shown here use
+            the published prices and are not charges observed on a Neon invoice.
           </p>
         </Section>
 
@@ -220,6 +211,14 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
             <dd>{new Date(benchmark.startedAt).toLocaleString()}</dd>
             <dt className="text-ledger-muted">Catalog snapshot</dt>
             <dd>{new Date(benchmark.catalogSnapshotAt).toLocaleString()}</dd>
+            {benchmark.pricingSnapshotAt && (
+              <>
+                <dt className="text-ledger-muted">Pricing verified</dt>
+                <dd>
+                  {new Date(benchmark.pricingSnapshotAt).toLocaleString()}
+                </dd>
+              </>
+            )}
             {benchmark.gitCommit && (
               <>
                 <dt className="text-ledger-muted">Git commit</dt>
@@ -235,8 +234,7 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
             <li>One run cannot measure output variance across repeated generations.</li>
             <li>Provider tokenizers differ, so a token is not identical across models.</li>
             <li>Strict checks measure policy completion, not writing style.</li>
-            <li>Prices and enabled models can change after the snapshot date.</li>
-            <li>Models without a public price appear in token results but not price rankings.</li>
+            <li>Prices and model availability can change after the verification date.</li>
           </ul>
         </Section>
       </div>

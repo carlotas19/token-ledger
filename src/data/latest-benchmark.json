@@ -26,45 +26,9 @@
       "outputTokens": 11063,
       "reasoningTokens": 0,
       "totalTokens": 33793,
-      "totalCostUsd": 0.008940999999999998,
+      "totalCostUsd": 0.008941,
       "tokensPerSuccess": 528.015625,
-      "costPerSuccessUsd": 0.00013970312499999996
-    },
-    {
-      "modelId": "gpt-oss-20b",
-      "modelName": "GPT OSS 20B",
-      "provider": "openai",
-      "openWeights": true,
-      "branchId": "br-fragrant-bar-axb1502a",
-      "branchName": "model-gpt-oss-20b",
-      "attempts": 100,
-      "successes": 54,
-      "passRate": 0.54,
-      "inputTokens": 27795,
-      "outputTokens": 34273,
-      "reasoningTokens": 0,
-      "totalTokens": 62068,
-      "totalCostUsd": 0.008244350000000001,
-      "tokensPerSuccess": 1149.4074074074074,
-      "costPerSuccessUsd": 0.00015267314814814816
-    },
-    {
-      "modelId": "gpt-oss-120b",
-      "modelName": "GPT OSS 120B",
-      "provider": "openai",
-      "openWeights": true,
-      "branchId": "br-summer-wildflower-ax341e8v",
-      "branchName": "model-gpt-oss-120b",
-      "attempts": 100,
-      "successes": 58,
-      "passRate": 0.58,
-      "inputTokens": 27795,
-      "outputTokens": 30078,
-      "reasoningTokens": 0,
-      "totalTokens": 57873,
-      "totalCostUsd": 0.010423079999999998,
-      "tokensPerSuccess": 997.8103448275862,
-      "costPerSuccessUsd": 0.00017970827586206891
+      "costPerSuccessUsd": 0.000139703125
     },
     {
       "modelId": "meta-llama-3-1-8b-instruct",
@@ -80,9 +44,9 @@
       "outputTokens": 7711,
       "reasoningTokens": 0,
       "totalTokens": 28261,
-      "totalCostUsd": 0.006552450000000003,
+      "totalCostUsd": 0.0065524500000000005,
       "tokensPerSuccess": 831.2058823529412,
-      "costPerSuccessUsd": 0.00019271911764705892
+      "costPerSuccessUsd": 0.00019271911764705884
     },
     {
       "modelId": "qwen3-next-80b-a3b-instruct",
@@ -98,9 +62,27 @@
       "outputTokens": 8728,
       "reasoningTokens": 0,
       "totalTokens": 29313,
-      "totalCostUsd": 0.013561349999999998,
+      "totalCostUsd": 0.01356135,
       "tokensPerSuccess": 480.5409836065574,
-      "costPerSuccessUsd": 0.00022231721311475407
+      "costPerSuccessUsd": 0.0002223172131147541
+    },
+    {
+      "modelId": "gpt-oss-20b",
+      "modelName": "GPT OSS 20B",
+      "provider": "openai",
+      "openWeights": true,
+      "branchId": "br-fragrant-bar-axb1502a",
+      "branchName": "model-gpt-oss-20b",
+      "attempts": 100,
+      "successes": 54,
+      "passRate": 0.54,
+      "inputTokens": 27795,
+      "outputTokens": 34273,
+      "reasoningTokens": 0,
+      "totalTokens": 62068,
+      "totalCostUsd": 0.012227549999999998,
+      "tokensPerSuccess": 1149.4074074074074,
+      "costPerSuccessUsd": 0.0002264361111111111
     },
     {
       "modelId": "llama-4-maverick",
@@ -134,9 +116,27 @@
       "outputTokens": 12267,
       "reasoningTokens": 0,
       "totalTokens": 45601,
-      "totalCostUsd": 0.023833000000000003,
+      "totalCostUsd": 0.023833,
       "tokensPerSuccess": 712.515625,
-      "costPerSuccessUsd": 0.00037239062500000005
+      "costPerSuccessUsd": 0.000372390625
+    },
+    {
+      "modelId": "gpt-oss-120b",
+      "modelName": "GPT OSS 120B",
+      "provider": "openai",
+      "openWeights": true,
+      "branchId": "br-summer-wildflower-ax341e8v",
+      "branchName": "model-gpt-oss-120b",
+      "attempts": 100,
+      "successes": 58,
+      "passRate": 0.58,
+      "inputTokens": 27795,
+      "outputTokens": 30078,
+      "reasoningTokens": 0,
+      "totalTokens": 57873,
+      "totalCostUsd": 0.022216049999999998,
+      "tokensPerSuccess": 997.8103448275862,
+      "costPerSuccessUsd": 0.0003830353448275862
     },
     {
       "modelId": "gemini-3-5-flash-lite",
@@ -152,9 +152,9 @@
       "outputTokens": 9567,
       "reasoningTokens": 0,
       "totalTokens": 31297,
-      "totalCostUsd": 0.03043650000000001,
+      "totalCostUsd": 0.0304365,
       "tokensPerSuccess": 447.1,
-      "costPerSuccessUsd": 0.000434807142857143
+      "costPerSuccessUsd": 0.00043480714285714284
     },
     {
       "modelId": "meta-llama-3-3-70b-instruct",
@@ -170,9 +170,9 @@
       "outputTokens": 6229,
       "reasoningTokens": 0,
       "totalTokens": 28779,
-      "totalCostUsd": 0.020618499999999998,
+      "totalCostUsd": 0.0206185,
       "tokensPerSuccess": 612.3191489361702,
-      "costPerSuccessUsd": 0.0004386914893617021
+      "costPerSuccessUsd": 0.00043869148936170215
     },
     {
       "modelId": "gemini-3-flash",
@@ -188,9 +188,9 @@
       "outputTokens": 11927,
       "reasoningTokens": 0,
       "totalTokens": 72990,
-      "totalCostUsd": 0.04664599999999999,
+      "totalCostUsd": 0.046646,
       "tokensPerSuccess": 1042.7142857142858,
-      "costPerSuccessUsd": 0.0006663714285714285
+      "costPerSuccessUsd": 0.0006663714285714286
     },
     {
       "modelId": "claude-haiku-4-5",
@@ -224,9 +224,9 @@
       "outputTokens": 11554,
       "reasoningTokens": 0,
       "totalTokens": 62463,
-      "totalCostUsd": 0.11925000000000001,
+      "totalCostUsd": 0.11925,
       "tokensPerSuccess": 821.8815789473684,
-      "costPerSuccessUsd": 0.0015690789473684211
+      "costPerSuccessUsd": 0.001569078947368421
     },
     {
       "modelId": "gemini-3-5-flash",
@@ -260,9 +260,9 @@
       "outputTokens": 13260,
       "reasoningTokens": 0,
       "totalTokens": 72277,
-      "totalCostUsd": 0.20258000000000004,
+      "totalCostUsd": 0.20258,
       "tokensPerSuccess": 1047.4927536231885,
-      "costPerSuccessUsd": 0.002935942028985508
+      "costPerSuccessUsd": 0.0029359420289855075
     },
     {
       "modelId": "glm-5-2",
@@ -278,9 +278,27 @@
       "outputTokens": 42571,
       "reasoningTokens": 0,
       "totalTokens": 62921,
-      "totalCostUsd": 0.2158024,
+      "totalCostUsd": 0.21580240000000003,
       "tokensPerSuccess": 925.3088235294117,
-      "costPerSuccessUsd": 0.003173564705882353
+      "costPerSuccessUsd": 0.0031735647058823532
+    },
+    {
+      "modelId": "inkling",
+      "modelName": "Inkling",
+      "provider": "thinkingmachines",
+      "openWeights": true,
+      "branchId": "br-fancy-pond-axfwhcnf",
+      "branchName": "model-inkling",
+      "attempts": 100,
+      "successes": 72,
+      "passRate": 0.72,
+      "inputTokens": 20995,
+      "outputTokens": 53153,
+      "reasoningTokens": 0,
+      "totalTokens": 74148,
+      "totalCostUsd": 0.23626465,
+      "tokensPerSuccess": 1029.8333333333333,
+      "costPerSuccessUsd": 0.003281453472222222
     },
     {
       "modelId": "claude-sonnet-4-6",
@@ -296,7 +314,7 @@
       "outputTokens": 14045,
       "reasoningTokens": 0,
       "totalTokens": 37535,
-      "totalCostUsd": 0.28114500000000003,
+      "totalCostUsd": 0.281145,
       "tokensPerSuccess": 551.9852941176471,
       "costPerSuccessUsd": 0.004134485294117647
     },
@@ -350,9 +368,9 @@
       "outputTokens": 16946,
       "reasoningTokens": 0,
       "totalTokens": 40336,
-      "totalCostUsd": 0.5405999999999999,
+      "totalCostUsd": 0.5406,
       "tokensPerSuccess": 560.2222222222222,
-      "costPerSuccessUsd": 0.007508333333333331
+      "costPerSuccessUsd": 0.007508333333333333
     },
     {
       "modelId": "claude-sonnet-5",
@@ -368,9 +386,9 @@
       "outputTokens": 34330,
       "reasoningTokens": 0,
       "totalTokens": 65780,
-      "totalCostUsd": 0.40619999999999984,
+      "totalCostUsd": 0.4062,
       "tokensPerSuccess": 1265.0,
-      "costPerSuccessUsd": 0.007811538461538458
+      "costPerSuccessUsd": 0.007811538461538462
     },
     {
       "modelId": "claude-opus-4-7",
@@ -386,7 +404,7 @@
       "outputTokens": 19957,
       "reasoningTokens": 0,
       "totalTokens": 51907,
-      "totalCostUsd": 0.6586750000000001,
+      "totalCostUsd": 0.658675,
       "tokensPerSuccess": 720.9305555555555,
       "costPerSuccessUsd": 0.00914826388888889
     },
@@ -404,9 +422,9 @@
       "outputTokens": 22475,
       "reasoningTokens": 0,
       "totalTokens": 53925,
-      "totalCostUsd": 0.7191249999999999,
+      "totalCostUsd": 0.719125,
       "tokensPerSuccess": 770.3571428571429,
-      "costPerSuccessUsd": 0.010273214285714285
+      "costPerSuccessUsd": 0.010273214285714287
     },
     {
       "modelId": "qwen35-122b-a10b",
@@ -422,9 +440,9 @@
       "outputTokens": 178254,
       "reasoningTokens": 0,
       "totalTokens": 200839,
-      "totalCostUsd": 0.39712749999999997,
+      "totalCostUsd": 0.3971275000000001,
       "tokensPerSuccess": 5738.257142857143,
-      "costPerSuccessUsd": 0.011346499999999999
+      "costPerSuccessUsd": 0.011346500000000002
     },
     {
       "modelId": "kimi-k3",
@@ -458,9 +476,9 @@
       "outputTokens": 34164,
       "reasoningTokens": 0,
       "totalTokens": 65614,
-      "totalCostUsd": 1.0113500000000002,
+      "totalCostUsd": 1.01135,
       "tokensPerSuccess": 950.927536231884,
-      "costPerSuccessUsd": 0.014657246376811596
+      "costPerSuccessUsd": 0.014657246376811595
     },
     {
       "modelId": "claude-fable-5",
@@ -476,9 +494,9 @@
       "outputTokens": 25560,
       "reasoningTokens": 0,
       "totalTokens": 57010,
-      "totalCostUsd": 1.5924999999999998,
+      "totalCostUsd": 1.5925,
       "tokensPerSuccess": 838.3823529411765,
-      "costPerSuccessUsd": 0.02341911764705882
+      "costPerSuccessUsd": 0.023419117647058823
     },
     {
       "modelId": "claude-opus-4-1",
@@ -497,24 +515,8 @@
       "totalCostUsd": 1.464975,
       "tokensPerSuccess": 626.9672131147541,
       "costPerSuccessUsd": 0.024015983606557375
-    },
-    {
-      "modelId": "inkling",
-      "modelName": "Inkling",
-      "provider": "thinkingmachines",
-      "openWeights": true,
-      "branchId": "br-fancy-pond-axfwhcnf",
-      "branchName": "model-inkling",
-      "attempts": 100,
-      "successes": 72,
-      "passRate": 0.72,
-      "inputTokens": 20995,
-      "outputTokens": 53153,
-      "reasoningTokens": 0,
-      "totalTokens": 74148,
-      "totalCostUsd": null,
-      "tokensPerSuccess": 1029.8333333333333,
-      "costPerSuccessUsd": null
     }
-  ]
+  ],
+  "pricingSnapshotAt": "2026-08-28T13:59:05.082361+00:00",
+  "pricingSource": "https://neon.com/docs/ai-gateway/models#available-models"
 }

@@ -14,12 +14,20 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm install
+      - name: Install Neon CLI
+        run: npm install -g neon@latest
       - run: npm run db:migrate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - run: npm run benchmark
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
           NEON_AI_GATEWAY_BASE_URL: ${{ secrets.NEON_AI_GATEWAY_BASE_URL }}
           NEON_AI_GATEWAY_TOKEN: ${{ secrets.NEON_AI_GATEWAY_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tokenomics-benchmark-results
+          path: |
+            src/data/latest-benchmark.json
+            benchmark/results/latest.json

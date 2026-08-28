@@ -9,18 +9,19 @@ export function TabNav({ activeTab, onTabChange }: TabNavProps) {
   const tabs: { id: Tab; label: string }[] = [
     { id: "benchmark", label: "Benchmark" },
     { id: "report", label: "Report" },
+    { id: "reproduce", label: "Reproduce the benchmark" },
   ];
 
   return (
     <nav
-      className="flex items-center gap-8 border-b border-ledger-border"
+      className="flex items-center gap-5 overflow-x-auto border-b border-ledger-border sm:gap-8"
       aria-label="Tokenomics benchmark sections"
     >
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
-          className={`relative pb-4 text-sm uppercase tracking-[0.22em] transition-colors ${
+          className={`relative shrink-0 pb-4 text-xs uppercase tracking-[0.18em] transition-colors sm:text-sm sm:tracking-[0.22em] ${
             activeTab === tab.id
               ? "text-ledger-cream"
               : "text-ledger-muted hover:text-ledger-cream/75"

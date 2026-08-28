@@ -11,6 +11,7 @@
 # testing
 /coverage
 .pycache/
+__pycache__/
 /benchmark/results/
 
 # next.js

@@ -16,12 +16,10 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Tokenomics, measured: AI model cost benchmark",
-  description:
-    "A public benchmark measuring the tokens, estimated cost, and completion rate of a 100-ticket support workload across AI Gateway models.",
+  description: "A small, practical benchmark of AI models.",
   openGraph: {
     title: "Tokenomics, measured",
-    description:
-      "What a fixed 100-ticket workload costs across the Neon AI Gateway catalog.",
+    description: "A small, practical benchmark of AI models.",
     type: "website",
   },
 };
