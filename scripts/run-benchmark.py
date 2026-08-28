@@ -340,6 +340,7 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
     }
     priced = [run["estimatedCostUsd"] for run in runs if run["estimatedCostUsd"] is not None]
     total_cost = sum(priced) if len(priced) == len(runs) else None
+    cost = model.get("cost") or {}
     success_count = len(completed)
     output_tokens = [run["usage"]["outputTokens"] for run in runs]
     failed_checks = Counter(
@@ -362,6 +363,12 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
         "pricedOutputTokens": max(
             totals["outputTokens"],
             totals["totalTokens"] - totals["inputTokens"],
+        ),
+        "inputPricePerMillionUsd": (
+            float(cost["input"]) if cost.get("input") is not None else None
+        ),
+        "outputPricePerMillionUsd": (
+            float(cost["output"]) if cost.get("output") is not None else None
         ),
         "totalCostUsd": total_cost,
         "tokensPerSuccess": totals["totalTokens"] / success_count if success_count else None,
@@ -387,6 +394,8 @@ def refresh_aggregate_price(summary: dict[str, Any], model: dict[str, Any]) -> N
         summary["totalTokens"] - summary["inputTokens"],
     )
     summary["pricedOutputTokens"] = priced_output_tokens
+    summary["inputPricePerMillionUsd"] = float(cost["input"])
+    summary["outputPricePerMillionUsd"] = float(cost["output"])
     total_cost = (
         summary["inputTokens"] * float(cost["input"])
         + priced_output_tokens * float(cost["output"])

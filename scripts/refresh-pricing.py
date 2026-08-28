@@ -50,6 +50,8 @@ def main() -> None:
             model["totalTokens"] - model["inputTokens"],
         )
         model["pricedOutputTokens"] = priced_output_tokens
+        model["inputPricePerMillionUsd"] = float(cost["input"])
+        model["outputPricePerMillionUsd"] = float(cost["output"])
         total_cost = (
             model["inputTokens"] * float(cost["input"])
             + priced_output_tokens * float(cost["output"])

@@ -39,7 +39,9 @@
       "maxOutputTokensUsed": 142,
       "outputCapHits": 0,
       "medianVisibleWords": 65.0,
-      "pricedOutputTokens": 11063
+      "pricedOutputTokens": 11063,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 0.5
     },
     {
       "modelId": "meta-llama-3-1-8b-instruct",
@@ -68,7 +70,9 @@
       "maxOutputTokensUsed": 127,
       "outputCapHits": 0,
       "medianVisibleWords": 44.5,
-      "pricedOutputTokens": 7711
+      "pricedOutputTokens": 7711,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 0.45
     },
     {
       "modelId": "qwen3-next-80b-a3b-instruct",
@@ -97,7 +101,9 @@
       "maxOutputTokensUsed": 116,
       "outputCapHits": 0,
       "medianVisibleWords": 55.0,
-      "pricedOutputTokens": 8728
+      "pricedOutputTokens": 8728,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 1.2
     },
     {
       "modelId": "gpt-oss-20b",
@@ -128,7 +134,9 @@
       "maxOutputTokensUsed": 1172,
       "outputCapHits": 0,
       "medianVisibleWords": 72.5,
-      "pricedOutputTokens": 34273
+      "pricedOutputTokens": 34273,
+      "inputPricePerMillionUsd": 0.07,
+      "outputPricePerMillionUsd": 0.3
     },
     {
       "modelId": "llama-4-maverick",
@@ -157,7 +165,9 @@
       "maxOutputTokensUsed": 119,
       "outputCapHits": 0,
       "medianVisibleWords": 48.0,
-      "pricedOutputTokens": 8208
+      "pricedOutputTokens": 8208,
+      "inputPricePerMillionUsd": 0.5,
+      "outputPricePerMillionUsd": 1.5
     },
     {
       "modelId": "gpt-oss-120b",
@@ -187,7 +197,9 @@
       "maxOutputTokensUsed": 660,
       "outputCapHits": 0,
       "medianVisibleWords": 66.5,
-      "pricedOutputTokens": 30078
+      "pricedOutputTokens": 30078,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 0.6
     },
     {
       "modelId": "gemini-3-5-flash-lite",
@@ -216,7 +228,9 @@
       "maxOutputTokensUsed": 136,
       "outputCapHits": 0,
       "medianVisibleWords": 59.0,
-      "pricedOutputTokens": 9567
+      "pricedOutputTokens": 9567,
+      "inputPricePerMillionUsd": 0.3,
+      "outputPricePerMillionUsd": 2.5
     },
     {
       "modelId": "meta-llama-3-3-70b-instruct",
@@ -245,7 +259,9 @@
       "maxOutputTokensUsed": 91,
       "outputCapHits": 0,
       "medianVisibleWords": 33.0,
-      "pricedOutputTokens": 6229
+      "pricedOutputTokens": 6229,
+      "inputPricePerMillionUsd": 0.5,
+      "outputPricePerMillionUsd": 1.5
     },
     {
       "modelId": "gemini-3-1-flash-lite",
@@ -274,7 +290,9 @@
       "maxOutputTokensUsed": 174,
       "outputCapHits": 0,
       "medianVisibleWords": 82.0,
-      "pricedOutputTokens": 23871
+      "pricedOutputTokens": 23871,
+      "inputPricePerMillionUsd": 0.25,
+      "outputPricePerMillionUsd": 1.5
     },
     {
       "modelId": "claude-haiku-4-5",
@@ -303,7 +321,9 @@
       "maxOutputTokensUsed": 206,
       "outputCapHits": 0,
       "medianVisibleWords": 73.5,
-      "pricedOutputTokens": 13171
+      "pricedOutputTokens": 13171,
+      "inputPricePerMillionUsd": 1.0,
+      "outputPricePerMillionUsd": 5.0
     },
     {
       "modelId": "gemini-3-flash",
@@ -331,7 +351,9 @@
       "maxOutputTokensUsed": 192,
       "outputCapHits": 0,
       "medianVisibleWords": 77.0,
-      "pricedOutputTokens": 51260
+      "pricedOutputTokens": 51260,
+      "inputPricePerMillionUsd": 0.5,
+      "outputPricePerMillionUsd": 3.0
     },
     {
       "modelId": "glm-5-2",
@@ -360,7 +382,9 @@
       "maxOutputTokensUsed": 2048,
       "outputCapHits": 1,
       "medianVisibleWords": 82.0,
-      "pricedOutputTokens": 42571
+      "pricedOutputTokens": 42571,
+      "inputPricePerMillionUsd": 1.4,
+      "outputPricePerMillionUsd": 4.4
     },
     {
       "modelId": "inkling",
@@ -387,7 +411,9 @@
       "maxOutputTokensUsed": 1484,
       "outputCapHits": 0,
       "medianVisibleWords": 65.0,
-      "pricedOutputTokens": 53153
+      "pricedOutputTokens": 53153,
+      "inputPricePerMillionUsd": 1.0,
+      "outputPricePerMillionUsd": 4.05
     },
     {
       "modelId": "claude-sonnet-4-6",
@@ -417,7 +443,9 @@
       "maxOutputTokensUsed": 266,
       "outputCapHits": 0,
       "medianVisibleWords": 83.0,
-      "pricedOutputTokens": 14045
+      "pricedOutputTokens": 14045,
+      "inputPricePerMillionUsd": 3.0,
+      "outputPricePerMillionUsd": 15.0
     },
     {
       "modelId": "gemini-3-6-flash",
@@ -445,7 +473,9 @@
       "maxOutputTokensUsed": 193,
       "outputCapHits": 0,
       "medianVisibleWords": 68.0,
-      "pricedOutputTokens": 40733
+      "pricedOutputTokens": 40733,
+      "inputPricePerMillionUsd": 1.5,
+      "outputPricePerMillionUsd": 7.5
     },
     {
       "modelId": "claude-sonnet-4-5",
@@ -475,7 +505,9 @@
       "maxOutputTokensUsed": 318,
       "outputCapHits": 0,
       "medianVisibleWords": 92.5,
-      "pricedOutputTokens": 15716
+      "pricedOutputTokens": 15716,
+      "inputPricePerMillionUsd": 3.0,
+      "outputPricePerMillionUsd": 15.0
     },
     {
       "modelId": "gemini-3-5-flash",
@@ -503,7 +535,9 @@
       "maxOutputTokensUsed": 193,
       "outputCapHits": 0,
       "medianVisibleWords": 74.0,
-      "pricedOutputTokens": 38266
+      "pricedOutputTokens": 38266,
+      "inputPricePerMillionUsd": 1.5,
+      "outputPricePerMillionUsd": 9.0
     },
     {
       "modelId": "claude-opus-4-6",
@@ -534,7 +568,9 @@
       "maxOutputTokensUsed": 322,
       "outputCapHits": 0,
       "medianVisibleWords": 106.0,
-      "pricedOutputTokens": 17314
+      "pricedOutputTokens": 17314,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0
     },
     {
       "modelId": "claude-opus-4-5",
@@ -564,7 +600,9 @@
       "maxOutputTokensUsed": 213,
       "outputCapHits": 0,
       "medianVisibleWords": 102.0,
-      "pricedOutputTokens": 16946
+      "pricedOutputTokens": 16946,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0
     },
     {
       "modelId": "claude-sonnet-5",
@@ -593,7 +631,9 @@
       "maxOutputTokensUsed": 836,
       "outputCapHits": 0,
       "medianVisibleWords": 80.5,
-      "pricedOutputTokens": 34330
+      "pricedOutputTokens": 34330,
+      "inputPricePerMillionUsd": 2.0,
+      "outputPricePerMillionUsd": 10.0
     },
     {
       "modelId": "claude-opus-4-7",
@@ -622,7 +662,9 @@
       "maxOutputTokensUsed": 280,
       "outputCapHits": 0,
       "medianVisibleWords": 92.0,
-      "pricedOutputTokens": 19957
+      "pricedOutputTokens": 19957,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0
     },
     {
       "modelId": "gemini-3-1-pro",
@@ -650,7 +692,9 @@
       "maxOutputTokensUsed": 196,
       "outputCapHits": 0,
       "medianVisibleWords": 87.0,
-      "pricedOutputTokens": 50547
+      "pricedOutputTokens": 50547,
+      "inputPricePerMillionUsd": 2.0,
+      "outputPricePerMillionUsd": 12.0
     },
     {
       "modelId": "claude-opus-4-8",
@@ -680,7 +724,9 @@
       "maxOutputTokensUsed": 668,
       "outputCapHits": 0,
       "medianVisibleWords": 91.0,
-      "pricedOutputTokens": 22475
+      "pricedOutputTokens": 22475,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0
     },
     {
       "modelId": "qwen35-122b-a10b",
@@ -709,7 +755,9 @@
       "maxOutputTokensUsed": 2048,
       "outputCapHits": 50,
       "medianVisibleWords": 70.0,
-      "pricedOutputTokens": 178254
+      "pricedOutputTokens": 178254,
+      "inputPricePerMillionUsd": 0.22,
+      "outputPricePerMillionUsd": 2.2
     },
     {
       "modelId": "kimi-k3",
@@ -739,7 +787,9 @@
       "maxOutputTokensUsed": 1398,
       "outputCapHits": 0,
       "medianVisibleWords": 104.0,
-      "pricedOutputTokens": 54637
+      "pricedOutputTokens": 54637,
+      "inputPricePerMillionUsd": 3.0,
+      "outputPricePerMillionUsd": 15.0
     },
     {
       "modelId": "claude-opus-5",
@@ -768,7 +818,9 @@
       "maxOutputTokensUsed": 636,
       "outputCapHits": 0,
       "medianVisibleWords": 109.0,
-      "pricedOutputTokens": 34164
+      "pricedOutputTokens": 34164,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0
     },
     {
       "modelId": "claude-fable-5",
@@ -797,7 +849,9 @@
       "maxOutputTokensUsed": 486,
       "outputCapHits": 0,
       "medianVisibleWords": 93.0,
-      "pricedOutputTokens": 25560
+      "pricedOutputTokens": 25560,
+      "inputPricePerMillionUsd": 10.0,
+      "outputPricePerMillionUsd": 50.0
     },
     {
       "modelId": "claude-opus-4-1",
@@ -828,9 +882,11 @@
       "maxOutputTokensUsed": 294,
       "outputCapHits": 0,
       "medianVisibleWords": 92.0,
-      "pricedOutputTokens": 14855
+      "pricedOutputTokens": 14855,
+      "inputPricePerMillionUsd": 15.0,
+      "outputPricePerMillionUsd": 75.0
     }
   ],
-  "pricingSnapshotAt": "2026-08-28T15:24:58.932856+00:00",
+  "pricingSnapshotAt": "2026-08-28T16:06:14.135574+00:00",
   "pricingSource": "https://neon.com/docs/ai-gateway/models#available-models"
 }
