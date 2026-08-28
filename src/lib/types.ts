@@ -85,6 +85,7 @@ export interface ModelAggregate {
   totalTokens: number;
   inputTokens: number;
   outputTokens: number;
+  pricedOutputTokens?: number;
   reasoningTokens: number;
   totalCostUsd: number | null;
   tokensPerSuccess?: number | null;

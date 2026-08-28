@@ -21,6 +21,13 @@ function median(values: number[]) {
     : (sorted[middle - 1] + sorted[middle]) / 2;
 }
 
+function pricedOutputTokens(model: ModelAggregate) {
+  return (
+    model.pricedOutputTokens ??
+    Math.max(model.outputTokens, model.totalTokens - model.inputTokens)
+  );
+}
+
 export function SimpleReport({ benchmark }: SimpleReportProps) {
   const models = ranked(benchmark.aggregates);
   const top = models.slice(0, 3);
@@ -68,7 +75,10 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
     (a, b) => a.inputTokens - b.inputTokens,
   );
   const outputTokenRanking = [...benchmark.aggregates].sort(
-    (a, b) => a.outputTokens - b.outputTokens,
+    (a, b) => pricedOutputTokens(a) - pricedOutputTokens(b),
+  );
+  const modelsWithUnsplitOutput = benchmark.aggregates.filter(
+    (model) => model.totalTokens > model.inputTokens + model.outputTokens,
   );
   const failedChecks = benchmark.aggregates.reduce<Record<string, number>>(
     (totals, model) => {
@@ -189,18 +199,30 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             × spread.
           </p>
           <p>
-            Output totals ranged from{" "}
-            {outputTokenRanking[0].outputTokens.toLocaleString()} to{" "}
-            {outputTokenRanking[
-              outputTokenRanking.length - 1
-            ].outputTokens.toLocaleString()} tokens, a{" "}
+            Priced output totals ranged from{" "}
+            {pricedOutputTokens(outputTokenRanking[0]).toLocaleString()} to{" "}
+            {pricedOutputTokens(
+              outputTokenRanking[outputTokenRanking.length - 1],
+            ).toLocaleString()}{" "}
+            tokens, a{" "}
             {(
-              outputTokenRanking[outputTokenRanking.length - 1].outputTokens /
-              outputTokenRanking[0].outputTokens
+              pricedOutputTokens(
+                outputTokenRanking[outputTokenRanking.length - 1],
+              ) / pricedOutputTokens(outputTokenRanking[0])
             ).toFixed(1)}
             × spread. Output behavior, not prompt tokenization, created most of
             the token gap in this run.
           </p>
+          {modelsWithUnsplitOutput.length > 0 && (
+            <p>
+              For {modelsWithUnsplitOutput.length} models, the provider-reported
+              total exceeded the separate input and output fields. To avoid
+              treating generated tokens as free, the cost estimate prices the
+              larger of reported output or total minus input as output. This
+              preserves the provider total when reasoning usage is not broken
+              out separately.
+            </p>
+          )}
         </AnalysisSection>
 
         <AnalysisSection title="Efficiency and pass rate">

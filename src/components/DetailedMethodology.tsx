@@ -190,8 +190,11 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
               available models table
             </a>
             . Workload cost equals input tokens multiplied by the input rate plus
-            output tokens multiplied by the output rate. Both products are divided
-            by one million.
+            priced output tokens multiplied by the output rate. Priced output is
+            the larger of reported output or reported total minus input. This
+            preserves generated usage when reasoning tokens appear in the total
+            but are not broken out separately. Both products are divided by one
+            million.
           </p>
           <p>
             AI Gateway inference is free during beta. Dollar values shown here use

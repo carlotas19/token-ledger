@@ -263,9 +263,13 @@ def estimated_cost(usage: dict[str, int], model: dict[str, Any]) -> float | None
     cost = model.get("cost")
     if not cost or cost.get("input") is None or cost.get("output") is None:
         return None
+    priced_output_tokens = max(
+        usage["outputTokens"],
+        usage["totalTokens"] - usage["inputTokens"],
+    )
     return (
         usage["inputTokens"] * float(cost["input"])
-        + usage["outputTokens"] * float(cost["output"])
+        + priced_output_tokens * float(cost["output"])
     ) / 1_000_000
 
 
@@ -355,6 +359,10 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
         "successes": success_count,
         "passRate": success_count / len(runs) if runs else 0,
         **totals,
+        "pricedOutputTokens": max(
+            totals["outputTokens"],
+            totals["totalTokens"] - totals["inputTokens"],
+        ),
         "totalCostUsd": total_cost,
         "tokensPerSuccess": totals["totalTokens"] / success_count if success_count else None,
         "costPerSuccessUsd": total_cost / success_count if total_cost is not None and success_count else None,
@@ -374,9 +382,14 @@ def refresh_aggregate_price(summary: dict[str, Any], model: dict[str, Any]) -> N
         summary["totalCostUsd"] = None
         summary["costPerSuccessUsd"] = None
         return
+    priced_output_tokens = max(
+        summary["outputTokens"],
+        summary["totalTokens"] - summary["inputTokens"],
+    )
+    summary["pricedOutputTokens"] = priced_output_tokens
     total_cost = (
         summary["inputTokens"] * float(cost["input"])
-        + summary["outputTokens"] * float(cost["output"])
+        + priced_output_tokens * float(cost["output"])
     ) / 1_000_000
     summary["totalCostUsd"] = total_cost
     summary["costPerSuccessUsd"] = (

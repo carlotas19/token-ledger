@@ -145,8 +145,16 @@ The cost calculation is:
 
 ```text
 (input tokens × input price per million
- + output tokens × output price per million) / 1,000,000
+ + priced output tokens × output price per million) / 1,000,000
+
+priced output tokens = max(
+  reported output tokens,
+  reported total tokens - reported input tokens
+)
 ```
+
+The fallback preserves generated usage when a provider includes reasoning tokens
+in the total but does not break them out in the output field.
 
 Pricing can change without rerunning inference. The saved token counts can be
 repriced against the current catalog:

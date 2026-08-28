@@ -45,9 +45,14 @@ def main() -> None:
             model["costPerSuccessUsd"] = None
             continue
 
+        priced_output_tokens = max(
+            model["outputTokens"],
+            model["totalTokens"] - model["inputTokens"],
+        )
+        model["pricedOutputTokens"] = priced_output_tokens
         total_cost = (
             model["inputTokens"] * float(cost["input"])
-            + model["outputTokens"] * float(cost["output"])
+            + priced_output_tokens * float(cost["output"])
         ) / 1_000_000
         successes = int(model["successes"])
         model["totalCostUsd"] = total_cost

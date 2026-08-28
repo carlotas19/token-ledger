@@ -38,7 +38,8 @@
       "medianOutputTokens": 109.0,
       "maxOutputTokensUsed": 142,
       "outputCapHits": 0,
-      "medianVisibleWords": 65.0
+      "medianVisibleWords": 65.0,
+      "pricedOutputTokens": 11063
     },
     {
       "modelId": "meta-llama-3-1-8b-instruct",
@@ -66,7 +67,8 @@
       "medianOutputTokens": 73.0,
       "maxOutputTokensUsed": 127,
       "outputCapHits": 0,
-      "medianVisibleWords": 44.5
+      "medianVisibleWords": 44.5,
+      "pricedOutputTokens": 7711
     },
     {
       "modelId": "qwen3-next-80b-a3b-instruct",
@@ -94,7 +96,8 @@
       "medianOutputTokens": 84.5,
       "maxOutputTokensUsed": 116,
       "outputCapHits": 0,
-      "medianVisibleWords": 55.0
+      "medianVisibleWords": 55.0,
+      "pricedOutputTokens": 8728
     },
     {
       "modelId": "gpt-oss-20b",
@@ -124,7 +127,8 @@
       "medianOutputTokens": 293.0,
       "maxOutputTokensUsed": 1172,
       "outputCapHits": 0,
-      "medianVisibleWords": 72.5
+      "medianVisibleWords": 72.5,
+      "pricedOutputTokens": 34273
     },
     {
       "modelId": "llama-4-maverick",
@@ -152,35 +156,8 @@
       "medianOutputTokens": 80.0,
       "maxOutputTokensUsed": 119,
       "outputCapHits": 0,
-      "medianVisibleWords": 48.0
-    },
-    {
-      "modelId": "gemini-3-1-flash-lite",
-      "modelName": "Gemini 3.1 Flash Lite Preview",
-      "provider": "google",
-      "openWeights": false,
-      "branchId": "br-blue-mouse-ax39qp6e",
-      "branchName": "model-gemini-3-1-flash-lite",
-      "attempts": 100,
-      "successes": 64,
-      "passRate": 0.64,
-      "inputTokens": 21730,
-      "outputTokens": 12267,
-      "reasoningTokens": 0,
-      "totalTokens": 45601,
-      "totalCostUsd": 0.023833,
-      "tokensPerSuccess": 712.515625,
-      "costPerSuccessUsd": 0.000372390625,
-      "failedChecks": {
-        "classification": 18,
-        "escalation": 10,
-        "action": 9,
-        "required_terms": 2
-      },
-      "medianOutputTokens": 121.5,
-      "maxOutputTokensUsed": 174,
-      "outputCapHits": 0,
-      "medianVisibleWords": 82.0
+      "medianVisibleWords": 48.0,
+      "pricedOutputTokens": 8208
     },
     {
       "modelId": "gpt-oss-120b",
@@ -209,7 +186,8 @@
       "medianOutputTokens": 288.0,
       "maxOutputTokensUsed": 660,
       "outputCapHits": 0,
-      "medianVisibleWords": 66.5
+      "medianVisibleWords": 66.5,
+      "pricedOutputTokens": 30078
     },
     {
       "modelId": "gemini-3-5-flash-lite",
@@ -237,7 +215,8 @@
       "medianOutputTokens": 94.0,
       "maxOutputTokensUsed": 136,
       "outputCapHits": 0,
-      "medianVisibleWords": 59.0
+      "medianVisibleWords": 59.0,
+      "pricedOutputTokens": 9567
     },
     {
       "modelId": "meta-llama-3-3-70b-instruct",
@@ -265,34 +244,37 @@
       "medianOutputTokens": 61.0,
       "maxOutputTokensUsed": 91,
       "outputCapHits": 0,
-      "medianVisibleWords": 33.0
+      "medianVisibleWords": 33.0,
+      "pricedOutputTokens": 6229
     },
     {
-      "modelId": "gemini-3-flash",
-      "modelName": "Gemini 3 Flash Preview",
+      "modelId": "gemini-3-1-flash-lite",
+      "modelName": "Gemini 3.1 Flash Lite Preview",
       "provider": "google",
       "openWeights": false,
-      "branchId": "br-bitter-violet-axpct1sa",
-      "branchName": "model-gemini-3-flash",
+      "branchId": "br-blue-mouse-ax39qp6e",
+      "branchName": "model-gemini-3-1-flash-lite",
       "attempts": 100,
-      "successes": 70,
-      "passRate": 0.7,
+      "successes": 64,
+      "passRate": 0.64,
       "inputTokens": 21730,
-      "outputTokens": 11927,
+      "outputTokens": 12267,
       "reasoningTokens": 0,
-      "totalTokens": 72990,
-      "totalCostUsd": 0.046646,
-      "tokensPerSuccess": 1042.7142857142858,
-      "costPerSuccessUsd": 0.0006663714285714286,
+      "totalTokens": 45601,
+      "totalCostUsd": 0.041239,
+      "tokensPerSuccess": 712.515625,
+      "costPerSuccessUsd": 0.000644359375,
       "failedChecks": {
-        "classification": 13,
-        "escalation": 12,
-        "required_terms": 11
+        "classification": 18,
+        "escalation": 10,
+        "action": 9,
+        "required_terms": 2
       },
-      "medianOutputTokens": 116.5,
-      "maxOutputTokensUsed": 192,
+      "medianOutputTokens": 121.5,
+      "maxOutputTokensUsed": 174,
       "outputCapHits": 0,
-      "medianVisibleWords": 77.0
+      "medianVisibleWords": 82.0,
+      "pricedOutputTokens": 23871
     },
     {
       "modelId": "claude-haiku-4-5",
@@ -320,88 +302,36 @@
       "medianOutputTokens": 127.0,
       "maxOutputTokensUsed": 206,
       "outputCapHits": 0,
-      "medianVisibleWords": 73.5
+      "medianVisibleWords": 73.5,
+      "pricedOutputTokens": 13171
     },
     {
-      "modelId": "gemini-3-6-flash",
-      "modelName": "Gemini 3.6 Flash",
+      "modelId": "gemini-3-flash",
+      "modelName": "Gemini 3 Flash Preview",
       "provider": "google",
       "openWeights": false,
-      "branchId": "br-shy-sea-axg3yxxf",
-      "branchName": "model-gemini-3-6-flash",
+      "branchId": "br-bitter-violet-axpct1sa",
+      "branchName": "model-gemini-3-flash",
       "attempts": 100,
-      "successes": 76,
-      "passRate": 0.76,
+      "successes": 70,
+      "passRate": 0.7,
       "inputTokens": 21730,
-      "outputTokens": 11554,
+      "outputTokens": 11927,
       "reasoningTokens": 0,
-      "totalTokens": 62463,
-      "totalCostUsd": 0.11925,
-      "tokensPerSuccess": 821.8815789473684,
-      "costPerSuccessUsd": 0.001569078947368421,
+      "totalTokens": 72990,
+      "totalCostUsd": 0.164645,
+      "tokensPerSuccess": 1042.7142857142858,
+      "costPerSuccessUsd": 0.0023520714285714286,
       "failedChecks": {
-        "escalation": 10,
-        "classification": 10,
-        "required_terms": 7
+        "classification": 13,
+        "escalation": 12,
+        "required_terms": 11
       },
-      "medianOutputTokens": 106.0,
-      "maxOutputTokensUsed": 193,
+      "medianOutputTokens": 116.5,
+      "maxOutputTokensUsed": 192,
       "outputCapHits": 0,
-      "medianVisibleWords": 68.0
-    },
-    {
-      "modelId": "gemini-3-5-flash",
-      "modelName": "Gemini 3.5 Flash",
-      "provider": "google",
-      "openWeights": false,
-      "branchId": "br-calm-bird-axgx6a4f",
-      "branchName": "model-gemini-3-5-flash",
-      "attempts": 100,
-      "successes": 67,
-      "passRate": 0.67,
-      "inputTokens": 21730,
-      "outputTokens": 12136,
-      "reasoningTokens": 0,
-      "totalTokens": 59996,
-      "totalCostUsd": 0.141819,
-      "tokensPerSuccess": 895.4626865671642,
-      "costPerSuccessUsd": 0.0021167014925373134,
-      "failedChecks": {
-        "classification": 18,
-        "escalation": 13,
-        "required_terms": 7
-      },
-      "medianOutputTokens": 114.5,
-      "maxOutputTokensUsed": 193,
-      "outputCapHits": 0,
-      "medianVisibleWords": 74.0
-    },
-    {
-      "modelId": "gemini-3-1-pro",
-      "modelName": "Gemini 3.1 Pro Preview Custom Tools",
-      "provider": "google",
-      "openWeights": false,
-      "branchId": "br-hidden-boat-ax0tx8ep",
-      "branchName": "model-gemini-3-1-pro",
-      "attempts": 100,
-      "successes": 69,
-      "passRate": 0.69,
-      "inputTokens": 21730,
-      "outputTokens": 13260,
-      "reasoningTokens": 0,
-      "totalTokens": 72277,
-      "totalCostUsd": 0.20258,
-      "tokensPerSuccess": 1047.4927536231885,
-      "costPerSuccessUsd": 0.0029359420289855075,
-      "failedChecks": {
-        "escalation": 15,
-        "classification": 10,
-        "required_terms": 9
-      },
-      "medianOutputTokens": 129.0,
-      "maxOutputTokensUsed": 196,
-      "outputCapHits": 0,
-      "medianVisibleWords": 87.0
+      "medianVisibleWords": 77.0,
+      "pricedOutputTokens": 51260
     },
     {
       "modelId": "glm-5-2",
@@ -429,7 +359,8 @@
       "medianOutputTokens": 298.0,
       "maxOutputTokensUsed": 2048,
       "outputCapHits": 1,
-      "medianVisibleWords": 82.0
+      "medianVisibleWords": 82.0,
+      "pricedOutputTokens": 42571
     },
     {
       "modelId": "inkling",
@@ -455,7 +386,8 @@
       "medianOutputTokens": 477.0,
       "maxOutputTokensUsed": 1484,
       "outputCapHits": 0,
-      "medianVisibleWords": 65.0
+      "medianVisibleWords": 65.0,
+      "pricedOutputTokens": 53153
     },
     {
       "modelId": "claude-sonnet-4-6",
@@ -484,7 +416,36 @@
       "medianOutputTokens": 140.0,
       "maxOutputTokensUsed": 266,
       "outputCapHits": 0,
-      "medianVisibleWords": 83.0
+      "medianVisibleWords": 83.0,
+      "pricedOutputTokens": 14045
+    },
+    {
+      "modelId": "gemini-3-6-flash",
+      "modelName": "Gemini 3.6 Flash",
+      "provider": "google",
+      "openWeights": false,
+      "branchId": "br-shy-sea-axg3yxxf",
+      "branchName": "model-gemini-3-6-flash",
+      "attempts": 100,
+      "successes": 76,
+      "passRate": 0.76,
+      "inputTokens": 21730,
+      "outputTokens": 11554,
+      "reasoningTokens": 0,
+      "totalTokens": 62463,
+      "totalCostUsd": 0.3380925,
+      "tokensPerSuccess": 821.8815789473684,
+      "costPerSuccessUsd": 0.00444858552631579,
+      "failedChecks": {
+        "escalation": 10,
+        "classification": 10,
+        "required_terms": 7
+      },
+      "medianOutputTokens": 106.0,
+      "maxOutputTokensUsed": 193,
+      "outputCapHits": 0,
+      "medianVisibleWords": 68.0,
+      "pricedOutputTokens": 40733
     },
     {
       "modelId": "claude-sonnet-4-5",
@@ -513,7 +474,36 @@
       "medianOutputTokens": 151.5,
       "maxOutputTokensUsed": 318,
       "outputCapHits": 0,
-      "medianVisibleWords": 92.5
+      "medianVisibleWords": 92.5,
+      "pricedOutputTokens": 15716
+    },
+    {
+      "modelId": "gemini-3-5-flash",
+      "modelName": "Gemini 3.5 Flash",
+      "provider": "google",
+      "openWeights": false,
+      "branchId": "br-calm-bird-axgx6a4f",
+      "branchName": "model-gemini-3-5-flash",
+      "attempts": 100,
+      "successes": 67,
+      "passRate": 0.67,
+      "inputTokens": 21730,
+      "outputTokens": 12136,
+      "reasoningTokens": 0,
+      "totalTokens": 59996,
+      "totalCostUsd": 0.376989,
+      "tokensPerSuccess": 895.4626865671642,
+      "costPerSuccessUsd": 0.0056267014925373135,
+      "failedChecks": {
+        "classification": 18,
+        "escalation": 13,
+        "required_terms": 7
+      },
+      "medianOutputTokens": 114.5,
+      "maxOutputTokensUsed": 193,
+      "outputCapHits": 0,
+      "medianVisibleWords": 74.0,
+      "pricedOutputTokens": 38266
     },
     {
       "modelId": "claude-opus-4-6",
@@ -543,7 +533,8 @@
       "medianOutputTokens": 168.0,
       "maxOutputTokensUsed": 322,
       "outputCapHits": 0,
-      "medianVisibleWords": 106.0
+      "medianVisibleWords": 106.0,
+      "pricedOutputTokens": 17314
     },
     {
       "modelId": "claude-opus-4-5",
@@ -572,7 +563,8 @@
       "medianOutputTokens": 166.5,
       "maxOutputTokensUsed": 213,
       "outputCapHits": 0,
-      "medianVisibleWords": 102.0
+      "medianVisibleWords": 102.0,
+      "pricedOutputTokens": 16946
     },
     {
       "modelId": "claude-sonnet-5",
@@ -600,7 +592,8 @@
       "medianOutputTokens": 323.0,
       "maxOutputTokensUsed": 836,
       "outputCapHits": 0,
-      "medianVisibleWords": 80.5
+      "medianVisibleWords": 80.5,
+      "pricedOutputTokens": 34330
     },
     {
       "modelId": "claude-opus-4-7",
@@ -628,7 +621,36 @@
       "medianOutputTokens": 198.5,
       "maxOutputTokensUsed": 280,
       "outputCapHits": 0,
-      "medianVisibleWords": 92.0
+      "medianVisibleWords": 92.0,
+      "pricedOutputTokens": 19957
+    },
+    {
+      "modelId": "gemini-3-1-pro",
+      "modelName": "Gemini 3.1 Pro Preview Custom Tools",
+      "provider": "google",
+      "openWeights": false,
+      "branchId": "br-hidden-boat-ax0tx8ep",
+      "branchName": "model-gemini-3-1-pro",
+      "attempts": 100,
+      "successes": 69,
+      "passRate": 0.69,
+      "inputTokens": 21730,
+      "outputTokens": 13260,
+      "reasoningTokens": 0,
+      "totalTokens": 72277,
+      "totalCostUsd": 0.650024,
+      "tokensPerSuccess": 1047.4927536231885,
+      "costPerSuccessUsd": 0.009420637681159421,
+      "failedChecks": {
+        "escalation": 15,
+        "classification": 10,
+        "required_terms": 9
+      },
+      "medianOutputTokens": 129.0,
+      "maxOutputTokensUsed": 196,
+      "outputCapHits": 0,
+      "medianVisibleWords": 87.0,
+      "pricedOutputTokens": 50547
     },
     {
       "modelId": "claude-opus-4-8",
@@ -657,7 +679,8 @@
       "medianOutputTokens": 190.5,
       "maxOutputTokensUsed": 668,
       "outputCapHits": 0,
-      "medianVisibleWords": 91.0
+      "medianVisibleWords": 91.0,
+      "pricedOutputTokens": 22475
     },
     {
       "modelId": "qwen35-122b-a10b",
@@ -685,7 +708,8 @@
       "medianOutputTokens": 2042.0,
       "maxOutputTokensUsed": 2048,
       "outputCapHits": 50,
-      "medianVisibleWords": 70.0
+      "medianVisibleWords": 70.0,
+      "pricedOutputTokens": 178254
     },
     {
       "modelId": "kimi-k3",
@@ -714,7 +738,8 @@
       "medianOutputTokens": 497.5,
       "maxOutputTokensUsed": 1398,
       "outputCapHits": 0,
-      "medianVisibleWords": 104.0
+      "medianVisibleWords": 104.0,
+      "pricedOutputTokens": 54637
     },
     {
       "modelId": "claude-opus-5",
@@ -742,7 +767,8 @@
       "medianOutputTokens": 335.5,
       "maxOutputTokensUsed": 636,
       "outputCapHits": 0,
-      "medianVisibleWords": 109.0
+      "medianVisibleWords": 109.0,
+      "pricedOutputTokens": 34164
     },
     {
       "modelId": "claude-fable-5",
@@ -770,7 +796,8 @@
       "medianOutputTokens": 245.5,
       "maxOutputTokensUsed": 486,
       "outputCapHits": 0,
-      "medianVisibleWords": 93.0
+      "medianVisibleWords": 93.0,
+      "pricedOutputTokens": 25560
     },
     {
       "modelId": "claude-opus-4-1",
@@ -800,9 +827,10 @@
       "medianOutputTokens": 146.5,
       "maxOutputTokensUsed": 294,
       "outputCapHits": 0,
-      "medianVisibleWords": 92.0
+      "medianVisibleWords": 92.0,
+      "pricedOutputTokens": 14855
     }
   ],
-  "pricingSnapshotAt": "2026-08-28T15:19:05.137633+00:00",
+  "pricingSnapshotAt": "2026-08-28T15:24:58.932856+00:00",
   "pricingSource": "https://neon.com/docs/ai-gateway/models#available-models"
 }
