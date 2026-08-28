@@ -51,6 +51,12 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
     leader?.costPerSuccessUsd && last?.costPerSuccessUsd
       ? last.costPerSuccessUsd / leader.costPerSuccessUsd
       : null;
+  const illustrativeAcceptedTickets = 1_000_000;
+  const illustrativeLowCost =
+    Number(leader?.costPerSuccessUsd) * illustrativeAcceptedTickets;
+  const illustrativeHighCost =
+    Number(last?.costPerSuccessUsd) * illustrativeAcceptedTickets;
+  const illustrativeSavings = illustrativeHighCost - illustrativeLowCost;
   const openModels = benchmark.aggregates.filter((model) => model.openWeights);
   const proprietaryModels = benchmark.aggregates.filter(
     (model) => !model.openWeights,
@@ -211,12 +217,54 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
       <div className="mt-14 space-y-14">
         <AnalysisSection title="Why we ran this benchmark">
           <p>
+            Agents are starting to perform work that companies previously
+            assigned entirely to people: triaging support, drafting replies,
+            researching questions, reviewing documents, and writing code. The
+            work still needs people to define it, supervise it, and handle the
+            cases that automation cannot complete. But every automated step now
+            consumes model inference too.
+          </p>
+          <p>
+            For an agent-heavy company, two operating inputs begin to sit side
+            by side:{" "}
+            <span className="text-ledger-cream">headcount and tokens</span>.
+            Payroll pays for human time. Token spend pays for the model work
+            inside each agent run. As agents take on more tasks, token usage can
+            grow from a small infrastructure line into a material operating
+            cost.
+          </p>
+          <p>
+            The two costs scale differently. Headcount usually grows in people
+            and time. Token spend grows with the number of tasks, the size of
+            their context, the amount of generated output, retries, and failed
+            runs. An enterprise can run the same agent workflow across many
+            teams and millions of actions. A small saving on each accepted
+            result is then multiplied by every one of those actions.
+          </p>
+          <p>
+            This benchmark shows the size of that multiplier without pretending
+            that one support test is an enterprise forecast. If these results
+            scaled linearly to {illustrativeAcceptedTickets.toLocaleString()}{" "}
+            accepted tickets, the lowest measured cost per usable response
+            would be about ${Math.round(illustrativeLowCost).toLocaleString()}.
+            The highest would be about $
+            {Math.round(illustrativeHighCost).toLocaleString()}. The difference
+            is roughly ${Math.round(illustrativeSavings).toLocaleString()} for
+            the same number of accepted outcomes, before adding retries, human
+            review, or fallback calls.
+          </p>
+          <p>
+            That is why token economics belongs next to workforce economics.
+            The goal is not simply to buy the cheapest token. It is to reduce
+            the token cost of each useful unit of work while preserving the
+            quality the business needs.
+          </p>
+          <p>
             AI costs behave more like a variable infrastructure bill than a
             software license. Every request consumes a different number of
-            input and output tokens. The model makes some of that volume
-            predictable through its tokenizer and response behavior, while the
-            application determines the prompt, output contract, and acceptance
-            criteria.
+            input and output tokens. The model affects that volume through its
+            tokenizer and response behavior. The application determines the
+            prompt, output contract, and acceptance criteria.
           </p>
           <p>
             A price table holds only one part of that system constant: the rate
@@ -703,11 +751,15 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
           </AnalysisSection>
         )}
 
-        <AnalysisSection title="A practical model-selection process">
+        <FeaturedAnalysisSection
+          eyebrow="From token economics to operating practice"
+          title="A practical model-selection process"
+        >
           <p>
-            The benchmark suggests a sequence for choosing a model. The order
-            matters because each step removes a different source of false
-            savings.
+            If token spend becomes a material company cost, model selection
+            becomes a recurring operating discipline. The benchmark suggests a
+            sequence for choosing a model. The order matters because each step
+            removes a different source of false savings.
           </p>
           <ol className="list-decimal space-y-3 pl-5">
             <li>
@@ -740,7 +792,14 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             changes its role from final answer to one input in a measured
             decision.
           </p>
-        </AnalysisSection>
+          <p>
+            At enterprise scale, this process can be applied to each major
+            agent workflow. Support triage may favor one model, code review
+            another, and document extraction a third. The savings come from
+            measuring the cost of an accepted result for each job, then routing
+            work to the least expensive model that meets its requirement.
+          </p>
+        </FeaturedAnalysisSection>
 
         <AnalysisSection title="What the benchmark does not prove">
           <p>
@@ -895,6 +954,29 @@ function FailureItem({ label, value }: { label: string; value: number }) {
       <span className="text-sm text-ledger-cream/75">{label}</span>
       <span className="font-mono text-sm text-ledger-cream">{value}</span>
     </li>
+  );
+}
+
+function FeaturedAnalysisSection({
+  eyebrow,
+  title,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="relative overflow-hidden rounded-2xl border border-neon-green/35 bg-neon-green/[0.06] p-6 shadow-[0_0_60px_rgba(0,229,153,0.06)] md:p-8">
+      <div className="absolute inset-y-0 left-0 w-1 bg-neon-green" />
+      <p className="text-xs uppercase tracking-[0.2em] text-neon-green">
+        {eyebrow}
+      </p>
+      <h3 className="mt-3 text-3xl font-light text-ledger-cream">{title}</h3>
+      <div className="mt-5 space-y-4 leading-relaxed text-ledger-cream/80">
+        {children}
+      </div>
+    </section>
   );
 }
 
