@@ -466,7 +466,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                       transform: "translate(12px, -16px)",
                     }}
                   >
-                    <ModelInfoCard point={selectedPoint} />
+                    <ModelInfoCard point={selectedPoint} highlighted />
                   </div>
                 )}
               </div>
@@ -553,10 +553,28 @@ function ChartTooltip({
   return <ModelInfoCard point={point} />;
 }
 
-function ModelInfoCard({ point }: { point: ChartPoint }) {
+function ModelInfoCard({
+  point,
+  highlighted = false,
+}: {
+  point: ChartPoint;
+  highlighted?: boolean;
+}) {
   return (
-    <div className="min-w-64 rounded-xl border border-[#405148] bg-[#070b09] p-4 text-xs shadow-2xl">
-      <p className="font-mono text-sm text-neon-green">{point.model}</p>
+    <div
+      className={`min-w-64 rounded-xl border p-4 text-xs shadow-2xl ${
+        highlighted
+          ? "border-orange-400/50 bg-[#140c07]"
+          : "border-[#405148] bg-[#070b09]"
+      }`}
+    >
+      <p
+        className={`font-mono text-sm ${
+          highlighted ? "text-orange-300" : "text-neon-green"
+        }`}
+      >
+        {point.model}
+      </p>
       <dl className="mt-3 grid grid-cols-[1fr_auto] gap-x-5 gap-y-2">
         <dt className="text-ledger-muted">Total workload tokens</dt>
         <dd className="font-mono text-ledger-cream">
@@ -570,24 +588,46 @@ function ModelInfoCard({ point }: { point: ChartPoint }) {
         <dd className="font-mono text-ledger-cream">
           {point.completed}/{point.attempted}
         </dd>
-        <dt className="border-t border-ledger-border pt-2 text-ledger-muted">
+        <dt
+          className={`border-t pt-2 text-ledger-muted ${
+            highlighted ? "border-orange-400/20" : "border-ledger-border"
+          }`}
+        >
           Tokens per completed ticket
         </dt>
-        <dd className="border-t border-ledger-border pt-2 font-mono text-ledger-cream">
+        <dd
+          className={`border-t pt-2 font-mono text-ledger-cream ${
+            highlighted ? "border-orange-400/20" : "border-ledger-border"
+          }`}
+        >
           {Math.round(point.tokensPerTicket ?? 0).toLocaleString()}
         </dd>
         <dt className="text-ledger-muted">Cost per completed ticket</dt>
         <dd className="font-mono text-ledger-cream">
           ${Number(point.costPerTicket ?? 0).toFixed(6)}
         </dd>
-        <dt className="border-t border-ledger-border pt-2 text-ledger-muted">
+        <dt
+          className={`border-t pt-2 text-ledger-muted ${
+            highlighted ? "border-orange-400/20" : "border-ledger-border"
+          }`}
+        >
           Workload cost rank
         </dt>
-        <dd className="border-t border-ledger-border pt-2 font-mono text-ledger-cream">
+        <dd
+          className={`border-t pt-2 font-mono ${
+            highlighted
+              ? "border-orange-400/20 text-orange-200"
+              : "border-ledger-border text-ledger-cream"
+          }`}
+        >
           #{point.workloadCostRank ?? "n/a"}/{point.workloadCostRankTotal}
         </dd>
         <dt className="text-ledger-muted">Cost per completed ticket rank</dt>
-        <dd className="font-mono text-ledger-cream">
+        <dd
+          className={`font-mono ${
+            highlighted ? "text-orange-200" : "text-ledger-cream"
+          }`}
+        >
           #{point.costPerTicketRank ?? "n/a"}/{point.costPerTicketRankTotal}
         </dd>
       </dl>
