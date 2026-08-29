@@ -121,9 +121,13 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
     setActiveResultIndex(0);
   }
 
-  function selectChartPoint(point: { modelId?: string }) {
+  function selectChartPoint(point: {
+    modelId?: string;
+    payload?: { modelId?: string };
+  }) {
+    const modelId = point.modelId ?? point.payload?.modelId;
     const model = benchmark.aggregates.find(
-      (aggregate) => aggregate.modelId === point.modelId,
+      (aggregate) => aggregate.modelId === modelId,
     );
     if (model) selectModel(model);
   }
@@ -371,7 +375,12 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                       strokeWidth={1}
                       className="cursor-pointer"
                       onClick={(point) =>
-                        selectChartPoint(point as { modelId?: string })
+                        selectChartPoint(
+                          point as {
+                            modelId?: string;
+                            payload?: { modelId?: string };
+                          },
+                        )
                       }
                     />
                     {selectedChartPoint && (
@@ -383,7 +392,12 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                         strokeWidth={4}
                         className="cursor-pointer"
                         onClick={(point) =>
-                          selectChartPoint(point as { modelId?: string })
+                          selectChartPoint(
+                            point as {
+                              modelId?: string;
+                              payload?: { modelId?: string };
+                            },
+                          )
                         }
                       />
                     )}
