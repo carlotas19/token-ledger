@@ -343,6 +343,9 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
     cost = model.get("cost") or {}
     success_count = len(completed)
     output_tokens = [run["usage"]["outputTokens"] for run in runs]
+    latencies = [run["latencyMs"] for run in runs]
+    sorted_latencies = sorted(latencies)
+    p95_index = max(0, min(len(sorted_latencies) - 1, int(len(sorted_latencies) * 0.95) - 1))
     failed_checks = Counter(
         check["id"]
         for run in runs
@@ -373,6 +376,9 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
         "totalCostUsd": total_cost,
         "tokensPerSuccess": totals["totalTokens"] / success_count if success_count else None,
         "costPerSuccessUsd": total_cost / success_count if total_cost is not None and success_count else None,
+        "medianLatencyMs": statistics.median(latencies) if latencies else 0,
+        "p95LatencyMs": sorted_latencies[p95_index] if sorted_latencies else 0,
+        "totalWorkloadDurationMs": sum(latencies),
         "failedChecks": dict(failed_checks.most_common()),
         "medianOutputTokens": statistics.median(output_tokens) if output_tokens else 0,
         "maxOutputTokensUsed": max(output_tokens, default=0),
@@ -381,29 +387,6 @@ def aggregate(model: dict[str, Any], branch: dict[str, str], runs: list[dict[str
             len(run["rawResponse"].split()) for run in runs
         ) if runs else 0,
     }
-
-
-def refresh_aggregate_price(summary: dict[str, Any], model: dict[str, Any]) -> None:
-    cost = model.get("cost")
-    if not cost or cost.get("input") is None or cost.get("output") is None:
-        summary["totalCostUsd"] = None
-        summary["costPerSuccessUsd"] = None
-        return
-    priced_output_tokens = max(
-        summary["outputTokens"],
-        summary["totalTokens"] - summary["inputTokens"],
-    )
-    summary["pricedOutputTokens"] = priced_output_tokens
-    summary["inputPricePerMillionUsd"] = float(cost["input"])
-    summary["outputPricePerMillionUsd"] = float(cost["output"])
-    total_cost = (
-        summary["inputTokens"] * float(cost["input"])
-        + priced_output_tokens * float(cost["output"])
-    ) / 1_000_000
-    summary["totalCostUsd"] = total_cost
-    summary["costPerSuccessUsd"] = (
-        total_cost / summary["successes"] if summary["successes"] else None
-    )
 
 
 def save_checkpoint(state: dict[str, Any]) -> None:
@@ -449,7 +432,7 @@ def main() -> None:
         model
         for model in catalog.values()
         if model["id"] in enabled_ids
-        and model.get("modalities", {}).get("output") == ["text"]
+        and "text" in model.get("modalities", {}).get("output", [])
     ]
     models.sort(key=lambda model: (model["provider"], model["id"]))
     print(f"Benchmarking {len(models)} enabled text models")
@@ -482,6 +465,15 @@ def main() -> None:
 
     completed_ids = {model["modelId"] for model in state["models"]}
     pending = [model for model in models if model["id"] not in completed_ids]
+    state["benchmark"]["status"] = "running"
+    state["benchmark"]["completedAt"] = None
+    state["benchmark"]["modelCount"] = len(models)
+    state["benchmark"]["catalogSnapshotAt"] = datetime.now(timezone.utc).isoformat()
+    save_checkpoint(state)
+    print(
+        f"Resuming with {len(completed_ids)} completed models and "
+        f"{len(pending)} pending models"
+    )
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
@@ -499,8 +491,17 @@ def main() -> None:
     state["benchmark"]["completedAt"] = datetime.now(timezone.utc).isoformat()
     state["benchmark"]["pricingSnapshotAt"] = datetime.now(timezone.utc).isoformat()
     state["benchmark"]["pricingSource"] = PRICING_SOURCE
-    for summary in state["models"]:
-        refresh_aggregate_price(summary, catalog[summary["modelId"]])
+    runs_by_model: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for run in state["runs"]:
+        runs_by_model[run["modelId"]].append(run)
+    state["models"] = [
+        aggregate(
+            catalog[summary["modelId"]],
+            branches.get(summary["modelId"], summary["branch"]),
+            runs_by_model[summary["modelId"]],
+        )
+        for summary in state["models"]
+    ]
     state["models"].sort(
         key=lambda model: (
             model["costPerSuccessUsd"] is None,

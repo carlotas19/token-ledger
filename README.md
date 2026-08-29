@@ -39,6 +39,9 @@ The main chart plots the full 100-ticket workload:
 - **Published workload cost**: those tokens multiplied by the published Neon
   AI Gateway input and output prices
 - **Responses passed**: shown as bubble size and in the tooltip
+- **100-ticket run time**: sum of measured request latency for one model’s 100
+  sequential requests
+- **Median and p95 ticket latency**: typical response time and the slower tail
 
 Cost and pass rate answer different questions. Cost measures efficiency. Pass
 rate is a separate quality signal that measures how often a model produced a
@@ -46,7 +49,8 @@ response the application could use. A production evaluation should set a
 minimum acceptable pass rate before comparing cost among the models that meet
 it.
 
-The tables below the chart normalize by successful responses:
+The tables below the chart rank token efficiency, cost efficiency, and workload
+time. Cost metrics normalize by successful responses:
 
 ```text
 tokens per completed ticket = total workload tokens / responses passed
@@ -97,8 +101,9 @@ Gateway is available during beta.
 - Branch naming: `model-<model-id>`, for example `model-gemma-3-12b`
 
 Before inference starts, `scripts/run-benchmark.py` reads the enabled model list
-from the branch AI Gateway `/v1/models` endpoint. It then creates any missing
-model branches with the Neon CLI:
+from the branch AI Gateway `/v1/models` endpoint and keeps every model that can
+return text, including multimodal models. It then creates any missing model
+branches with the Neon CLI:
 
 ```bash
 neon branches create \
@@ -129,10 +134,12 @@ For each model, the runner:
 6. Runs seven deterministic checks.
 7. Records the raw response, parsed response, checks, latency, and
    provider-reported input, output, total, and reasoning token counts.
-8. Aggregates tokens, published cost, and pass count.
+8. Aggregates tokens, published cost, pass count, total workload time, median
+   latency, and p95 latency.
 
 Models run concurrently, with up to eight model workers. Requests within one
-model run sequentially.
+model run sequentially. A checkpoint lets later runs add newly enabled models
+without rerunning completed models.
 
 ## Pricing
 

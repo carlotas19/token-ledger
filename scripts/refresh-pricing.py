@@ -69,6 +69,15 @@ def main() -> None:
                 if not check["passed"]
             )
             output_tokens = [run["usage"]["outputTokens"] for run in runs]
+            latencies = [run["latencyMs"] for run in runs]
+            sorted_latencies = sorted(latencies)
+            p95_index = max(
+                0,
+                min(
+                    len(sorted_latencies) - 1,
+                    int(len(sorted_latencies) * 0.95) - 1,
+                ),
+            )
             model["failedChecks"] = dict(failed_checks.most_common())
             model["medianOutputTokens"] = statistics.median(output_tokens)
             model["maxOutputTokensUsed"] = max(output_tokens)
@@ -78,6 +87,9 @@ def main() -> None:
             model["medianVisibleWords"] = statistics.median(
                 len(run["rawResponse"].split()) for run in runs
             )
+            model["medianLatencyMs"] = statistics.median(latencies)
+            model["p95LatencyMs"] = sorted_latencies[p95_index]
+            model["totalWorkloadDurationMs"] = sum(latencies)
 
     summary["pricingSnapshotAt"] = datetime.now(timezone.utc).isoformat()
     summary["pricingSource"] = PRICING_DOCS

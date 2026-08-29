@@ -173,8 +173,26 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
             <li>Chat Completions for compatible text models</li>
             <li>OpenAI Responses API for models that require that endpoint</li>
             <li>Provider-reported input, output, total, and reasoning tokens</li>
+            <li>Request latency recorded from send through final response</li>
             <li>Transient 429 and 5xx responses retried with exponential backoff</li>
           </ul>
+        </Section>
+
+        <Section title="Timing">
+          <p>
+            Requests run sequentially within each model. The app reports the sum
+            of all 100 request latencies as the model’s workload time, plus the
+            median and p95 ticket latency. Retries and provider waits remain in
+            the measured request time.
+          </p>
+          <p>
+            Models run concurrently in groups of up to eight. The original
+            models and later catalog additions also ran in separate batches.
+            Timing is therefore useful for comparing the observed runs, but it
+            is not a controlled latency benchmark. Reproducing a latency study
+            would require repeated runs under matched concurrency and network
+            conditions.
+          </p>
         </Section>
 
         <Section title="Pricing">
@@ -237,6 +255,7 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
             <li>One run cannot measure output variance across repeated generations.</li>
             <li>Provider tokenizers differ, so a token is not identical across models.</li>
             <li>Strict checks measure policy completion, not writing style.</li>
+            <li>Timing can vary with provider load, network conditions, and retries.</li>
             <li>Prices and model availability can change after the verification date.</li>
           </ul>
         </Section>

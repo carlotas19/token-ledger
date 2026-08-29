@@ -31,6 +31,13 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
     const byPassRate = [...benchmark.aggregates].sort(
       (a, b) => b.passRate - a.passRate,
     );
+    const byDuration = benchmark.aggregates
+      .filter((model) => model.totalWorkloadDurationMs != null)
+      .sort(
+        (a, b) =>
+          Number(a.totalWorkloadDurationMs) -
+          Number(b.totalWorkloadDurationMs),
+      );
     const topPassRate = byPassRate[0]?.passRate;
     const completionLeaders = byPassRate.filter(
       (model) => model.passRate === topPassRate,
@@ -43,6 +50,7 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
         .map((model) => model.modelName)
         .join(" + "),
       completionCount: completionLeaders.length,
+      speed: byDuration[0],
     };
   }, [benchmark.aggregates]);
 
@@ -70,11 +78,12 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
           </h1>
           <p className="mt-4 max-w-3xl animate-fade-in text-lg leading-relaxed text-ledger-cream/75">
             Some models are cheaper than others. But do they actually save you
-            money? We ran a simulated support workload through 28 open-weight
-            and frontier models on Neon AI Gateway, then measured how many tokens
-            and dollars it took to produce usable answers.
+            money? We ran a simulated support workload through{" "}
+            {benchmark.modelCount} open-weight and frontier models on Neon AI
+            Gateway, then measured how many tokens and dollars it took to
+            produce usable answers.
           </p>
-          <div className="mt-6 grid max-w-5xl gap-3 sm:grid-cols-3">
+          <div className="mt-6 grid max-w-6xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {leaders.cost && (
               <Leader
                 label="Lowest cost per completed ticket"
@@ -101,6 +110,13 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
                 }
                 model={leaders.completionNames}
                 value={`${(leaders.completion.passRate * 100).toFixed(0)}% of responses passed every check`}
+              />
+            )}
+            {leaders.speed && (
+              <Leader
+                label="Fastest 100-ticket run"
+                model={leaders.speed.modelName}
+                value={formatDuration(leaders.speed.totalWorkloadDurationMs)}
               />
             )}
           </div>
@@ -157,6 +173,14 @@ function Leader({
       <p className="mt-1 text-xs text-ledger-cream/70">{value}</p>
     </div>
   );
+}
+
+function formatDuration(milliseconds?: number | null) {
+  if (milliseconds == null) return "Not recorded";
+  const seconds = milliseconds / 1000;
+  if (seconds < 60) return `${seconds.toFixed(1)} seconds`;
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes}m ${(seconds % 60).toFixed(0)}s`;
 }
 
 function GitHubIcon() {

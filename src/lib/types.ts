@@ -93,6 +93,8 @@ export interface ModelAggregate {
   tokensPerSuccess?: number | null;
   costPerSuccessUsd: number | null;
   medianLatencyMs: number;
+  p95LatencyMs?: number;
+  totalWorkloadDurationMs?: number;
   costPerThousandSuccessesUsd: number | null;
   failedChecks?: Record<string, number>;
   medianOutputTokens?: number;

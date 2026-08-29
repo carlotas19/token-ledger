@@ -28,6 +28,14 @@ function pricedOutputTokens(model: ModelAggregate) {
   );
 }
 
+function formatDuration(milliseconds?: number | null) {
+  if (milliseconds == null) return "Not recorded";
+  const seconds = milliseconds / 1000;
+  if (seconds < 60) return `${seconds.toFixed(1)} seconds`;
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes}m ${(seconds % 60).toFixed(0)}s`;
+}
+
 export function SimpleReport({ benchmark }: SimpleReportProps) {
   const models = ranked(benchmark.aggregates);
   const top = models.slice(0, 3);
@@ -73,6 +81,16 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
   const workloadTokenRanking = [...benchmark.aggregates].sort(
     (a, b) => a.totalTokens - b.totalTokens,
   );
+  const workloadDurationRanking = benchmark.aggregates
+    .filter((model) => model.totalWorkloadDurationMs != null)
+    .sort(
+      (a, b) =>
+        Number(a.totalWorkloadDurationMs) -
+        Number(b.totalWorkloadDurationMs),
+    );
+  const fastestWorkload = workloadDurationRanking[0];
+  const slowestWorkload =
+    workloadDurationRanking[workloadDurationRanking.length - 1];
   const lowestWorkloadCost = workloadCostRanking[0];
   const lowestTokenWorkload = workloadTokenRanking[0];
   const tokenEfficient = [...benchmark.aggregates].sort(
@@ -160,9 +178,9 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             model runs a real task.
           </p>
           <p>
-            This benchmark asks a narrow question: if 28 models receive the same
-            100 support tickets, does the model with the lowest token price
-            produce the lowest workload cost?
+            This benchmark asks a narrow question: if {benchmark.modelCount}{" "}
+            models receive the same 100 support tickets, does the model with the
+            lowest token price produce the lowest workload cost?
           </p>
         </div>
       </header>
@@ -347,7 +365,7 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
         </AnalysisSection>
       </div>
 
-      <section className="mt-10 grid gap-4 sm:grid-cols-3">
+      <section className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {lowestWorkloadCost && (
           <MetricCard
             label="Lowest workload cost"
@@ -370,6 +388,14 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             model={tokenEfficient.modelName}
             value={`${Math.round(tokenEfficient.tokensPerSuccess ?? 0).toLocaleString()} tokens`}
             detail={`${tokenEfficient.successes}/100 responses passed`}
+          />
+        )}
+        {fastestWorkload && (
+          <MetricCard
+            label="Fastest 100-ticket run"
+            model={fastestWorkload.modelName}
+            value={formatDuration(fastestWorkload.totalWorkloadDurationMs)}
+            detail={`${formatDuration(fastestWorkload.medianLatencyMs)} median ticket latency`}
           />
         )}
       </section>
@@ -530,7 +556,7 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
               {lowestTokenWorkload.modelName}
             </span>{" "}
             used the fewest total tokens, but only{" "}
-            {lowestWorkloadCost.successes}/100 responses passed.
+            {lowestTokenWorkload.successes}/100 responses passed.
           </p>
           <FormulaBlock>
             cost per usable response = average cost per attempt ÷ pass rate
@@ -570,6 +596,46 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             among the models that satisfy it.
           </p>
         </AnalysisSection>
+
+        {fastestWorkload && slowestWorkload && (
+          <AnalysisSection title="Time to completion">
+            <p>
+              Token cost is not the only operating constraint. A model that
+              takes longer to finish a request can make an agent feel slow,
+              reduce throughput, and keep a human waiting for work that should
+              be automated.
+            </p>
+            <p>
+              Each model processed its 100 tickets sequentially. We sum the
+              measured request latency to estimate the time needed to finish
+              that model’s complete workload.{" "}
+              <span className="font-mono text-neon-green">
+                {fastestWorkload.modelName}
+              </span>{" "}
+              finished fastest in{" "}
+              {formatDuration(fastestWorkload.totalWorkloadDurationMs)}.{" "}
+              <span className="font-mono text-red-300">
+                {slowestWorkload.modelName}
+              </span>{" "}
+              took {formatDuration(slowestWorkload.totalWorkloadDurationMs)}.
+            </p>
+            <p>
+              Median ticket latency helps separate a consistently slow model
+              from a run dominated by a few long requests. The Results model
+              card also reports p95 latency, which captures the slower end of
+              each model’s 100 responses.
+            </p>
+            <p>
+              These timing rankings are directional. The original 28 models and
+              the 14 GPT additions ran in separate batches and on different
+              dates. Models also ran concurrently within each batch. Network
+              conditions, provider load, and rate-limit waits can therefore
+              affect the comparison. A controlled latency benchmark would
+              repeat each model under the same concurrency and report the
+              distribution across runs.
+            </p>
+          </AnalysisSection>
+        )}
 
         <AnalysisSection title="Why responses failed">
           <p>
@@ -774,12 +840,17 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             </li>
             <li>
               Run representative production prompts and record input, output,
-              reasoning, retries, parse failures, and fallback calls.
+              reasoning, latency, retries, parse failures, and fallback calls.
             </li>
             <li>
               Calculate the cost of the whole workload and divide it by usable
               results. Compare that number among models that passed the quality
               threshold.
+            </li>
+            <li>
+              Set a response-time requirement and compare median, p95, and
+              full-workload time. A low-cost model still has to meet the
+              application’s latency and throughput needs.
             </li>
             <li>
               Repeat the run. A single deterministic sample cannot show output
@@ -817,9 +888,10 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
           <p>
             The run also does not measure variance. Each ticket was sent once
             to each model. Repeated runs would show whether a 70% pass rate is
-            stable or whether the model moves widely from run to run. Latency,
-            rate limits, caching, batch discounts, retry policies, and human
-            review costs sit outside this comparison.
+            stable or whether the model moves widely from run to run. Timing is
+            observed, but it was not collected under a controlled latency test.
+            Caching, batch discounts, retry policies, and human review costs sit
+            outside this comparison.
           </p>
           <p>
             Prices and model behavior can change. The report ties its dollar
@@ -873,6 +945,17 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
               Qwen3.5 showed that a low listed rate can be overwhelmed by output
               volume and parse failures.
             </li>
+            {fastestWorkload && slowestWorkload && (
+              <li>
+                Observed workload time ranged from{" "}
+                {formatDuration(fastestWorkload.totalWorkloadDurationMs)} for{" "}
+                {fastestWorkload.modelName} to{" "}
+                {formatDuration(slowestWorkload.totalWorkloadDurationMs)} for{" "}
+                {slowestWorkload.modelName}. Cost and quality candidates still
+                need a response-time threshold, although this two-batch run
+                should not be treated as a controlled latency test.
+              </li>
+            )}
           </ul>
           <p>
             The useful unit is the cost of an accepted outcome. A token rate can

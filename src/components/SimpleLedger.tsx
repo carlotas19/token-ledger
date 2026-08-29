@@ -28,6 +28,14 @@ function costPerCompletion(model?: ModelAggregate) {
   return model.costPerSuccessUsd;
 }
 
+function formatDuration(milliseconds?: number | null) {
+  if (milliseconds == null) return "Not recorded";
+  const seconds = milliseconds / 1000;
+  if (seconds < 60) return `${seconds.toFixed(1)}s`;
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes}m ${(seconds % 60).toFixed(0)}s`;
+}
+
 function rankModels(
   models: ModelAggregate[],
   metric: (model: ModelAggregate) => number | null | undefined,
@@ -64,6 +72,11 @@ type ChartPoint = {
   costPerTicketRankTotal: number;
   workloadTokenRank: number | null;
   passRateRank: number | null;
+  workloadDurationMs: number | null;
+  medianLatencyMs: number;
+  p95LatencyMs: number | null;
+  workloadDurationRank: number | null;
+  workloadDurationRankTotal: number;
 };
 
 function normalizeSearch(value: string) {
@@ -88,6 +101,10 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
   const workloadPriceRanking = rankModels(
     benchmark.aggregates,
     (model) => model.totalCostUsd,
+  );
+  const workloadDurationRanking = rankModels(
+    benchmark.aggregates,
+    (model) => model.totalWorkloadDurationMs,
   );
   const workloadTokenLeader = workloadTokenRanking[0];
   const workloadTokenLast =
@@ -126,6 +143,11 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
       costPerTicketRankTotal: priceRanking.length,
       workloadTokenRank: rankOf(workloadTokenRanking, model.modelId),
       passRateRank: rankOf(passRateRanking, model.modelId),
+      workloadDurationMs: model.totalWorkloadDurationMs ?? null,
+      medianLatencyMs: model.medianLatencyMs ?? null,
+      p95LatencyMs: model.p95LatencyMs ?? null,
+      workloadDurationRank: rankOf(workloadDurationRanking, model.modelId),
+      workloadDurationRankTotal: workloadDurationRanking.length,
     }))
     .filter((model): model is ChartPoint => model.price != null);
   const selectedPoint = chartData.find(
@@ -511,7 +533,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
         </p>
       </section>
 
-      <section className="mt-10 grid gap-6 lg:grid-cols-2">
+      <section className="mt-10 grid gap-6 lg:grid-cols-3">
         <RankingTable
           title="Fewest tokens per completed ticket"
           description="All tokens from 100 attempts divided by responses that passed."
@@ -525,6 +547,12 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
           description="Cost at published prices for 100 attempts divided by responses that passed."
           models={priceRanking}
           value={(model) => `$${(costPerCompletion(model) ?? 0).toFixed(6)}`}
+        />
+        <RankingTable
+          title="Fastest 100-ticket workload"
+          description="Sum of measured request latency across 100 sequential tickets."
+          models={workloadDurationRanking}
+          value={(model) => formatDuration(model.totalWorkloadDurationMs)}
         />
       </section>
 
@@ -588,6 +616,18 @@ function ModelInfoCard({
         <dd className="font-mono text-ledger-cream">
           {point.completed}/{point.attempted}
         </dd>
+        <dt className="text-ledger-muted">100-ticket run time</dt>
+        <dd className="font-mono text-ledger-cream">
+          {formatDuration(point.workloadDurationMs)}
+        </dd>
+        <dt className="text-ledger-muted">Median ticket latency</dt>
+        <dd className="font-mono text-ledger-cream">
+          {formatDuration(point.medianLatencyMs)}
+        </dd>
+        <dt className="text-ledger-muted">P95 ticket latency</dt>
+        <dd className="font-mono text-ledger-cream">
+          {formatDuration(point.p95LatencyMs)}
+        </dd>
         <dt
           className={`border-t pt-2 text-ledger-muted ${
             highlighted ? "border-orange-400/20" : "border-ledger-border"
@@ -629,6 +669,15 @@ function ModelInfoCard({
           }`}
         >
           #{point.costPerTicketRank ?? "n/a"}/{point.costPerTicketRankTotal}
+        </dd>
+        <dt className="text-ledger-muted">Workload time rank</dt>
+        <dd
+          className={`font-mono ${
+            highlighted ? "text-orange-200" : "text-ledger-cream"
+          }`}
+        >
+          #{point.workloadDurationRank ?? "n/a"}/
+          {point.workloadDurationRankTotal}
         </dd>
       </dl>
     </div>

@@ -3,15 +3,51 @@
   "name": "Token Ledger 100-ticket support benchmark",
   "status": "completed",
   "ticketCount": 100,
-  "modelCount": 28,
+  "modelCount": 42,
   "startedAt": "2026-08-25T14:17:12.061335+00:00",
-  "completedAt": "2026-08-25T15:07:01.982094+00:00",
-  "catalogSnapshotAt": "2026-08-25T14:17:12.061390+00:00",
+  "completedAt": "2026-08-29T16:36:17.151869+00:00",
+  "catalogSnapshotAt": "2026-08-29T15:32:18.151632+00:00",
   "projectId": "silent-violet-94567844",
   "parentBranchId": "br-young-snow-ax2vm8ck",
   "maxOutputTokens": 2048,
   "systemPrompt": "You are a support agent for a developer platform.\nRead the customer message, account context, and policy notes.\nReturn ONLY valid JSON with this shape:\n{\n  \"classification\": \"billing|access|feature|security|refund|other\",\n  \"action\": \"reply_only|reset_password|issue_credit|deny_request|escalate_security\",\n  \"escalate\": true|false,\n  \"customer_reply\": \"concise customer-facing reply\"\n}\nRules:\n- Never invent account facts not present in the context.\n- Escalate only when the policy notes require escalation.\n- Follow refund and credit policy strictly.\n- Keep customer_reply under 120 words.",
+  "pricingSnapshotAt": "2026-08-29T16:39:28.424398+00:00",
+  "pricingSource": "https://neon.com/docs/ai-gateway/models#available-models",
   "aggregates": [
+    {
+      "modelId": "gpt-5-nano",
+      "modelName": "GPT-5 Nano",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-crimson-meadow-ax5g9tf9",
+      "branchName": "model-gpt-5-nano",
+      "attempts": 100,
+      "successes": 51,
+      "passRate": 0.51,
+      "inputTokens": 20195,
+      "outputTokens": 11904,
+      "reasoningTokens": 0,
+      "totalTokens": 32099,
+      "pricedOutputTokens": 11904,
+      "inputPricePerMillionUsd": 0.05,
+      "outputPricePerMillionUsd": 0.4,
+      "totalCostUsd": 0.005771350000000001,
+      "tokensPerSuccess": 629.3921568627451,
+      "costPerSuccessUsd": 0.00011316372549019609,
+      "failedChecks": {
+        "classification": 26,
+        "escalation": 13,
+        "action": 10,
+        "required_terms": 6
+      },
+      "medianOutputTokens": 118.0,
+      "maxOutputTokensUsed": 168,
+      "outputCapHits": 0,
+      "medianVisibleWords": 73.5,
+      "medianLatencyMs": 1778.5,
+      "p95LatencyMs": 2179,
+      "totalWorkloadDurationMs": 181909
+    },
     {
       "modelId": "gemma-3-12b",
       "modelName": "Gemma 3 12B",
@@ -29,6 +65,9 @@
       "totalCostUsd": 0.008941,
       "tokensPerSuccess": 528.015625,
       "costPerSuccessUsd": 0.000139703125,
+      "pricedOutputTokens": 11063,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 0.5,
       "failedChecks": {
         "required_terms": 14,
         "classification": 12,
@@ -39,9 +78,9 @@
       "maxOutputTokensUsed": 142,
       "outputCapHits": 0,
       "medianVisibleWords": 65.0,
-      "pricedOutputTokens": 11063,
-      "inputPricePerMillionUsd": 0.15,
-      "outputPricePerMillionUsd": 0.5
+      "medianLatencyMs": 1767.5,
+      "p95LatencyMs": 2084,
+      "totalWorkloadDurationMs": 177157
     },
     {
       "modelId": "meta-llama-3-1-8b-instruct",
@@ -60,6 +99,9 @@
       "totalCostUsd": 0.0065524500000000005,
       "tokensPerSuccess": 831.2058823529412,
       "costPerSuccessUsd": 0.00019271911764705884,
+      "pricedOutputTokens": 7711,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 0.45,
       "failedChecks": {
         "classification": 34,
         "action": 33,
@@ -70,9 +112,9 @@
       "maxOutputTokensUsed": 127,
       "outputCapHits": 0,
       "medianVisibleWords": 44.5,
-      "pricedOutputTokens": 7711,
-      "inputPricePerMillionUsd": 0.15,
-      "outputPricePerMillionUsd": 0.45
+      "medianLatencyMs": 762.0,
+      "p95LatencyMs": 914,
+      "totalWorkloadDurationMs": 78647
     },
     {
       "modelId": "qwen3-next-80b-a3b-instruct",
@@ -91,6 +133,9 @@
       "totalCostUsd": 0.01356135,
       "tokensPerSuccess": 480.5409836065574,
       "costPerSuccessUsd": 0.0002223172131147541,
+      "pricedOutputTokens": 8728,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 1.2,
       "failedChecks": {
         "classification": 23,
         "escalation": 10,
@@ -101,9 +146,9 @@
       "maxOutputTokensUsed": 116,
       "outputCapHits": 0,
       "medianVisibleWords": 55.0,
-      "pricedOutputTokens": 8728,
-      "inputPricePerMillionUsd": 0.15,
-      "outputPricePerMillionUsd": 1.2
+      "medianLatencyMs": 2287.0,
+      "p95LatencyMs": 3227,
+      "totalWorkloadDurationMs": 239204
     },
     {
       "modelId": "gpt-oss-20b",
@@ -122,6 +167,9 @@
       "totalCostUsd": 0.012227549999999998,
       "tokensPerSuccess": 1149.4074074074074,
       "costPerSuccessUsd": 0.0002264361111111111,
+      "pricedOutputTokens": 34273,
+      "inputPricePerMillionUsd": 0.07,
+      "outputPricePerMillionUsd": 0.3,
       "failedChecks": {
         "classification": 22,
         "escalation": 15,
@@ -134,9 +182,77 @@
       "maxOutputTokensUsed": 1172,
       "outputCapHits": 0,
       "medianVisibleWords": 72.5,
-      "pricedOutputTokens": 34273,
-      "inputPricePerMillionUsd": 0.07,
-      "outputPricePerMillionUsd": 0.3
+      "medianLatencyMs": 1899.0,
+      "p95LatencyMs": 4197,
+      "totalWorkloadDurationMs": 224398
+    },
+    {
+      "modelId": "gpt-5-4-nano",
+      "modelName": "GPT-5.4 nano",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-empty-hill-axrinfvy",
+      "branchName": "model-gpt-5-4-nano",
+      "attempts": 100,
+      "successes": 69,
+      "passRate": 0.69,
+      "inputTokens": 20195,
+      "outputTokens": 13045,
+      "reasoningTokens": 0,
+      "totalTokens": 33240,
+      "pricedOutputTokens": 13045,
+      "inputPricePerMillionUsd": 0.2,
+      "outputPricePerMillionUsd": 1.25,
+      "totalCostUsd": 0.02034525,
+      "tokensPerSuccess": 481.7391304347826,
+      "costPerSuccessUsd": 0.0002948586956521739,
+      "failedChecks": {
+        "classification": 15,
+        "action": 14,
+        "escalation": 13,
+        "required_terms": 3
+      },
+      "medianOutputTokens": 127.5,
+      "maxOutputTokensUsed": 183,
+      "outputCapHits": 0,
+      "medianVisibleWords": 83.0,
+      "medianLatencyMs": 1561.0,
+      "p95LatencyMs": 1812,
+      "totalWorkloadDurationMs": 157082
+    },
+    {
+      "modelId": "gpt-5-6-luna",
+      "modelName": "GPT-5.6 Luna",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-noisy-rain-axuob4ih",
+      "branchName": "model-gpt-5-6-luna",
+      "attempts": 100,
+      "successes": 65,
+      "passRate": 0.65,
+      "inputTokens": 20195,
+      "outputTokens": 14794,
+      "reasoningTokens": 5322,
+      "totalTokens": 34989,
+      "pricedOutputTokens": 14794,
+      "inputPricePerMillionUsd": 0.2,
+      "outputPricePerMillionUsd": 1.2,
+      "totalCostUsd": 0.0217918,
+      "tokensPerSuccess": 538.2923076923076,
+      "costPerSuccessUsd": 0.00033525846153846154,
+      "failedChecks": {
+        "escalation": 17,
+        "classification": 17,
+        "action": 2,
+        "required_terms": 1
+      },
+      "medianOutputTokens": 144.5,
+      "maxOutputTokensUsed": 531,
+      "outputCapHits": 0,
+      "medianVisibleWords": 53.0,
+      "medianLatencyMs": 2475.0,
+      "p95LatencyMs": 3256,
+      "totalWorkloadDurationMs": 253801
     },
     {
       "modelId": "llama-4-maverick",
@@ -155,6 +271,9 @@
       "totalCostUsd": 0.022562,
       "tokensPerSuccess": 470.62295081967216,
       "costPerSuccessUsd": 0.0003698688524590164,
+      "pricedOutputTokens": 8208,
+      "inputPricePerMillionUsd": 0.5,
+      "outputPricePerMillionUsd": 1.5,
       "failedChecks": {
         "required_terms": 15,
         "classification": 15,
@@ -165,9 +284,9 @@
       "maxOutputTokensUsed": 119,
       "outputCapHits": 0,
       "medianVisibleWords": 48.0,
-      "pricedOutputTokens": 8208,
-      "inputPricePerMillionUsd": 0.5,
-      "outputPricePerMillionUsd": 1.5
+      "medianLatencyMs": 1350.0,
+      "p95LatencyMs": 1668,
+      "totalWorkloadDurationMs": 139112
     },
     {
       "modelId": "gpt-oss-120b",
@@ -186,6 +305,9 @@
       "totalCostUsd": 0.022216049999999998,
       "tokensPerSuccess": 997.8103448275862,
       "costPerSuccessUsd": 0.0003830353448275862,
+      "pricedOutputTokens": 30078,
+      "inputPricePerMillionUsd": 0.15,
+      "outputPricePerMillionUsd": 0.6,
       "failedChecks": {
         "classification": 28,
         "required_terms": 11,
@@ -197,9 +319,9 @@
       "maxOutputTokensUsed": 660,
       "outputCapHits": 0,
       "medianVisibleWords": 66.5,
-      "pricedOutputTokens": 30078,
-      "inputPricePerMillionUsd": 0.15,
-      "outputPricePerMillionUsd": 0.6
+      "medianLatencyMs": 1520.5,
+      "p95LatencyMs": 2056,
+      "totalWorkloadDurationMs": 157101
     },
     {
       "modelId": "gemini-3-5-flash-lite",
@@ -218,6 +340,9 @@
       "totalCostUsd": 0.0304365,
       "tokensPerSuccess": 447.1,
       "costPerSuccessUsd": 0.00043480714285714284,
+      "pricedOutputTokens": 9567,
+      "inputPricePerMillionUsd": 0.3,
+      "outputPricePerMillionUsd": 2.5,
       "failedChecks": {
         "classification": 12,
         "required_terms": 11,
@@ -228,9 +353,9 @@
       "maxOutputTokensUsed": 136,
       "outputCapHits": 0,
       "medianVisibleWords": 59.0,
-      "pricedOutputTokens": 9567,
-      "inputPricePerMillionUsd": 0.3,
-      "outputPricePerMillionUsd": 2.5
+      "medianLatencyMs": 1383.0,
+      "p95LatencyMs": 1695,
+      "totalWorkloadDurationMs": 142415
     },
     {
       "modelId": "meta-llama-3-3-70b-instruct",
@@ -249,6 +374,9 @@
       "totalCostUsd": 0.0206185,
       "tokensPerSuccess": 612.3191489361702,
       "costPerSuccessUsd": 0.00043869148936170215,
+      "pricedOutputTokens": 6229,
+      "inputPricePerMillionUsd": 0.5,
+      "outputPricePerMillionUsd": 1.5,
       "failedChecks": {
         "classification": 23,
         "action": 18,
@@ -259,9 +387,44 @@
       "maxOutputTokensUsed": 91,
       "outputCapHits": 0,
       "medianVisibleWords": 33.0,
-      "pricedOutputTokens": 6229,
-      "inputPricePerMillionUsd": 0.5,
-      "outputPricePerMillionUsd": 1.5
+      "medianLatencyMs": 1230.5,
+      "p95LatencyMs": 1512,
+      "totalWorkloadDurationMs": 125473
+    },
+    {
+      "modelId": "gpt-5-mini",
+      "modelName": "GPT-5 Mini",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-patient-wind-ax6aamnk",
+      "branchName": "model-gpt-5-mini",
+      "attempts": 100,
+      "successes": 66,
+      "passRate": 0.66,
+      "inputTokens": 20195,
+      "outputTokens": 12566,
+      "reasoningTokens": 0,
+      "totalTokens": 32761,
+      "pricedOutputTokens": 12566,
+      "inputPricePerMillionUsd": 0.25,
+      "outputPricePerMillionUsd": 2.0,
+      "totalCostUsd": 0.03018075,
+      "tokensPerSuccess": 496.3787878787879,
+      "costPerSuccessUsd": 0.0004572840909090909,
+      "failedChecks": {
+        "classification": 18,
+        "action": 15,
+        "escalation": 15,
+        "forbidden_terms": 1,
+        "reply_length": 1
+      },
+      "medianOutputTokens": 119.0,
+      "maxOutputTokensUsed": 228,
+      "outputCapHits": 0,
+      "medianVisibleWords": 75.0,
+      "medianLatencyMs": 2653.0,
+      "p95LatencyMs": 3419,
+      "totalWorkloadDurationMs": 276562
     },
     {
       "modelId": "gemini-3-1-flash-lite",
@@ -280,6 +443,9 @@
       "totalCostUsd": 0.041239,
       "tokensPerSuccess": 712.515625,
       "costPerSuccessUsd": 0.000644359375,
+      "pricedOutputTokens": 23871,
+      "inputPricePerMillionUsd": 0.25,
+      "outputPricePerMillionUsd": 1.5,
       "failedChecks": {
         "classification": 18,
         "escalation": 10,
@@ -290,9 +456,44 @@
       "maxOutputTokensUsed": 174,
       "outputCapHits": 0,
       "medianVisibleWords": 82.0,
-      "pricedOutputTokens": 23871,
-      "inputPricePerMillionUsd": 0.25,
-      "outputPricePerMillionUsd": 1.5
+      "medianLatencyMs": 1959.0,
+      "p95LatencyMs": 2185,
+      "totalWorkloadDurationMs": 195419
+    },
+    {
+      "modelId": "gpt-5-4-mini",
+      "modelName": "GPT-5.4 mini",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-square-leaf-ax7bvpf5",
+      "branchName": "model-gpt-5-4-mini",
+      "attempts": 100,
+      "successes": 76,
+      "passRate": 0.76,
+      "inputTokens": 20195,
+      "outputTokens": 9565,
+      "reasoningTokens": 0,
+      "totalTokens": 29760,
+      "pricedOutputTokens": 9565,
+      "inputPricePerMillionUsd": 0.75,
+      "outputPricePerMillionUsd": 4.5,
+      "totalCostUsd": 0.05818875,
+      "tokensPerSuccess": 391.57894736842104,
+      "costPerSuccessUsd": 0.000765641447368421,
+      "failedChecks": {
+        "classification": 12,
+        "escalation": 10,
+        "action": 3,
+        "required_terms": 1,
+        "forbidden_terms": 1
+      },
+      "medianOutputTokens": 89.5,
+      "maxOutputTokensUsed": 154,
+      "outputCapHits": 0,
+      "medianVisibleWords": 56.0,
+      "medianLatencyMs": 1452.5,
+      "p95LatencyMs": 1761,
+      "totalWorkloadDurationMs": 150957
     },
     {
       "modelId": "claude-haiku-4-5",
@@ -311,6 +512,9 @@
       "totalCostUsd": 0.089245,
       "tokensPerSuccess": 500.83561643835617,
       "costPerSuccessUsd": 0.0012225342465753426,
+      "pricedOutputTokens": 13171,
+      "inputPricePerMillionUsd": 1.0,
+      "outputPricePerMillionUsd": 5.0,
       "failedChecks": {
         "action": 15,
         "escalation": 15,
@@ -321,9 +525,42 @@
       "maxOutputTokensUsed": 206,
       "outputCapHits": 0,
       "medianVisibleWords": 73.5,
-      "pricedOutputTokens": 13171,
-      "inputPricePerMillionUsd": 1.0,
-      "outputPricePerMillionUsd": 5.0
+      "medianLatencyMs": 2593.5,
+      "p95LatencyMs": 3341,
+      "totalWorkloadDurationMs": 265720
+    },
+    {
+      "modelId": "gpt-5-6-terra",
+      "modelName": "GPT-5.6 Terra",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-morning-tree-axnjfo6m",
+      "branchName": "model-gpt-5-6-terra",
+      "attempts": 100,
+      "successes": 72,
+      "passRate": 0.72,
+      "inputTokens": 20195,
+      "outputTokens": 8201,
+      "reasoningTokens": 118,
+      "totalTokens": 28396,
+      "pricedOutputTokens": 8201,
+      "inputPricePerMillionUsd": 2.0,
+      "outputPricePerMillionUsd": 12.0,
+      "totalCostUsd": 0.138802,
+      "tokensPerSuccess": 394.3888888888889,
+      "costPerSuccessUsd": 0.0019278055555555557,
+      "failedChecks": {
+        "classification": 18,
+        "escalation": 9,
+        "required_terms": 1
+      },
+      "medianOutputTokens": 77.0,
+      "maxOutputTokensUsed": 145,
+      "outputCapHits": 0,
+      "medianVisibleWords": 45.0,
+      "medianLatencyMs": 2053.0,
+      "p95LatencyMs": 2702,
+      "totalWorkloadDurationMs": 211095
     },
     {
       "modelId": "gemini-3-flash",
@@ -342,6 +579,9 @@
       "totalCostUsd": 0.164645,
       "tokensPerSuccess": 1042.7142857142858,
       "costPerSuccessUsd": 0.0023520714285714286,
+      "pricedOutputTokens": 51260,
+      "inputPricePerMillionUsd": 0.5,
+      "outputPricePerMillionUsd": 3.0,
       "failedChecks": {
         "classification": 13,
         "escalation": 12,
@@ -351,9 +591,148 @@
       "maxOutputTokensUsed": 192,
       "outputCapHits": 0,
       "medianVisibleWords": 77.0,
-      "pricedOutputTokens": 51260,
-      "inputPricePerMillionUsd": 0.5,
-      "outputPricePerMillionUsd": 3.0
+      "medianLatencyMs": 4668.0,
+      "p95LatencyMs": 6544,
+      "totalWorkloadDurationMs": 478813
+    },
+    {
+      "modelId": "gpt-5-3-codex",
+      "modelName": "GPT-5.3 Codex",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-shiny-water-axj88qc5",
+      "branchName": "model-gpt-5-3-codex",
+      "attempts": 100,
+      "successes": 82,
+      "passRate": 0.82,
+      "inputTokens": 20195,
+      "outputTokens": 12153,
+      "reasoningTokens": 0,
+      "totalTokens": 32348,
+      "pricedOutputTokens": 12153,
+      "inputPricePerMillionUsd": 1.75,
+      "outputPricePerMillionUsd": 14.0,
+      "totalCostUsd": 0.20548325,
+      "tokensPerSuccess": 394.4878048780488,
+      "costPerSuccessUsd": 0.002505893292682927,
+      "failedChecks": {
+        "classification": 12,
+        "escalation": 4,
+        "required_terms": 3,
+        "action": 2
+      },
+      "medianOutputTokens": 117.0,
+      "maxOutputTokensUsed": 169,
+      "outputCapHits": 0,
+      "medianVisibleWords": 76.0,
+      "medianLatencyMs": 2236.0,
+      "p95LatencyMs": 3129,
+      "totalWorkloadDurationMs": 233615
+    },
+    {
+      "modelId": "gpt-5",
+      "modelName": "GPT-5",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-nameless-lake-axz11697",
+      "branchName": "model-gpt-5",
+      "attempts": 100,
+      "successes": 69,
+      "passRate": 0.69,
+      "inputTokens": 20195,
+      "outputTokens": 15018,
+      "reasoningTokens": 0,
+      "totalTokens": 35213,
+      "pricedOutputTokens": 15018,
+      "inputPricePerMillionUsd": 1.25,
+      "outputPricePerMillionUsd": 10.0,
+      "totalCostUsd": 0.17542375,
+      "tokensPerSuccess": 510.3333333333333,
+      "costPerSuccessUsd": 0.002542373188405797,
+      "failedChecks": {
+        "classification": 20,
+        "escalation": 10,
+        "action": 4,
+        "forbidden_terms": 1,
+        "required_terms": 1
+      },
+      "medianOutputTokens": 147.5,
+      "maxOutputTokensUsed": 205,
+      "outputCapHits": 0,
+      "medianVisibleWords": 93.0,
+      "medianLatencyMs": 2228.0,
+      "p95LatencyMs": 2842,
+      "totalWorkloadDurationMs": 225738
+    },
+    {
+      "modelId": "gpt-5-4",
+      "modelName": "GPT-5.4",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-raspy-math-axkxktyd",
+      "branchName": "model-gpt-5-4",
+      "attempts": 100,
+      "successes": 76,
+      "passRate": 0.76,
+      "inputTokens": 20195,
+      "outputTokens": 10372,
+      "reasoningTokens": 0,
+      "totalTokens": 30567,
+      "pricedOutputTokens": 10372,
+      "inputPricePerMillionUsd": 2.5,
+      "outputPricePerMillionUsd": 15.0,
+      "totalCostUsd": 0.2060675,
+      "tokensPerSuccess": 402.19736842105266,
+      "costPerSuccessUsd": 0.0027114144736842104,
+      "failedChecks": {
+        "classification": 16,
+        "escalation": 5,
+        "action": 2,
+        "required_terms": 2,
+        "forbidden_terms": 1
+      },
+      "medianOutputTokens": 101.5,
+      "maxOutputTokensUsed": 153,
+      "outputCapHits": 0,
+      "medianVisibleWords": 65.5,
+      "medianLatencyMs": 1815.0,
+      "p95LatencyMs": 2204,
+      "totalWorkloadDurationMs": 183078
+    },
+    {
+      "modelId": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-rapid-lab-axns2muu",
+      "branchName": "model-gpt-5-1",
+      "attempts": 100,
+      "successes": 66,
+      "passRate": 0.66,
+      "inputTokens": 20195,
+      "outputTokens": 16233,
+      "reasoningTokens": 0,
+      "totalTokens": 36428,
+      "pricedOutputTokens": 16233,
+      "inputPricePerMillionUsd": 1.25,
+      "outputPricePerMillionUsd": 10.0,
+      "totalCostUsd": 0.18757375,
+      "tokensPerSuccess": 551.939393939394,
+      "costPerSuccessUsd": 0.0028420265151515153,
+      "failedChecks": {
+        "classification": 15,
+        "action": 10,
+        "escalation": 10,
+        "required_terms": 5,
+        "valid_json": 1
+      },
+      "medianOutputTokens": 163.5,
+      "maxOutputTokensUsed": 213,
+      "outputCapHits": 0,
+      "medianVisibleWords": 105.0,
+      "medianLatencyMs": 2351.0,
+      "p95LatencyMs": 2890,
+      "totalWorkloadDurationMs": 238518
     },
     {
       "modelId": "glm-5-2",
@@ -372,6 +751,9 @@
       "totalCostUsd": 0.21580240000000003,
       "tokensPerSuccess": 925.3088235294117,
       "costPerSuccessUsd": 0.0031735647058823532,
+      "pricedOutputTokens": 42571,
+      "inputPricePerMillionUsd": 1.4,
+      "outputPricePerMillionUsd": 4.4,
       "failedChecks": {
         "classification": 14,
         "escalation": 13,
@@ -382,9 +764,9 @@
       "maxOutputTokensUsed": 2048,
       "outputCapHits": 1,
       "medianVisibleWords": 82.0,
-      "pricedOutputTokens": 42571,
-      "inputPricePerMillionUsd": 1.4,
-      "outputPricePerMillionUsd": 4.4
+      "medianLatencyMs": 1936.0,
+      "p95LatencyMs": 4073,
+      "totalWorkloadDurationMs": 255863
     },
     {
       "modelId": "inkling",
@@ -403,6 +785,9 @@
       "totalCostUsd": 0.23626465,
       "tokensPerSuccess": 1029.8333333333333,
       "costPerSuccessUsd": 0.003281453472222222,
+      "pricedOutputTokens": 53153,
+      "inputPricePerMillionUsd": 1.0,
+      "outputPricePerMillionUsd": 4.05,
       "failedChecks": {
         "classification": 19,
         "escalation": 10
@@ -411,9 +796,44 @@
       "maxOutputTokensUsed": 1484,
       "outputCapHits": 0,
       "medianVisibleWords": 65.0,
-      "pricedOutputTokens": 53153,
-      "inputPricePerMillionUsd": 1.0,
-      "outputPricePerMillionUsd": 4.05
+      "medianLatencyMs": 2921.0,
+      "p95LatencyMs": 5460,
+      "totalWorkloadDurationMs": 311426
+    },
+    {
+      "modelId": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-fragrant-waterfall-ax53eo4b",
+      "branchName": "model-gpt-5-2",
+      "attempts": 100,
+      "successes": 71,
+      "passRate": 0.71,
+      "inputTokens": 20195,
+      "outputTokens": 14228,
+      "reasoningTokens": 0,
+      "totalTokens": 34423,
+      "pricedOutputTokens": 14228,
+      "inputPricePerMillionUsd": 1.75,
+      "outputPricePerMillionUsd": 14.0,
+      "totalCostUsd": 0.23453325,
+      "tokensPerSuccess": 484.83098591549293,
+      "costPerSuccessUsd": 0.003303285211267606,
+      "failedChecks": {
+        "classification": 13,
+        "escalation": 12,
+        "action": 11,
+        "forbidden_terms": 2,
+        "required_terms": 1
+      },
+      "medianOutputTokens": 142.0,
+      "maxOutputTokensUsed": 196,
+      "outputCapHits": 0,
+      "medianVisibleWords": 93.5,
+      "medianLatencyMs": 3156.5,
+      "p95LatencyMs": 3855,
+      "totalWorkloadDurationMs": 318204
     },
     {
       "modelId": "claude-sonnet-4-6",
@@ -432,6 +852,9 @@
       "totalCostUsd": 0.281145,
       "tokensPerSuccess": 551.9852941176471,
       "costPerSuccessUsd": 0.004134485294117647,
+      "pricedOutputTokens": 14045,
+      "inputPricePerMillionUsd": 3.0,
+      "outputPricePerMillionUsd": 15.0,
       "failedChecks": {
         "action": 16,
         "escalation": 10,
@@ -443,9 +866,9 @@
       "maxOutputTokensUsed": 266,
       "outputCapHits": 0,
       "medianVisibleWords": 83.0,
-      "pricedOutputTokens": 14045,
-      "inputPricePerMillionUsd": 3.0,
-      "outputPricePerMillionUsd": 15.0
+      "medianLatencyMs": 3918.0,
+      "p95LatencyMs": 5333,
+      "totalWorkloadDurationMs": 410148
     },
     {
       "modelId": "gemini-3-6-flash",
@@ -464,6 +887,9 @@
       "totalCostUsd": 0.3380925,
       "tokensPerSuccess": 821.8815789473684,
       "costPerSuccessUsd": 0.00444858552631579,
+      "pricedOutputTokens": 40733,
+      "inputPricePerMillionUsd": 1.5,
+      "outputPricePerMillionUsd": 7.5,
       "failedChecks": {
         "escalation": 10,
         "classification": 10,
@@ -473,9 +899,9 @@
       "maxOutputTokensUsed": 193,
       "outputCapHits": 0,
       "medianVisibleWords": 68.0,
-      "pricedOutputTokens": 40733,
-      "inputPricePerMillionUsd": 1.5,
-      "outputPricePerMillionUsd": 7.5
+      "medianLatencyMs": 2882.0,
+      "p95LatencyMs": 4249,
+      "totalWorkloadDurationMs": 294506
     },
     {
       "modelId": "claude-sonnet-4-5",
@@ -494,6 +920,9 @@
       "totalCostUsd": 0.30591,
       "tokensPerSuccess": 641.0819672131148,
       "costPerSuccessUsd": 0.005014918032786885,
+      "pricedOutputTokens": 15716,
+      "inputPricePerMillionUsd": 3.0,
+      "outputPricePerMillionUsd": 15.0,
       "failedChecks": {
         "action": 24,
         "escalation": 20,
@@ -505,9 +934,9 @@
       "maxOutputTokensUsed": 318,
       "outputCapHits": 0,
       "medianVisibleWords": 92.5,
-      "pricedOutputTokens": 15716,
-      "inputPricePerMillionUsd": 3.0,
-      "outputPricePerMillionUsd": 15.0
+      "medianLatencyMs": 5169.5,
+      "p95LatencyMs": 6409,
+      "totalWorkloadDurationMs": 527234
     },
     {
       "modelId": "gemini-3-5-flash",
@@ -526,6 +955,9 @@
       "totalCostUsd": 0.376989,
       "tokensPerSuccess": 895.4626865671642,
       "costPerSuccessUsd": 0.0056267014925373135,
+      "pricedOutputTokens": 38266,
+      "inputPricePerMillionUsd": 1.5,
+      "outputPricePerMillionUsd": 9.0,
       "failedChecks": {
         "classification": 18,
         "escalation": 13,
@@ -535,9 +967,9 @@
       "maxOutputTokensUsed": 193,
       "outputCapHits": 0,
       "medianVisibleWords": 74.0,
-      "pricedOutputTokens": 38266,
-      "inputPricePerMillionUsd": 1.5,
-      "outputPricePerMillionUsd": 9.0
+      "medianLatencyMs": 3489.5,
+      "p95LatencyMs": 4813,
+      "totalWorkloadDurationMs": 359931
     },
     {
       "modelId": "claude-opus-4-6",
@@ -556,6 +988,9 @@
       "totalCostUsd": 0.5503,
       "tokensPerSuccess": 536.8947368421053,
       "costPerSuccessUsd": 0.007240789473684211,
+      "pricedOutputTokens": 17314,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0,
       "failedChecks": {
         "action": 15,
         "escalation": 11,
@@ -568,9 +1003,9 @@
       "maxOutputTokensUsed": 322,
       "outputCapHits": 0,
       "medianVisibleWords": 106.0,
-      "pricedOutputTokens": 17314,
-      "inputPricePerMillionUsd": 5.0,
-      "outputPricePerMillionUsd": 25.0
+      "medianLatencyMs": 5259.5,
+      "p95LatencyMs": 6616,
+      "totalWorkloadDurationMs": 542198
     },
     {
       "modelId": "claude-opus-4-5",
@@ -589,6 +1024,9 @@
       "totalCostUsd": 0.5406,
       "tokensPerSuccess": 560.2222222222222,
       "costPerSuccessUsd": 0.007508333333333333,
+      "pricedOutputTokens": 16946,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0,
       "failedChecks": {
         "action": 15,
         "escalation": 10,
@@ -600,9 +1038,42 @@
       "maxOutputTokensUsed": 213,
       "outputCapHits": 0,
       "medianVisibleWords": 102.0,
-      "pricedOutputTokens": 16946,
+      "medianLatencyMs": 5140.5,
+      "p95LatencyMs": 6280,
+      "totalWorkloadDurationMs": 519185
+    },
+    {
+      "modelId": "gpt-5-6-sol",
+      "modelName": "GPT-5.6 Sol",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-little-waterfall-axlyavg6",
+      "branchName": "model-gpt-5-6-sol",
+      "attempts": 100,
+      "successes": 69,
+      "passRate": 0.69,
+      "inputTokens": 20195,
+      "outputTokens": 14468,
+      "reasoningTokens": 6021,
+      "totalTokens": 34663,
+      "pricedOutputTokens": 14468,
       "inputPricePerMillionUsd": 5.0,
-      "outputPricePerMillionUsd": 25.0
+      "outputPricePerMillionUsd": 30.0,
+      "totalCostUsd": 0.535015,
+      "tokensPerSuccess": 502.3623188405797,
+      "costPerSuccessUsd": 0.007753840579710145,
+      "failedChecks": {
+        "classification": 17,
+        "escalation": 13,
+        "required_terms": 1
+      },
+      "medianOutputTokens": 129.0,
+      "maxOutputTokensUsed": 597,
+      "outputCapHits": 0,
+      "medianVisibleWords": 45.5,
+      "medianLatencyMs": 2879.5,
+      "p95LatencyMs": 5893,
+      "totalWorkloadDurationMs": 320041
     },
     {
       "modelId": "claude-sonnet-5",
@@ -621,6 +1092,9 @@
       "totalCostUsd": 0.4062,
       "tokensPerSuccess": 1265.0,
       "costPerSuccessUsd": 0.007811538461538462,
+      "pricedOutputTokens": 34330,
+      "inputPricePerMillionUsd": 2.0,
+      "outputPricePerMillionUsd": 10.0,
       "failedChecks": {
         "classification": 19,
         "required_terms": 14,
@@ -631,9 +1105,9 @@
       "maxOutputTokensUsed": 836,
       "outputCapHits": 0,
       "medianVisibleWords": 80.5,
-      "pricedOutputTokens": 34330,
-      "inputPricePerMillionUsd": 2.0,
-      "outputPricePerMillionUsd": 10.0
+      "medianLatencyMs": 5382.0,
+      "p95LatencyMs": 8213,
+      "totalWorkloadDurationMs": 558777
     },
     {
       "modelId": "claude-opus-4-7",
@@ -652,6 +1126,9 @@
       "totalCostUsd": 0.658675,
       "tokensPerSuccess": 720.9305555555555,
       "costPerSuccessUsd": 0.00914826388888889,
+      "pricedOutputTokens": 19957,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0,
       "failedChecks": {
         "action": 14,
         "escalation": 13,
@@ -662,9 +1139,41 @@
       "maxOutputTokensUsed": 280,
       "outputCapHits": 0,
       "medianVisibleWords": 92.0,
-      "pricedOutputTokens": 19957,
+      "medianLatencyMs": 3676.5,
+      "p95LatencyMs": 4910,
+      "totalWorkloadDurationMs": 374385
+    },
+    {
+      "modelId": "gpt-5-5",
+      "modelName": "GPT-5.5",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-lucky-block-ax1t6nki",
+      "branchName": "model-gpt-5-5",
+      "attempts": 100,
+      "successes": 79,
+      "passRate": 0.79,
+      "inputTokens": 20195,
+      "outputTokens": 21191,
+      "reasoningTokens": 10860,
+      "totalTokens": 41386,
+      "pricedOutputTokens": 21191,
       "inputPricePerMillionUsd": 5.0,
-      "outputPricePerMillionUsd": 25.0
+      "outputPricePerMillionUsd": 30.0,
+      "totalCostUsd": 0.736705,
+      "tokensPerSuccess": 523.873417721519,
+      "costPerSuccessUsd": 0.009325379746835444,
+      "failedChecks": {
+        "escalation": 12,
+        "classification": 9
+      },
+      "medianOutputTokens": 177.5,
+      "maxOutputTokensUsed": 1161,
+      "outputCapHits": 0,
+      "medianVisibleWords": 58.5,
+      "medianLatencyMs": 3239.5,
+      "p95LatencyMs": 5174,
+      "totalWorkloadDurationMs": 356377
     },
     {
       "modelId": "gemini-3-1-pro",
@@ -683,6 +1192,9 @@
       "totalCostUsd": 0.650024,
       "tokensPerSuccess": 1047.4927536231885,
       "costPerSuccessUsd": 0.009420637681159421,
+      "pricedOutputTokens": 50547,
+      "inputPricePerMillionUsd": 2.0,
+      "outputPricePerMillionUsd": 12.0,
       "failedChecks": {
         "escalation": 15,
         "classification": 10,
@@ -692,9 +1204,9 @@
       "maxOutputTokensUsed": 196,
       "outputCapHits": 0,
       "medianVisibleWords": 87.0,
-      "pricedOutputTokens": 50547,
-      "inputPricePerMillionUsd": 2.0,
-      "outputPricePerMillionUsd": 12.0
+      "medianLatencyMs": 5872.5,
+      "p95LatencyMs": 7257,
+      "totalWorkloadDurationMs": 589846
     },
     {
       "modelId": "claude-opus-4-8",
@@ -713,6 +1225,9 @@
       "totalCostUsd": 0.719125,
       "tokensPerSuccess": 770.3571428571429,
       "costPerSuccessUsd": 0.010273214285714287,
+      "pricedOutputTokens": 22475,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0,
       "failedChecks": {
         "classification": 12,
         "valid_json": 10,
@@ -724,9 +1239,9 @@
       "maxOutputTokensUsed": 668,
       "outputCapHits": 0,
       "medianVisibleWords": 91.0,
-      "pricedOutputTokens": 22475,
-      "inputPricePerMillionUsd": 5.0,
-      "outputPricePerMillionUsd": 25.0
+      "medianLatencyMs": 5404.5,
+      "p95LatencyMs": 14900,
+      "totalWorkloadDurationMs": 686701
     },
     {
       "modelId": "qwen35-122b-a10b",
@@ -745,6 +1260,9 @@
       "totalCostUsd": 0.3971275000000001,
       "tokensPerSuccess": 5738.257142857143,
       "costPerSuccessUsd": 0.011346500000000002,
+      "pricedOutputTokens": 178254,
+      "inputPricePerMillionUsd": 0.22,
+      "outputPricePerMillionUsd": 2.2,
       "failedChecks": {
         "valid_json": 50,
         "classification": 9,
@@ -755,9 +1273,9 @@
       "maxOutputTokensUsed": 2048,
       "outputCapHits": 50,
       "medianVisibleWords": 70.0,
-      "pricedOutputTokens": 178254,
-      "inputPricePerMillionUsd": 0.22,
-      "outputPricePerMillionUsd": 2.2
+      "medianLatencyMs": 11721.0,
+      "p95LatencyMs": 11891,
+      "totalWorkloadDurationMs": 1036626
     },
     {
       "modelId": "kimi-k3",
@@ -776,6 +1294,9 @@
       "totalCostUsd": 0.907125,
       "tokensPerSuccess": 1180.661971830986,
       "costPerSuccessUsd": 0.012776408450704225,
+      "pricedOutputTokens": 54637,
+      "inputPricePerMillionUsd": 3.0,
+      "outputPricePerMillionUsd": 15.0,
       "failedChecks": {
         "escalation": 13,
         "classification": 12,
@@ -787,9 +1308,9 @@
       "maxOutputTokensUsed": 1398,
       "outputCapHits": 0,
       "medianVisibleWords": 104.0,
-      "pricedOutputTokens": 54637,
-      "inputPricePerMillionUsd": 3.0,
-      "outputPricePerMillionUsd": 15.0
+      "medianLatencyMs": 6409.0,
+      "p95LatencyMs": 20841,
+      "totalWorkloadDurationMs": 861221
     },
     {
       "modelId": "claude-opus-5",
@@ -808,6 +1329,9 @@
       "totalCostUsd": 1.01135,
       "tokensPerSuccess": 950.927536231884,
       "costPerSuccessUsd": 0.014657246376811595,
+      "pricedOutputTokens": 34164,
+      "inputPricePerMillionUsd": 5.0,
+      "outputPricePerMillionUsd": 25.0,
       "failedChecks": {
         "classification": 17,
         "escalation": 10,
@@ -818,9 +1342,9 @@
       "maxOutputTokensUsed": 636,
       "outputCapHits": 0,
       "medianVisibleWords": 109.0,
-      "pricedOutputTokens": 34164,
-      "inputPricePerMillionUsd": 5.0,
-      "outputPricePerMillionUsd": 25.0
+      "medianLatencyMs": 6342.5,
+      "p95LatencyMs": 11795,
+      "totalWorkloadDurationMs": 690163
     },
     {
       "modelId": "claude-fable-5",
@@ -839,6 +1363,9 @@
       "totalCostUsd": 1.5925,
       "tokensPerSuccess": 838.3823529411765,
       "costPerSuccessUsd": 0.023419117647058823,
+      "pricedOutputTokens": 25560,
+      "inputPricePerMillionUsd": 10.0,
+      "outputPricePerMillionUsd": 50.0,
       "failedChecks": {
         "escalation": 14,
         "valid_json": 10,
@@ -849,9 +1376,9 @@
       "maxOutputTokensUsed": 486,
       "outputCapHits": 0,
       "medianVisibleWords": 93.0,
-      "pricedOutputTokens": 25560,
-      "inputPricePerMillionUsd": 10.0,
-      "outputPricePerMillionUsd": 50.0
+      "medianLatencyMs": 7130.0,
+      "p95LatencyMs": 10328,
+      "totalWorkloadDurationMs": 733396
     },
     {
       "modelId": "claude-opus-4-1",
@@ -870,6 +1397,9 @@
       "totalCostUsd": 1.464975,
       "tokensPerSuccess": 626.9672131147541,
       "costPerSuccessUsd": 0.024015983606557375,
+      "pricedOutputTokens": 14855,
+      "inputPricePerMillionUsd": 15.0,
+      "outputPricePerMillionUsd": 75.0,
       "failedChecks": {
         "escalation": 15,
         "classification": 15,
@@ -882,11 +1412,42 @@
       "maxOutputTokensUsed": 294,
       "outputCapHits": 0,
       "medianVisibleWords": 92.0,
-      "pricedOutputTokens": 14855,
-      "inputPricePerMillionUsd": 15.0,
-      "outputPricePerMillionUsd": 75.0
+      "medianLatencyMs": 13121.0,
+      "p95LatencyMs": 19093,
+      "totalWorkloadDurationMs": 1339173
+    },
+    {
+      "modelId": "gpt-5-5-pro",
+      "modelName": "GPT-5.5 Pro",
+      "provider": "openai",
+      "openWeights": false,
+      "branchId": "br-odd-sunset-ax8yayub",
+      "branchName": "model-gpt-5-5-pro",
+      "attempts": 100,
+      "successes": 70,
+      "passRate": 0.7,
+      "inputTokens": 20195,
+      "outputTokens": 42981,
+      "reasoningTokens": 33408,
+      "totalTokens": 63176,
+      "pricedOutputTokens": 42981,
+      "inputPricePerMillionUsd": 30.0,
+      "outputPricePerMillionUsd": 180.0,
+      "totalCostUsd": 8.34243,
+      "tokensPerSuccess": 902.5142857142857,
+      "costPerSuccessUsd": 0.11917757142857144,
+      "failedChecks": {
+        "escalation": 15,
+        "classification": 13,
+        "valid_json": 2
+      },
+      "medianOutputTokens": 300.0,
+      "maxOutputTokensUsed": 2048,
+      "outputCapHits": 2,
+      "medianVisibleWords": 53.0,
+      "medianLatencyMs": 26438.0,
+      "p95LatencyMs": 69944,
+      "totalWorkloadDurationMs": 3413050
     }
-  ],
-  "pricingSnapshotAt": "2026-08-28T16:06:14.135574+00:00",
-  "pricingSource": "https://neon.com/docs/ai-gateway/models#available-models"
+  ]
 }
