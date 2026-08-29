@@ -11,7 +11,6 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
-import type { TooltipProps } from "recharts";
 import type { BenchmarkSummary, ModelAggregate } from "@/lib/types";
 
 interface SimpleLedgerProps {
@@ -379,9 +378,10 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                   />
                   <Tooltip
                     cursor={{ strokeDasharray: "3 3" }}
-                    content={(props) => (
+                    content={({ active, payload }) => (
                       <ChartTooltip
-                        {...props}
+                        active={active}
+                        payload={payload}
                         selectedModelId={selectedModelId}
                       />
                     )}
@@ -394,16 +394,23 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                       stroke="#74ffd0"
                       strokeWidth={1}
                       className="cursor-pointer"
-                      shape={(props) => (
-                        <ChartBubble
-                          cx={Number(props.cx)}
-                          cy={Number(props.cy)}
-                          size={Number(props.size)}
-                          payload={props.payload as ChartPoint}
-                          selectedModelId={selectedModelId}
-                          onSelectedPosition={handleSelectedPosition}
-                        />
-                      )}
+                      shape={
+                        ((props: {
+                          cx?: number;
+                          cy?: number;
+                          size?: number;
+                          payload?: ChartPoint;
+                        }) => (
+                          <ChartBubble
+                            cx={Number(props.cx)}
+                            cy={Number(props.cy)}
+                            size={Number(props.size)}
+                            payload={props.payload}
+                            selectedModelId={selectedModelId}
+                            onSelectedPosition={handleSelectedPosition}
+                          />
+                        )) as never
+                      }
                       onClick={(point) =>
                         selectChartPoint(
                           point as {
@@ -538,8 +545,12 @@ function ChartTooltip({
   active,
   payload,
   selectedModelId,
-}: TooltipProps<number, string> & { selectedModelId: string | null }) {
-  const point = payload?.[0]?.payload as ChartPoint | undefined;
+}: {
+  active?: boolean;
+  payload?: ReadonlyArray<{ payload?: ChartPoint }>;
+  selectedModelId: string | null;
+}) {
+  const point = payload?.[0]?.payload;
   if (!active || !point || point.modelId === selectedModelId) return null;
   return <ModelInfoCard point={point} />;
 }
