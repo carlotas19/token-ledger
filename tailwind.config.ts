@@ -28,6 +28,7 @@ const config: Config = {
         },
         neon: {
           green: "#00E599",
+          yellow: "#E8C547",
           dim: "#00b377",
         },
       },

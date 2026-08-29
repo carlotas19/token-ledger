@@ -56,10 +56,27 @@ function rankOf(models: ModelAggregate[], modelId: string) {
   return index >= 0 ? index + 1 : null;
 }
 
+const OPEN_WEIGHT_FILL = "#E8C547";
+const OPEN_WEIGHT_STROKE = "#FFE58A";
+const FRONTIER_FILL = "#00E599";
+const FRONTIER_STROKE = "#74ffd0";
+const SELECTED_FILL = "#fb923c";
+const SELECTED_STROKE = "#fed7aa";
+
+function bubbleColors(openWeights: boolean, selected: boolean) {
+  if (selected) {
+    return { fill: SELECTED_FILL, stroke: SELECTED_STROKE };
+  }
+  return openWeights
+    ? { fill: OPEN_WEIGHT_FILL, stroke: OPEN_WEIGHT_STROKE }
+    : { fill: FRONTIER_FILL, stroke: FRONTIER_STROKE };
+}
+
 type ChartPoint = {
   modelId: string;
   model: string;
   provider: string;
+  openWeights: boolean;
   tokens: number;
   price: number | null;
   completed: number;
@@ -131,6 +148,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
       modelId: model.modelId,
       model: model.modelName,
       provider: model.provider,
+      openWeights: model.openWeights,
       tokens: model.totalTokens,
       price: model.totalCostUsd,
       completed: model.successes,
@@ -144,7 +162,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
       workloadTokenRank: rankOf(workloadTokenRanking, model.modelId),
       passRateRank: rankOf(passRateRanking, model.modelId),
       workloadDurationMs: model.totalWorkloadDurationMs ?? null,
-      medianLatencyMs: model.medianLatencyMs ?? null,
+      medianLatencyMs: model.medianLatencyMs ?? 0,
       p95LatencyMs: model.p95LatencyMs ?? null,
       workloadDurationRank: rankOf(workloadDurationRanking, model.modelId),
       workloadDurationRankTotal: workloadDurationRanking.length,
@@ -339,12 +357,24 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                           : "text-ledger-cream/80 hover:bg-ledger-panel"
                       }`}
                     >
-                      <span>
-                        <span className="block font-mono text-sm">
-                          {model.modelName}
-                        </span>
-                        <span className="mt-0.5 block text-xs text-ledger-muted">
-                          {model.provider} · {model.modelId}
+                      <span className="flex min-w-0 items-start gap-2">
+                        <span
+                          className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
+                          style={{
+                            background: model.openWeights
+                              ? OPEN_WEIGHT_FILL
+                              : FRONTIER_FILL,
+                          }}
+                          aria-hidden="true"
+                        />
+                        <span>
+                          <span className="block font-mono text-sm">
+                            {model.modelName}
+                          </span>
+                          <span className="mt-0.5 block text-xs text-ledger-muted">
+                            {model.provider} ·{" "}
+                            {model.openWeights ? "open-weight" : "frontier"}
+                          </span>
                         </span>
                       </span>
                       <span className="shrink-0 font-mono text-xs text-ledger-muted">
@@ -435,9 +465,9 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                   />
                     <Scatter
                       data={chartData}
-                      fill="#00E599"
+                      fill={OPEN_WEIGHT_FILL}
                       fillOpacity={0.7}
-                      stroke="#74ffd0"
+                      stroke={OPEN_WEIGHT_STROKE}
                       strokeWidth={1}
                       isAnimationActive={false}
                       className="cursor-pointer"
@@ -450,6 +480,10 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                         }) => {
                           const isSelected =
                             props.payload?.modelId === selectedModelId;
+                          const colors = bubbleColors(
+                            Boolean(props.payload?.openWeights),
+                            isSelected,
+                          );
                           const radius = Math.sqrt(
                             Math.max(Number(props.size) || 0, 0) / Math.PI,
                           );
@@ -459,9 +493,9 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                               cy={props.cy}
                               r={radius}
                               data-selected={isSelected ? "true" : undefined}
-                              fill={isSelected ? "#fb923c" : "#00E599"}
+                              fill={colors.fill}
                               fillOpacity={isSelected ? 1 : 0.7}
-                              stroke={isSelected ? "#fed7aa" : "#74ffd0"}
+                              stroke={colors.stroke}
                               strokeWidth={isSelected ? 3 : 1}
                               className="cursor-pointer"
                             />
@@ -499,6 +533,22 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
             <p className="mt-3 text-center text-[11px] uppercase tracking-[0.14em] text-ledger-muted/70">
               Logarithmic scale
             </p>
+            <div className="mt-4 flex items-center justify-center gap-5 text-[11px] uppercase tracking-[0.14em] text-ledger-muted">
+              <span className="inline-flex items-center gap-2">
+                <span
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={{ background: OPEN_WEIGHT_FILL }}
+                />
+                Open-weight
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={{ background: FRONTIER_FILL }}
+                />
+                Frontier
+              </span>
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -588,20 +638,33 @@ function ModelInfoCard({
   point: ChartPoint;
   highlighted?: boolean;
 }) {
+  const family = point.openWeights ? "open" : "frontier";
+  const cardTone = highlighted
+    ? "border-orange-400/50 bg-[#140c07]"
+    : family === "open"
+      ? "border-neon-yellow/50 bg-[#120f06]"
+      : "border-neon-green/40 bg-[#070b09]";
+  const titleTone = highlighted
+    ? "text-orange-300"
+    : family === "open"
+      ? "text-neon-yellow"
+      : "text-neon-green";
+  const dividerTone = highlighted
+    ? "border-orange-400/20"
+    : family === "open"
+      ? "border-neon-yellow/20"
+      : "border-ledger-border";
+  const rankTone = highlighted
+    ? "text-orange-200"
+    : family === "open"
+      ? "text-neon-yellow"
+      : "text-ledger-cream";
+
   return (
-    <div
-      className={`min-w-64 rounded-xl border p-4 text-xs shadow-2xl ${
-        highlighted
-          ? "border-orange-400/50 bg-[#140c07]"
-          : "border-[#405148] bg-[#070b09]"
-      }`}
-    >
-      <p
-        className={`font-mono text-sm ${
-          highlighted ? "text-orange-300" : "text-neon-green"
-        }`}
-      >
-        {point.model}
+    <div className={`min-w-64 rounded-xl border p-4 text-xs shadow-2xl ${cardTone}`}>
+      <p className={`font-mono text-sm ${titleTone}`}>{point.model}</p>
+      <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-ledger-muted">
+        {point.openWeights ? "Open-weight" : "Frontier"}
       </p>
       <dl className="mt-3 grid grid-cols-[1fr_auto] gap-x-5 gap-y-2">
         <dt className="text-ledger-muted">Total workload tokens</dt>
@@ -628,17 +691,11 @@ function ModelInfoCard({
         <dd className="font-mono text-ledger-cream">
           {formatDuration(point.p95LatencyMs)}
         </dd>
-        <dt
-          className={`border-t pt-2 text-ledger-muted ${
-            highlighted ? "border-orange-400/20" : "border-ledger-border"
-          }`}
-        >
+        <dt className={`border-t pt-2 text-ledger-muted ${dividerTone}`}>
           Tokens per completed ticket
         </dt>
         <dd
-          className={`border-t pt-2 font-mono text-ledger-cream ${
-            highlighted ? "border-orange-400/20" : "border-ledger-border"
-          }`}
+          className={`border-t pt-2 font-mono text-ledger-cream ${dividerTone}`}
         >
           {Math.round(point.tokensPerTicket ?? 0).toLocaleString()}
         </dd>
@@ -646,36 +703,18 @@ function ModelInfoCard({
         <dd className="font-mono text-ledger-cream">
           ${Number(point.costPerTicket ?? 0).toFixed(6)}
         </dd>
-        <dt
-          className={`border-t pt-2 text-ledger-muted ${
-            highlighted ? "border-orange-400/20" : "border-ledger-border"
-          }`}
-        >
+        <dt className={`border-t pt-2 text-ledger-muted ${dividerTone}`}>
           Workload cost rank
         </dt>
-        <dd
-          className={`border-t pt-2 font-mono ${
-            highlighted
-              ? "border-orange-400/20 text-orange-200"
-              : "border-ledger-border text-ledger-cream"
-          }`}
-        >
+        <dd className={`border-t pt-2 font-mono ${dividerTone} ${rankTone}`}>
           #{point.workloadCostRank ?? "n/a"}/{point.workloadCostRankTotal}
         </dd>
         <dt className="text-ledger-muted">Cost per completed ticket rank</dt>
-        <dd
-          className={`font-mono ${
-            highlighted ? "text-orange-200" : "text-ledger-cream"
-          }`}
-        >
+        <dd className={`font-mono ${rankTone}`}>
           #{point.costPerTicketRank ?? "n/a"}/{point.costPerTicketRankTotal}
         </dd>
         <dt className="text-ledger-muted">Workload time rank</dt>
-        <dd
-          className={`font-mono ${
-            highlighted ? "text-orange-200" : "text-ledger-cream"
-          }`}
-        >
+        <dd className={`font-mono ${rankTone}`}>
           #{point.workloadDurationRank ?? "n/a"}/
           {point.workloadDurationRankTotal}
         </dd>
