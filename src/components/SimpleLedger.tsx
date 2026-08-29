@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import {
   CartesianGrid,
   ResponsiveContainer,
@@ -49,6 +49,24 @@ function rankOf(models: ModelAggregate[], modelId: string) {
   return index >= 0 ? index + 1 : null;
 }
 
+type ChartPoint = {
+  modelId: string;
+  model: string;
+  provider: string;
+  tokens: number;
+  price: number;
+  completed: number;
+  attempted: number;
+  tokensPerTicket: number | null;
+  costPerTicket: number | null;
+  workloadCostRank: number | null;
+  workloadCostRankTotal: number;
+  costPerTicketRank: number | null;
+  costPerTicketRankTotal: number;
+  workloadTokenRank: number | null;
+  passRateRank: number | null;
+};
+
 function normalizeSearch(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
@@ -58,6 +76,15 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
   const [selectedModelId, setSelectedModelId] = useState<string | null>(null);
   const [isModelListOpen, setIsModelListOpen] = useState(false);
   const [activeResultIndex, setActiveResultIndex] = useState(0);
+  const [pinnedBubble, setPinnedBubble] = useState<{ x: number; y: number } | null>(
+    null,
+  );
+  const handleSelectedPosition = useCallback(
+    (position: { x: number; y: number } | null) => {
+      setPinnedBubble(position);
+    },
+    [],
+  );
   const tokenRanking = rankModels(benchmark.aggregates, tokensPerCompletion);
   const priceRanking = rankModels(benchmark.aggregates, costPerCompletion);
   const workloadTokenRanking = rankModels(
@@ -88,9 +115,6 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
       })
       .sort((a, b) => a.modelName.localeCompare(b.modelName));
   }, [benchmark.aggregates, modelQuery]);
-  const selectedModel = benchmark.aggregates.find(
-    (model) => model.modelId === selectedModelId,
-  );
   const chartData = benchmark.aggregates
     .map((model) => ({
       modelId: model.modelId,
@@ -110,9 +134,13 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
       passRateRank: rankOf(passRateRanking, model.modelId),
     }))
     .filter((model) => model.tokens != null && model.price != null);
-  const selectedChartPoint = chartData.find(
+  const selectedPoint = chartData.find(
     (model) => model.modelId === selectedModelId,
   );
+
+  useEffect(() => {
+    if (!selectedModelId) setPinnedBubble(null);
+  }, [selectedModelId]);
 
   function selectModel(model: ModelAggregate) {
     setSelectedModelId(model.modelId);
@@ -292,20 +320,6 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
           )}
         </div>
 
-        {selectedModel && (
-          <SelectedModelCard
-            model={selectedModel}
-            workloadCostRank={rankOf(workloadPriceRanking, selectedModel.modelId)}
-            workloadCostRankTotal={workloadPriceRanking.length}
-            costPerTicketRank={rankOf(priceRanking, selectedModel.modelId)}
-            costPerTicketRankTotal={priceRanking.length}
-            workloadTokenRank={rankOf(workloadTokenRanking, selectedModel.modelId)}
-            passRateRank={rankOf(passRateRanking, selectedModel.modelId)}
-            modelCount={benchmark.modelCount}
-            onClear={clearSelectedModel}
-          />
-        )}
-
         <div className="grid items-center gap-6 lg:grid-cols-[12rem_minmax(0,1fr)_12rem]">
           <div className="space-y-4">
             <OutcomeCallout
@@ -327,7 +341,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
               <p className="rotate-180 text-center text-[10px] uppercase tracking-[0.14em] text-ledger-muted [writing-mode:vertical-rl]">
                 Published cost for the full 100-ticket workload
               </p>
-              <div className="h-[460px]">
+              <div className="relative h-[460px] overflow-visible">
                 <ResponsiveContainer width="100%" height="100%">
                   <ScatterChart margin={{ top: 15, right: 20, bottom: 22, left: 25 }}>
                   <CartesianGrid stroke="rgba(127,145,136,0.14)" />
@@ -365,7 +379,10 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                   />
                   <Tooltip
                     cursor={{ strokeDasharray: "3 3" }}
-                    content={<ChartTooltip />}
+                    content={
+                      <ChartTooltip selectedModelId={selectedModelId} />
+                    }
+                    isAnimationActive={false}
                   />
                     <Scatter
                       data={chartData}
@@ -374,6 +391,16 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                       stroke="#74ffd0"
                       strokeWidth={1}
                       className="cursor-pointer"
+                      shape={(props) => (
+                        <ChartBubble
+                          cx={props.cx}
+                          cy={props.cy}
+                          size={props.size}
+                          payload={props.payload as ChartPoint}
+                          selectedModelId={selectedModelId}
+                          onSelectedPosition={handleSelectedPosition}
+                        />
+                      )}
                       onClick={(point) =>
                         selectChartPoint(
                           point as {
@@ -383,26 +410,20 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                         )
                       }
                     />
-                    {selectedChartPoint && (
-                      <Scatter
-                        data={[selectedChartPoint]}
-                        fill="#fb923c"
-                        fillOpacity={1}
-                        stroke="#fed7aa"
-                        strokeWidth={4}
-                        className="cursor-pointer"
-                        onClick={(point) =>
-                          selectChartPoint(
-                            point as {
-                              modelId?: string;
-                              payload?: { modelId?: string };
-                            },
-                          )
-                        }
-                      />
-                    )}
                   </ScatterChart>
                 </ResponsiveContainer>
+                {selectedPoint && pinnedBubble && (
+                  <div
+                    className="pointer-events-none absolute z-10"
+                    style={{
+                      left: pinnedBubble.x,
+                      top: pinnedBubble.y,
+                      transform: "translate(12px, -16px)",
+                    }}
+                  >
+                    <ModelInfoCard point={selectedPoint} />
+                  </div>
+                )}
               </div>
             </div>
             <p className="mt-2 text-center text-xs uppercase tracking-[0.16em] text-ledger-muted">
@@ -473,27 +494,54 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
   );
 }
 
+function ChartBubble({
+  cx,
+  cy,
+  size,
+  payload,
+  selectedModelId,
+  onSelectedPosition,
+}: {
+  cx?: number;
+  cy?: number;
+  size?: number;
+  payload?: ChartPoint;
+  selectedModelId: string | null;
+  onSelectedPosition: (position: { x: number; y: number } | null) => void;
+}) {
+  const isSelected = payload?.modelId === selectedModelId;
+  useLayoutEffect(() => {
+    if (isSelected && cx != null && cy != null) {
+      onSelectedPosition({ x: cx, y: cy });
+    }
+  }, [isSelected, cx, cy, onSelectedPosition]);
+
+  const radius = Math.sqrt(Math.max(Number(size) || 0, 0) / Math.PI);
+  return (
+    <circle
+      cx={cx}
+      cy={cy}
+      r={radius}
+      fill={isSelected ? "#fb923c" : "#00E599"}
+      fillOpacity={isSelected ? 1 : 0.7}
+      stroke={isSelected ? "#fed7aa" : "#74ffd0"}
+      strokeWidth={isSelected ? 3 : 1}
+      className="cursor-pointer"
+    />
+  );
+}
+
 function ChartTooltip({
   active,
   payload,
-}: TooltipProps<number, string>) {
-  if (!active || !payload?.[0]) return null;
-  const point = payload[0].payload as {
-    model: string;
-    tokens: number;
-    price: number;
-    completed: number;
-    attempted: number;
-    tokensPerTicket: number;
-    costPerTicket: number;
-    workloadCostRank: number | null;
-    workloadCostRankTotal: number;
-    costPerTicketRank: number | null;
-    costPerTicketRankTotal: number;
-    workloadTokenRank: number;
-    passRateRank: number;
-  };
+  selectedModelId,
+}: TooltipProps<number, string> & { selectedModelId: string | null }) {
+  const point = payload?.[0]?.payload as ChartPoint | undefined;
+  if (!active || !point || point.modelId === selectedModelId) return null;
+  return <ModelInfoCard point={point} />;
+}
 
+function ModelInfoCard({ point }: { point: ChartPoint }) {
   return (
     <div className="min-w-64 rounded-xl border border-[#405148] bg-[#070b09] p-4 text-xs shadow-2xl">
       <p className="font-mono text-sm text-neon-green">{point.model}</p>
@@ -514,11 +562,11 @@ function ChartTooltip({
           Tokens per completed ticket
         </dt>
         <dd className="border-t border-ledger-border pt-2 font-mono text-ledger-cream">
-          {Math.round(point.tokensPerTicket).toLocaleString()}
+          {Math.round(point.tokensPerTicket ?? 0).toLocaleString()}
         </dd>
         <dt className="text-ledger-muted">Cost per completed ticket</dt>
         <dd className="font-mono text-ledger-cream">
-          ${point.costPerTicket.toFixed(6)}
+          ${Number(point.costPerTicket ?? 0).toFixed(6)}
         </dd>
         <dt className="border-t border-ledger-border pt-2 text-ledger-muted">
           Workload cost rank
@@ -531,119 +579,6 @@ function ChartTooltip({
           #{point.costPerTicketRank ?? "n/a"}/{point.costPerTicketRankTotal}
         </dd>
       </dl>
-    </div>
-  );
-}
-
-function SelectedModelCard({
-  model,
-  workloadCostRank,
-  workloadCostRankTotal,
-  costPerTicketRank,
-  costPerTicketRankTotal,
-  workloadTokenRank,
-  passRateRank,
-  modelCount,
-  onClear,
-}: {
-  model: ModelAggregate;
-  workloadCostRank: number | null;
-  workloadCostRankTotal: number;
-  costPerTicketRank: number | null;
-  costPerTicketRankTotal: number;
-  workloadTokenRank: number | null;
-  passRateRank: number | null;
-  modelCount: number;
-  onClear: () => void;
-}) {
-  return (
-    <div className="mb-8 rounded-2xl border border-orange-400/40 bg-orange-400/[0.06] p-5">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-orange-300">
-            Selected model
-          </p>
-          <h2 className="mt-2 font-mono text-xl text-ledger-cream">
-            {model.modelName}
-          </h2>
-          <p className="mt-1 text-xs text-ledger-muted">
-            {model.provider} · {model.modelId}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={onClear}
-          className="rounded-full border border-orange-400/25 p-2 text-orange-200 transition-colors hover:bg-orange-400/10"
-          aria-label={`Clear ${model.modelName} selection`}
-        >
-          <CloseIcon />
-        </button>
-      </div>
-
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <SelectedMetric
-          label="Published workload cost"
-          value={
-            model.totalCostUsd != null
-              ? `$${model.totalCostUsd.toFixed(6)}`
-              : "Not priced"
-          }
-        />
-        <SelectedMetric
-          label="Total workload tokens"
-          value={model.totalTokens.toLocaleString()}
-        />
-        <SelectedMetric
-          label="Responses passed"
-          value={`${model.successes}/${model.attempts}`}
-        />
-        <SelectedMetric
-          label="Cost per completed ticket"
-          value={
-            model.costPerSuccessUsd != null
-              ? `$${model.costPerSuccessUsd.toFixed(6)}`
-              : "Not priced"
-          }
-        />
-      </div>
-
-      <div className="mt-5 grid gap-2 border-t border-orange-400/20 pt-4 text-sm sm:grid-cols-2">
-        <p className="text-ledger-cream/80">
-          <span className="font-mono text-orange-300">
-            {costPerTicketRank ?? "n/a"}/{costPerTicketRankTotal}
-          </span>{" "}
-          model in cost per completed ticket
-        </p>
-        <p className="text-ledger-cream/80">
-          <span className="font-mono text-orange-300">
-            {workloadCostRank ?? "n/a"}/{workloadCostRankTotal}
-          </span>{" "}
-          model in published workload cost
-        </p>
-        <p className="text-ledger-cream/80">
-          <span className="font-mono text-orange-300">
-            {workloadTokenRank ?? "n/a"}/{modelCount}
-          </span>{" "}
-          model in total token use
-        </p>
-        <p className="text-ledger-cream/80">
-          <span className="font-mono text-orange-300">
-            {passRateRank ?? "n/a"}/{modelCount}
-          </span>{" "}
-          model in pass rate
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function SelectedMetric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-orange-400/15 bg-[#090e0b]/70 px-4 py-3">
-      <p className="text-[10px] uppercase tracking-[0.14em] text-ledger-muted">
-        {label}
-      </p>
-      <p className="mt-2 font-mono text-sm text-ledger-cream">{value}</p>
     </div>
   );
 }
