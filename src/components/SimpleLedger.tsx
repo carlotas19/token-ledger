@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   CartesianGrid,
   ResponsiveContainer,
@@ -78,12 +78,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
   const [pinnedBubble, setPinnedBubble] = useState<{ x: number; y: number } | null>(
     null,
   );
-  const handleSelectedPosition = useCallback(
-    (position: { x: number; y: number } | null) => {
-      setPinnedBubble(position);
-    },
-    [],
-  );
+  const chartRef = useRef<HTMLDivElement>(null);
   const tokenRanking = rankModels(benchmark.aggregates, tokensPerCompletion);
   const priceRanking = rankModels(benchmark.aggregates, costPerCompletion);
   const workloadTokenRanking = rankModels(
@@ -137,9 +132,35 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
     (model) => model.modelId === selectedModelId,
   );
 
-  useEffect(() => {
-    if (!selectedModelId) setPinnedBubble(null);
-  }, [selectedModelId]);
+  useLayoutEffect(() => {
+    if (!selectedModelId) {
+      setPinnedBubble(null);
+      return;
+    }
+
+    let attempts = 0;
+    let frame = 0;
+    const locate = () => {
+      const selected = chartRef.current?.querySelector(
+        "circle[data-selected='true']",
+      );
+      if (selected instanceof SVGCircleElement) {
+        const x = selected.cx.baseVal.value;
+        const y = selected.cy.baseVal.value;
+        setPinnedBubble((current) =>
+          current && current.x === x && current.y === y ? current : { x, y },
+        );
+        return;
+      }
+      if (attempts < 20) {
+        attempts += 1;
+        frame = requestAnimationFrame(locate);
+      }
+    };
+
+    locate();
+    return () => cancelAnimationFrame(frame);
+  }, [selectedModelId, selectedPoint?.tokens, selectedPoint?.price]);
 
   function selectModel(model: ModelAggregate) {
     setSelectedModelId(model.modelId);
@@ -340,7 +361,10 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
               <p className="rotate-180 text-center text-[10px] uppercase tracking-[0.14em] text-ledger-muted [writing-mode:vertical-rl]">
                 Published cost for the full 100-ticket workload
               </p>
-              <div className="relative h-[460px] overflow-visible">
+              <div
+                ref={chartRef}
+                className="relative h-[460px] overflow-visible"
+              >
                 <ResponsiveContainer width="100%" height="100%">
                   <ScatterChart margin={{ top: 15, right: 20, bottom: 22, left: 25 }}>
                   <CartesianGrid stroke="rgba(127,145,136,0.14)" />
@@ -393,6 +417,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                       fillOpacity={0.7}
                       stroke="#74ffd0"
                       strokeWidth={1}
+                      isAnimationActive={false}
                       className="cursor-pointer"
                       shape={
                         ((props: {
@@ -400,16 +425,26 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                           cy?: number;
                           size?: number;
                           payload?: ChartPoint;
-                        }) => (
-                          <ChartBubble
-                            cx={Number(props.cx)}
-                            cy={Number(props.cy)}
-                            size={Number(props.size)}
-                            payload={props.payload}
-                            selectedModelId={selectedModelId}
-                            onSelectedPosition={handleSelectedPosition}
-                          />
-                        )) as never
+                        }) => {
+                          const isSelected =
+                            props.payload?.modelId === selectedModelId;
+                          const radius = Math.sqrt(
+                            Math.max(Number(props.size) || 0, 0) / Math.PI,
+                          );
+                          return (
+                            <circle
+                              cx={props.cx}
+                              cy={props.cy}
+                              r={radius}
+                              data-selected={isSelected ? "true" : undefined}
+                              fill={isSelected ? "#fb923c" : "#00E599"}
+                              fillOpacity={isSelected ? 1 : 0.7}
+                              stroke={isSelected ? "#fed7aa" : "#74ffd0"}
+                              strokeWidth={isSelected ? 3 : 1}
+                              className="cursor-pointer"
+                            />
+                          );
+                        }) as never
                       }
                       onClick={(point) =>
                         selectChartPoint(
@@ -501,43 +536,6 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
         ).toLocaleDateString()}.
       </p>
     </div>
-  );
-}
-
-function ChartBubble({
-  cx,
-  cy,
-  size,
-  payload,
-  selectedModelId,
-  onSelectedPosition,
-}: {
-  cx?: number;
-  cy?: number;
-  size?: number;
-  payload?: ChartPoint;
-  selectedModelId: string | null;
-  onSelectedPosition: (position: { x: number; y: number } | null) => void;
-}) {
-  const isSelected = payload?.modelId === selectedModelId;
-  useLayoutEffect(() => {
-    if (isSelected && cx != null && cy != null) {
-      onSelectedPosition({ x: cx, y: cy });
-    }
-  }, [isSelected, cx, cy, onSelectedPosition]);
-
-  const radius = Math.sqrt(Math.max(Number(size) || 0, 0) / Math.PI);
-  return (
-    <circle
-      cx={cx}
-      cy={cy}
-      r={radius}
-      fill={isSelected ? "#fb923c" : "#00E599"}
-      fillOpacity={isSelected ? 1 : 0.7}
-      stroke={isSelected ? "#fed7aa" : "#74ffd0"}
-      strokeWidth={isSelected ? 3 : 1}
-      className="cursor-pointer"
-    />
   );
 }
 
