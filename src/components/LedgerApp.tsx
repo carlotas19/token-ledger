@@ -55,12 +55,12 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
   }, [benchmark.aggregates]);
 
   return (
-    <div className="grain dot-grid min-h-screen">
+    <div className="min-h-screen bg-black">
       <header className="border-b border-ledger-border px-6 py-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="flex items-start justify-between gap-6">
             <p className="animate-fade-in text-sm uppercase tracking-[0.35em] text-ledger-muted">
-              A small, practical benchmark of AI models
+              Tokenomics, measured
             </p>
             <a
               href="https://github.com/carlotas19/token-ledger"
@@ -73,15 +73,14 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
               <span className="hidden sm:inline">Check out the code</span>
             </a>
           </div>
-          <h1 className="mt-4 animate-fade-in text-5xl font-light tracking-tight text-ledger-cream lg:text-7xl">
-            Tokenomics, measured
+          <h1 className="mt-4 animate-fade-in text-4xl font-light tracking-tight text-ledger-cream lg:text-6xl">
+            Which model is actually cheaper?
           </h1>
           <p className="mt-4 max-w-3xl animate-fade-in text-lg leading-relaxed text-ledger-cream/75">
-            Some models are cheaper than others. But do they actually save you
-            money? We ran a simulated support workload through{" "}
-            {benchmark.modelCount} open-weight and frontier models on Neon AI
-            Gateway, then measured how many tokens and dollars it took to
-            produce usable answers.
+            We ran a simulated support workload through{" "}
+            {benchmark.modelCount} models, then compared the final costs. The
+            ranking looks at token use, published price, pass rate, and time to
+            finish—not just the catalog rate per million tokens.
           </p>
           <div className="mt-6 grid max-w-6xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {leaders.cost && (

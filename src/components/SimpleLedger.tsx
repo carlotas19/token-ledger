@@ -233,9 +233,9 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
         <p className="text-sm leading-relaxed text-ledger-cream/80">
           <span className="text-ledger-cream">The prompt:</span>{" "}
           “Use an LLM to reply to 100 support tickets.” Every model attempted all
-          100 tickets, and each run stopped after the 100th response. A completed
-          ticket is a response that passed every deterministic policy and format
-          check. Failed responses still count toward the workload’s token use and
+          100 tickets, and each run stopped after the 100th try. A ticket is only
+          considered complete if the response passed a deterministic quality
+          check; failed responses still count toward the workload’s token use and
           cost.
         </p>
       </section>
@@ -607,8 +607,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
       </section>
 
       <p className="mt-6 text-xs leading-relaxed text-ledger-muted">
-        Green marks the top three. Red marks the bottom three. Prices were
-        verified{" "}
+        Prices were verified{" "}
         {new Date(
           benchmark.pricingSnapshotAt ?? benchmark.catalogSnapshotAt,
         ).toLocaleDateString()}.

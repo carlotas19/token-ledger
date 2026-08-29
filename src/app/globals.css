@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  background: var(--ledger-black);
+  background: #000;
   color: var(--ledger-cream);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
