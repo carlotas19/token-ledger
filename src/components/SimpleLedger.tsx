@@ -54,7 +54,7 @@ type ChartPoint = {
   model: string;
   provider: string;
   tokens: number;
-  price: number;
+  price: number | null;
   completed: number;
   attempted: number;
   tokensPerTicket: number | null;
@@ -133,7 +133,7 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
       workloadTokenRank: rankOf(workloadTokenRanking, model.modelId),
       passRateRank: rankOf(passRateRanking, model.modelId),
     }))
-    .filter((model) => model.tokens != null && model.price != null);
+    .filter((model): model is ChartPoint => model.price != null);
   const selectedPoint = chartData.find(
     (model) => model.modelId === selectedModelId,
   );
@@ -379,9 +379,12 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                   />
                   <Tooltip
                     cursor={{ strokeDasharray: "3 3" }}
-                    content={
-                      <ChartTooltip selectedModelId={selectedModelId} />
-                    }
+                    content={(props) => (
+                      <ChartTooltip
+                        {...props}
+                        selectedModelId={selectedModelId}
+                      />
+                    )}
                     isAnimationActive={false}
                   />
                     <Scatter
@@ -393,9 +396,9 @@ export function SimpleLedger({ benchmark }: SimpleLedgerProps) {
                       className="cursor-pointer"
                       shape={(props) => (
                         <ChartBubble
-                          cx={props.cx}
-                          cy={props.cy}
-                          size={props.size}
+                          cx={Number(props.cx)}
+                          cy={Number(props.cy)}
+                          size={Number(props.size)}
                           payload={props.payload as ChartPoint}
                           selectedModelId={selectedModelId}
                           onSelectedPosition={handleSelectedPosition}
@@ -552,7 +555,7 @@ function ModelInfoCard({ point }: { point: ChartPoint }) {
         </dd>
         <dt className="text-ledger-muted">Published workload cost</dt>
         <dd className="font-mono text-ledger-cream">
-          ${point.price.toFixed(6)}
+          {point.price != null ? `$${point.price.toFixed(6)}` : "Not priced"}
         </dd>
         <dt className="text-ledger-muted">Responses passed</dt>
         <dd className="font-mono text-ledger-cream">
