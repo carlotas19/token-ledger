@@ -59,12 +59,6 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
     leader?.costPerSuccessUsd && last?.costPerSuccessUsd
       ? last.costPerSuccessUsd / leader.costPerSuccessUsd
       : null;
-  const illustrativeAcceptedTickets = 1_000_000;
-  const illustrativeLowCost =
-    Number(leader?.costPerSuccessUsd) * illustrativeAcceptedTickets;
-  const illustrativeHighCost =
-    Number(last?.costPerSuccessUsd) * illustrativeAcceptedTickets;
-  const illustrativeSavings = illustrativeHighCost - illustrativeLowCost;
   const openModels = benchmark.aggregates.filter((model) => model.openWeights);
   const proprietaryModels = benchmark.aggregates.filter(
     (model) => !model.openWeights,
@@ -92,6 +86,8 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
   const slowestWorkload =
     workloadDurationRanking[workloadDurationRanking.length - 1];
   const lowestWorkloadCost = workloadCostRanking[0];
+  const highestWorkloadCost =
+    workloadCostRanking[workloadCostRanking.length - 1];
   const lowestTokenWorkload = workloadTokenRanking[0];
   const tokenEfficient = [...benchmark.aggregates].sort(
     (a, b) =>
@@ -122,30 +118,6 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
   const topFiveOpenCount = models
     .slice(0, 5)
     .filter((model) => model.openWeights).length;
-  const pricedModels = benchmark.aggregates.filter(
-    (model) =>
-      model.inputPricePerMillionUsd != null &&
-      model.outputPricePerMillionUsd != null,
-  );
-  const lowestInputRate = [...pricedModels].sort(
-    (a, b) =>
-      Number(a.inputPricePerMillionUsd) -
-      Number(b.inputPricePerMillionUsd),
-  )[0];
-  const lowestOutputRate = [...pricedModels].sort(
-    (a, b) =>
-      Number(a.outputPricePerMillionUsd) -
-      Number(b.outputPricePerMillionUsd),
-  )[0];
-  const rateLeader = lowestInputRate;
-  const rateLeaderAlsoHasLowestOutput =
-    rateLeader.modelId === lowestOutputRate.modelId;
-  const rateLeaderWorkloadRank =
-    workloadCostRanking.findIndex(
-      (model) => model.modelId === rateLeader.modelId,
-    ) + 1;
-  const rateLeaderUsableRank =
-    models.findIndex((model) => model.modelId === rateLeader.modelId) + 1;
   const qwenWorkloadRank = qwenOutlier
     ? workloadCostRanking.findIndex(
         (model) => model.modelId === qwenOutlier.modelId,
@@ -162,156 +134,33 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
           Report
         </p>
         <h2 className="mt-3 text-4xl font-light text-ledger-cream">
-          The price per token is only the starting point
+          The growing weight of token economics
         </h2>
         <div className="mt-5 max-w-3xl space-y-4 text-lg leading-relaxed text-ledger-cream/75">
           <p>
-            Model selection often starts with a price table. One model charges
-            less for a million input tokens. Another charges less for a million
-            output tokens. It is tempting to pick the lowest rate and call it
-            the cheapest model for the application.
+            Headcount is usually one of a company’s largest costs. As agents
+            take on more work, model inference becomes a second cost attached
+            to that work: tokens. Choosing models that execute reliably for less
+            can create meaningful savings across millions of agent actions.
           </p>
           <p>
-            The rate does not tell us how many tokens the model will consume,
-            how often its response will satisfy the application, or how much
-            paid output will be discarded. Those parts only appear when the
-            model runs a real task.
+            But the cheapest listed model is not necessarily the cheapest model
+            to operate. A low token rate can be offset by long outputs, rejected
+            responses, retries, or slow execution. Those costs only become
+            visible when models run the same representative task.
           </p>
           <p>
-            This benchmark asks a narrow question: if {benchmark.modelCount}{" "}
-            models receive the same 100 support tickets, does the model with the
-            lowest token price produce the lowest workload cost?
+            That is the case for small, repeatable experiments like this one.
+            We ran the same 100-ticket workload through {benchmark.modelCount}{" "}
+            models and compared the cost, usable output, and time required to
+            finish. The goal is not to crown one universal winner. It is to show
+            why companies should test the economics of their own work before
+            choosing the model that will execute it.
           </p>
         </div>
       </header>
 
-      {rateLeader && (
-        <section className="mt-10 rounded-2xl border border-neon-green/30 bg-neon-green/[0.05] p-6 md:p-8">
-          <p className="text-xs uppercase tracking-[0.2em] text-neon-green">
-            The short answer
-          </p>
-          <h3 className="mt-3 text-2xl font-light text-ledger-cream">
-            Low token rates help, but they do not determine the winner.
-          </h3>
-          <div className="mt-4 space-y-4 leading-relaxed text-ledger-cream/80">
-            <p>
-              <span className="font-mono text-ledger-cream">
-                {rateLeader.modelName}
-              </span>{" "}
-              had the lowest published input rate in this catalog at $
-              {rateLeader.inputPricePerMillionUsd?.toFixed(2)} per million
-              tokens. Its ${rateLeader.outputPricePerMillionUsd?.toFixed(2)}{" "}
-              output rate was{" "}
-              {rateLeaderAlsoHasLowestOutput
-                ? "also the lowest"
-                : "not the lowest"}
-              . It finished #{rateLeaderWorkloadRank} on total workload cost and
-              #{rateLeaderUsableRank} on cost per usable response.
-            </p>
-            <p>
-              <span className="font-mono text-ledger-cream">
-                {lowestWorkloadCost.modelName}
-              </span>{" "}
-              was cheapest for all 100 attempts because it paired low rates
-              with the lowest total token use. But only{" "}
-              {lowestWorkloadCost.successes}/100 responses passed. Once we
-              divide total spend by usable responses,{" "}
-              <span className="font-mono text-neon-green">
-                {leader.modelName}
-              </span>{" "}
-              becomes the cheapest model.
-            </p>
-            <p>
-              The broad pattern still holds: low-rate models occupy most of the
-              inexpensive end of the ranking. The exact order changes because
-              token volume and pass rate matter too. Price per token predicts a
-              cost advantage. It does not calculate the application’s unit
-              cost by itself.
-            </p>
-          </div>
-        </section>
-      )}
-
       <div className="mt-14 space-y-14">
-        <AnalysisSection title="Why we ran this benchmark">
-          <p>
-            Agents are starting to perform work that companies previously
-            assigned entirely to people: triaging support, drafting replies,
-            researching questions, reviewing documents, and writing code. The
-            work still needs people to define it, supervise it, and handle the
-            cases that automation cannot complete. But every automated step now
-            consumes model inference too.
-          </p>
-          <p>
-            For an agent-heavy company, two operating inputs begin to sit side
-            by side:{" "}
-            <span className="text-ledger-cream">headcount and tokens</span>.
-            Payroll pays for human time. Token spend pays for the model work
-            inside each agent run. As agents take on more tasks, token usage can
-            grow from a small infrastructure line into a material operating
-            cost.
-          </p>
-          <p>
-            The two costs scale differently. Headcount usually grows in people
-            and time. Token spend grows with the number of tasks, the size of
-            their context, the amount of generated output, retries, and failed
-            runs. An enterprise can run the same agent workflow across many
-            teams and millions of actions. A small saving on each accepted
-            result is then multiplied by every one of those actions.
-          </p>
-          <p>
-            This benchmark shows the size of that multiplier without pretending
-            that one support test is an enterprise forecast. If these results
-            scaled linearly to {illustrativeAcceptedTickets.toLocaleString()}{" "}
-            accepted tickets, the lowest measured cost per usable response
-            would be about ${Math.round(illustrativeLowCost).toLocaleString()}.
-            The highest would be about $
-            {Math.round(illustrativeHighCost).toLocaleString()}. The difference
-            is roughly ${Math.round(illustrativeSavings).toLocaleString()} for
-            the same number of accepted outcomes, before adding retries, human
-            review, or fallback calls.
-          </p>
-          <p>
-            That is why token economics belongs next to workforce economics.
-            The goal is not simply to buy the cheapest token. It is to reduce
-            the token cost of each useful unit of work while preserving the
-            quality the business needs.
-          </p>
-          <p>
-            AI costs behave more like a variable infrastructure bill than a
-            software license. Every request consumes a different number of
-            input and output tokens. The model affects that volume through its
-            tokenizer and response behavior. The application determines the
-            prompt, output contract, and acceptance criteria.
-          </p>
-          <p>
-            A price table holds only one part of that system constant: the rate
-            charged for each token. We wanted to measure the other two parts
-            with a workload that resembles a small business process:
-          </p>
-          <ol className="list-decimal space-y-3 pl-5">
-            <li>
-              <span className="text-ledger-cream">Rate:</span> the published
-              price for one million input or output tokens.
-            </li>
-            <li>
-              <span className="text-ledger-cream">Volume:</span> the number of
-              tokens the model actually consumes to process the workload.
-            </li>
-            <li>
-              <span className="text-ledger-cream">Yield:</span> the share of
-              responses the application can use without a retry or correction.
-            </li>
-          </ol>
-          <p>
-            Together, these turn a catalog price into an application cost. A
-            model can have a low rate and generate a large amount of output. It
-            can be concise but fail the required contract. It can also cost more
-            per token while completing enough tickets correctly to reduce the
-            cost of each usable result.
-          </p>
-        </AnalysisSection>
-
         <AnalysisSection title="What the benchmark measures">
           <p>
             Every model received the same 100 synthetic support tickets. Each
@@ -363,9 +212,113 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             ).toLocaleDateString()}.
           </p>
         </AnalysisSection>
+
+        <AnalysisSection title="How we decided a response was usable">
+          <p>
+            Usable did not mean “a good support reply.” It meant the application
+            could accept the output without a retry or a human fix. Every
+            response had to pass seven deterministic checks. One miss failed the
+            ticket. There was no human review and no second model scoring the
+            prose.
+          </p>
+          <p>
+            The model had to return JSON with four fields:{" "}
+            <span className="font-mono text-ledger-cream">classification</span>,{" "}
+            <span className="font-mono text-ledger-cream">action</span>,{" "}
+            <span className="font-mono text-ledger-cream">escalate</span>, and{" "}
+            <span className="font-mono text-ledger-cream">customer_reply</span>.
+            Markdown fences were stripped, then the payload was parsed. If that
+            failed, scoring stopped. If it parsed, every remaining check had to
+            pass:
+          </p>
+          <ol className="list-decimal space-y-2 pl-5">
+            <li>
+              The response parses as JSON with all four required fields.
+            </li>
+            <li>
+              Classification matches the ticket category exactly (
+              <span className="font-mono text-ledger-cream">
+                billing, access, feature, security, refund, other
+              </span>
+              ).
+            </li>
+            <li>
+              Action is one the ticket allowed (
+              <span className="font-mono text-ledger-cream">
+                reply_only, reset_password, issue_credit, deny_request,
+                escalate_security
+              </span>
+              ).
+            </li>
+            <li>
+              Escalation is the boolean the policy required. A credential leak
+              must escalate. A billing explanation must not.
+            </li>
+            <li>The customer reply is between 1 and 120 words.</li>
+            <li>
+              Required policy terms appear in the reply, case-insensitive. A
+              leak ticket must mention{" "}
+              <span className="font-mono text-ledger-cream">rotate</span>; a
+              pooling ticket must mention{" "}
+              <span className="font-mono text-ledger-cream">pool</span>.
+            </li>
+            <li>
+              Forbidden terms do not appear. A refund ticket fails if the reply
+              says{" "}
+              <span className="font-mono text-ledger-cream">refund approved</span>{" "}
+              or{" "}
+              <span className="font-mono text-ledger-cream">full refund</span>.
+            </li>
+          </ol>
+          <p>
+            The expected answers are fixed in the 20 scenarios. Each scenario is
+            asked five ways—direct, urgent, frustrated, asking for next steps, and
+            written for a nontechnical reader—but the policy target stays the
+            same. Tone and empathy are not scored. A short, slightly stiff reply
+            that hits the contract counts. A fluent reply that promises a refund
+            does not.
+          </p>
+          <p>
+            The examples below follow the actual ticket contract. They are
+            reconstructed to show the grader, not quoted from a stored model log.
+          </p>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <TicketOutcome
+              tone="pass"
+              label="This response would pass"
+              ticket="Credential leak"
+              policy="Treat this as a security incident. Recommend rotation and escalate."
+              response={`{
+  "classification": "security",
+  "action": "escalate_security",
+  "escalate": true,
+  "customer_reply": "This is a security incident. Rotate the exposed credentials now. We are escalating this to the security team."
+}`}
+              why="It is valid JSON, classified as security, chose the only allowed action, set escalate to true, mentioned rotate, and stayed under 120 words."
+            />
+            <TicketOutcome
+              tone="fail"
+              label="This response would fail"
+              ticket="Annual prepay refund"
+              policy="Annual refunds require manager review. Never promise an amount."
+              response={`{
+  "classification": "refund",
+  "action": "issue_credit",
+  "escalate": false,
+  "customer_reply": "Sorry you are shutting down. I have processed a full refund of the unused months."
+}`}
+              why="The reply is readable, but issue_credit is not allowed for this ticket, and full refund is a forbidden promise. Either miss would fail the ticket."
+            />
+          </div>
+          <p>
+            Failed tickets still add their tokens and published cost to the
+            model total. Cost per completed ticket is therefore the full
+            100-ticket bill divided by the responses that passed.
+          </p>
+        </AnalysisSection>
       </div>
 
-      <section className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {lowestWorkloadCost && (
           <MetricCard
             label="Lowest workload cost"
@@ -398,6 +351,24 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             detail={`${formatDuration(fastestWorkload.medianLatencyMs)} median ticket latency`}
           />
         )}
+        {highestWorkloadCost && (
+          <MetricCard
+            label="Highest workload cost"
+            model={highestWorkloadCost.modelName}
+            value={`$${highestWorkloadCost.totalCostUsd?.toFixed(6)}`}
+            detail={`${highestWorkloadCost.successes}/100 responses passed`}
+            tone="worst"
+          />
+        )}
+        {slowestWorkload && (
+          <MetricCard
+            label="Slowest 100-ticket run"
+            model={slowestWorkload.modelName}
+            value={formatDuration(slowestWorkload.totalWorkloadDurationMs)}
+            detail={`${formatDuration(slowestWorkload.medianLatencyMs)} median ticket latency`}
+            tone="worst"
+          />
+        )}
       </section>
 
       {leader && last && (
@@ -420,7 +391,21 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             </span>{" "}
             {completionLeaders.length > 1 ? "shared" : "had"} the highest
             completion rate at{" "}
-            {(completionLeader.passRate * 100).toFixed(0)}%.
+            {(completionLeader.passRate * 100).toFixed(0)}%.{" "}
+            {fastestWorkload && slowestWorkload && (
+              <>
+                Observed workload time ranged from{" "}
+                {formatDuration(fastestWorkload.totalWorkloadDurationMs)} for{" "}
+                <span className="font-mono text-neon-green">
+                  {fastestWorkload.modelName}
+                </span>{" "}
+                to {formatDuration(slowestWorkload.totalWorkloadDurationMs)} for{" "}
+                <span className="font-mono text-red-300">
+                  {slowestWorkload.modelName}
+                </span>
+                .
+              </>
+            )}
           </p>
         </section>
       )}
@@ -431,10 +416,73 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
       </section>
 
       <div className="mt-14 space-y-14">
-        <AnalysisSection title="Three ways to call a model cheap">
+        <AnalysisSection title="Open-weight and proprietary models">
           <p>
-            The word “cheap” can refer to three different measurements. They
-            should not be collapsed into one ranking.
+            Open-weight models had the lower median cost in this run. Their
+            median 100-ticket workload cost was $
+            {openMedianWorkloadCost.toFixed(6)}, compared with $
+            {proprietaryMedianWorkloadCost.toFixed(6)} for proprietary models,
+            a{" "}
+            {(
+              proprietaryMedianWorkloadCost / openMedianWorkloadCost
+            ).toFixed(1)}
+            × difference. {topFiveOpenCount} of the five lowest-cost models per
+            completed ticket were open weight.
+          </p>
+          <p>
+            Published rates explain much of that gap. The five models with the
+            lowest input rates and the five models with the lowest output rates
+            were all open weight. A lower rate creates room for more tokens
+            before the workload reaches the same dollar cost as a higher-rate
+            model.
+          </p>
+          <p>
+            The group result was not a clean win. The median pass rate was{" "}
+            {(
+              median(openModels.map((model) => model.passRate)) * 100
+            ).toFixed(0)}
+            % for open-weight models and{" "}
+            {(
+              median(proprietaryModels.map((model) => model.passRate)) * 100
+            ).toFixed(0)}
+            % for proprietary models. Open-weight models also used a median of{" "}
+            {Math.round(
+              median(
+                openModels.map((model) =>
+                  Number(model.tokensPerSuccess),
+                ),
+              ),
+            ).toLocaleString()}{" "}
+            tokens per completed ticket, versus{" "}
+            {Math.round(
+              median(
+                proprietaryModels.map((model) =>
+                  Number(model.tokensPerSuccess),
+                ),
+              ),
+            ).toLocaleString()}
+            .
+          </p>
+          <p>
+            Qwen3.5 shows why the group median cannot choose a model for an
+            application. It is open weight and has relatively low published
+            rates, yet its output volume and 35% pass rate moved it to #
+            {qwenWorkloadRank} for workload cost and #{qwenUsableRank} for cost
+            per usable response.
+          </p>
+          <p>
+            This single run does not establish a general rule for open-weight
+            and proprietary models. It shows a tradeoff in this workload: lower
+            published rates outweighed lower median contract compliance for the
+            open-weight group, while individual models still moved far from the
+            group pattern.
+          </p>
+        </AnalysisSection>
+
+        <AnalysisSection title="Four questions behind “cheap”">
+          <p>
+            A useful model decision needs four measurements. They should not be
+            collapsed into one ranking.
           </p>
           <ol className="list-decimal space-y-4 pl-5">
             <li>
@@ -454,87 +502,81 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
               divides that workload cost by the responses that passed. This
               adds application reliability to the calculation.
             </li>
+            <li>
+              <span className="text-ledger-cream">Time to completion</span>{" "}
+              asks how long users and downstream agents wait. A cheap response
+              that arrives too slowly can reduce throughput and create a poor
+              product experience.
+            </li>
           </ol>
           <p>
             Each measure answers a valid question. The first helps screen a
             catalog. The second estimates the model bill for a known traffic
             pattern. The third gets closer to the cost of delivering a product
             feature, because it does not count failed output as completed work.
-          </p>
-        </AnalysisSection>
-
-        <AnalysisSection title="How the ranking changed">
-          <p>
-            The lowest token rate did not produce the lowest total workload
-            cost. {rateLeader.modelName} had the lowest input{" "}
-            {rateLeaderAlsoHasLowestOutput ? "and output rates" : "rate"}, but
-            it generated {rateLeader.totalTokens.toLocaleString()} tokens.{" "}
-            {lowestWorkloadCost.modelName} generated only{" "}
-            {lowestWorkloadCost.totalTokens.toLocaleString()}, so its 100-ticket
-            workload cost less even though its rates were slightly higher.
-          </p>
-          <p>
-            The ranking changed again when we asked how much a usable response
-            cost. {lowestWorkloadCost.modelName} passed{" "}
-            {lowestWorkloadCost.successes} tickets. {leader.modelName} passed{" "}
-            {leader.successes}. The second model spent more on the complete
-            workload, but it spread that spend across nearly twice as many
-            usable responses. That moved {leader.modelName} into first place on
-            cost per completed ticket.
-          </p>
-          <p>
-            This is the main result of the experiment. Catalog rates explained
-            the broad shape of the cost ranking, while measured token use and
-            pass rate decided the order within the low-cost group.
+            The fourth tests whether those savings arrive at an acceptable
+            speed. In this run, the fastest and slowest 100-ticket workloads
+            differed by{" "}
+            {fastestWorkload && slowestWorkload
+              ? (
+                  Number(slowestWorkload.totalWorkloadDurationMs) /
+                  Number(fastestWorkload.totalWorkloadDurationMs)
+                ).toFixed(1)
+              : "many"}
+            ×.
           </p>
         </AnalysisSection>
 
         <AnalysisSection title="Why token use differs">
-          <p>
-            Token use has two components: how a model tokenizes the shared input
-            and how much output it generates. Input totals ranged from{" "}
-            {inputTokenRanking[0].inputTokens.toLocaleString()} to{" "}
-            {inputTokenRanking[
-              inputTokenRanking.length - 1
-            ].inputTokens.toLocaleString()} tokens, a relatively narrow{" "}
-            {(
-              inputTokenRanking[inputTokenRanking.length - 1].inputTokens /
-              inputTokenRanking[0].inputTokens
-            ).toFixed(1)}
-            × spread.
-          </p>
-          <p>
-            The prompt text was fixed, but a token is not a universal unit.
-            Model families use different tokenizers, and providers can account
-            for request framing differently. The benchmark keeps the text
-            constant and records the provider’s count. It cannot attribute each
-            input-token difference to one of those mechanisms.
-          </p>
-          <p>
-            Priced output totals ranged from{" "}
-            {pricedOutputTokens(outputTokenRanking[0]).toLocaleString()} to{" "}
-            {pricedOutputTokens(
-              outputTokenRanking[outputTokenRanking.length - 1],
-            ).toLocaleString()}{" "}
-            tokens, a{" "}
-            {(
-              pricedOutputTokens(
+          <ul className="space-y-4">
+            <li>
+              <span className="font-medium text-ledger-cream">
+                Input use varied less.
+              </span>{" "}
+              The fixed prompt produced{" "}
+              {inputTokenRanking[0].inputTokens.toLocaleString()} to{" "}
+              {inputTokenRanking[
+                inputTokenRanking.length - 1
+              ].inputTokens.toLocaleString()}{" "}
+              input tokens, a{" "}
+              {(
+                inputTokenRanking[inputTokenRanking.length - 1].inputTokens /
+                inputTokenRanking[0].inputTokens
+              ).toFixed(1)}
+              × spread. Tokenizers and provider accounting differ even when the
+              text is identical.
+            </li>
+            <li>
+              <span className="font-medium text-ledger-cream">
+                Output behavior created the bigger gap.
+              </span>{" "}
+              Priced output ranged from{" "}
+              {pricedOutputTokens(outputTokenRanking[0]).toLocaleString()} to{" "}
+              {pricedOutputTokens(
                 outputTokenRanking[outputTokenRanking.length - 1],
-              ) / pricedOutputTokens(outputTokenRanking[0])
-            ).toFixed(1)}
-            × spread. Output behavior, not prompt tokenization, created most of
-            the token gap in this run.
-          </p>
-          <p>
-            Output volume includes more than the customer-facing sentence. A
-            model may generate longer JSON, return separately counted reasoning
-            blocks, or reach the output cap before returning the expected
-            object. Output rates are also higher than input rates for
-            most models in this catalog. Extra generated tokens can therefore
-            affect cost more than the same number of extra prompt tokens.
-          </p>
+              ).toLocaleString()}{" "}
+              tokens, a{" "}
+              {(
+                pricedOutputTokens(
+                  outputTokenRanking[outputTokenRanking.length - 1],
+                ) / pricedOutputTokens(outputTokenRanking[0])
+              ).toFixed(1)}
+              × spread.
+            </li>
+            <li>
+              <span className="font-medium text-ledger-cream">
+                Visible length is not the full bill.
+              </span>{" "}
+              Output can include longer JSON, separately counted reasoning, or
+              tokens generated before the model reaches its cap. Because output
+              rates are often higher, extra generation can move cost quickly.
+            </li>
+          </ul>
           {modelsWithUnsplitOutput.length > 0 && (
             <p>
+              <span className="font-medium text-ledger-cream">
+                We priced unexplained generated usage.
+              </span>{" "}
               For {modelsWithUnsplitOutput.length} models, the provider-reported
               total exceeded the separate input and output fields. To avoid
               treating generated tokens as free, the cost estimate prices the
@@ -637,129 +679,6 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
           </AnalysisSection>
         )}
 
-        <AnalysisSection title="Why responses failed">
-          <p>
-            “Accuracy” here means contract compliance, not general intelligence
-            or writing quality. A response had to pass every check. One response
-            could fail more than one check, so the counts below overlap.
-          </p>
-          <ul className="grid gap-3 sm:grid-cols-2">
-            <FailureItem
-              label="Wrong classification"
-              value={failedChecks.classification ?? 0}
-            />
-            <FailureItem
-              label="Wrong escalation decision"
-              value={failedChecks.escalation ?? 0}
-            />
-            <FailureItem
-              label="Missing required policy terms"
-              value={failedChecks.required_terms ?? 0}
-            />
-            <FailureItem
-              label="Disallowed action"
-              value={failedChecks.action ?? 0}
-            />
-          </ul>
-          <p>
-            The most common miss was classification, followed by escalation.
-            Many failed responses were readable customer replies but made a
-            different policy decision than the fixed expected answer. This test
-            therefore measures reliable execution of a narrow support contract,
-            not whether one model writes more naturally or is broadly
-            “smarter.”
-          </p>
-          <p>
-            The failure types point to different application risks.
-            Classification and action misses mean the model chose a different
-            branch of the workflow. Escalation misses can send a routine ticket
-            to a human or leave a security case in an automated path. Missing
-            required terms means the policy decision may be right while the
-            customer-facing response omits a required fact. Invalid JSON means
-            the application cannot reliably parse the response at all.
-          </p>
-          <p>
-            Across {benchmark.modelCount * benchmark.ticketCount} responses,
-            valid JSON failed {failedChecks.valid_json ?? 0} times. That was
-            much less common than classification, which failed{" "}
-            {failedChecks.classification ?? 0} checks. Structured output alone
-            was therefore not the main separator. The larger difference was
-            whether the model mapped the ticket to the benchmark’s exact policy
-            decision.
-          </p>
-          <p>
-            A different prompt, clearer labels, tool calling, constrained
-            decoding, or a model-specific adapter could change these pass
-            rates. We intentionally held the request contract constant to
-            compare models through one application interface. The results
-            measure that interface as tested, not the highest score each model
-            could reach after individual tuning.
-          </p>
-        </AnalysisSection>
-
-        <AnalysisSection title="Open-weight and proprietary models">
-          <p>
-            Open-weight models had the lower median cost in this run. Their
-            median 100-ticket workload cost was $
-            {openMedianWorkloadCost.toFixed(6)}, compared with $
-            {proprietaryMedianWorkloadCost.toFixed(6)} for proprietary models,
-            a{" "}
-            {(
-              proprietaryMedianWorkloadCost / openMedianWorkloadCost
-            ).toFixed(1)}
-            × difference. {topFiveOpenCount} of the five lowest-cost models per
-            completed ticket were open weight.
-          </p>
-          <p>
-            Published rates explain much of that gap. The five models with the
-            lowest input rates and the five models with the lowest output rates
-            were all open weight. A lower rate creates room for more tokens
-            before the workload reaches the same dollar cost as a higher-rate
-            model.
-          </p>
-          <p>
-            The group result was not a clean win. The median pass rate was{" "}
-            {(
-              median(openModels.map((model) => model.passRate)) * 100
-            ).toFixed(0)}
-            % for open-weight models and{" "}
-            {(
-              median(proprietaryModels.map((model) => model.passRate)) * 100
-            ).toFixed(0)}
-            % for proprietary models. Open-weight models also used a median of{" "}
-            {Math.round(
-              median(
-                openModels.map((model) =>
-                  Number(model.tokensPerSuccess),
-                ),
-              ),
-            ).toLocaleString()}{" "}
-            tokens per completed ticket, versus{" "}
-            {Math.round(
-              median(
-                proprietaryModels.map((model) =>
-                  Number(model.tokensPerSuccess),
-                ),
-              ),
-            ).toLocaleString()}
-            .
-          </p>
-          <p>
-            Qwen3.5 shows why the group median cannot choose a model for an
-            application. It is open weight and has relatively low published
-            rates, yet its output volume and 35% pass rate moved it to #
-            {qwenWorkloadRank} for workload cost and #{qwenUsableRank} for cost
-            per usable response.
-          </p>
-          <p>
-            This single run does not establish a general rule for open-weight
-            and proprietary models. It shows a tradeoff in this workload: lower
-            published rates outweighed lower median contract compliance for the
-            open-weight group, while individual models still moved far from the
-            group pattern.
-          </p>
-        </AnalysisSection>
-
         {qwenOutlier && (
           <AnalysisSection title="The Qwen3.5 outlier">
             <p>
@@ -816,6 +735,129 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             </p>
           </AnalysisSection>
         )}
+
+        <AnalysisSection title="What we learned">
+          <p>
+            In this run, GPT-5 Nano had the lowest listed input rate and also
+            finished first by workload cost and cost per usable response. That
+            alignment is a result of this task, not evidence that the cheapest
+            catalog rate will always win. Other models show why the workload
+            test still matters.
+          </p>
+          <ul className="list-disc space-y-3 pl-5">
+            <li>
+              GPT-5 Nano combined a low rate, low token volume, and enough
+              passing responses to lead the measured cost rankings.
+            </li>
+            <li>
+              Pass rates ranged from{" "}
+              {(completionLast.passRate * 100).toFixed(0)}% to{" "}
+              {(completionLeader.passRate * 100).toFixed(0)}%. A low bill can
+              therefore hide extra retries, fallback calls, or human cleanup
+              that this benchmark does not add to the dollar total.
+            </li>
+            <li>
+              Output behavior created a {(
+                pricedOutputTokens(
+                  outputTokenRanking[outputTokenRanking.length - 1],
+                ) / pricedOutputTokens(outputTokenRanking[0])
+              ).toFixed(1)}
+              × token spread, compared with{" "}
+              {(
+                inputTokenRanking[inputTokenRanking.length - 1].inputTokens /
+                inputTokenRanking[0].inputTokens
+              ).toFixed(1)}
+              × for input tokens.
+            </li>
+            <li>
+              Open-weight models had the lower median dollar cost, but their
+              median pass rate was lower and their median token use per usable
+              response was higher in this task.
+            </li>
+            <li>
+              Qwen3.5 showed that a low listed rate can be overwhelmed by output
+              volume and parse failures.
+            </li>
+            {fastestWorkload && slowestWorkload && (
+              <li>
+                Observed workload time ranged from{" "}
+                {formatDuration(fastestWorkload.totalWorkloadDurationMs)} for{" "}
+                {fastestWorkload.modelName} to{" "}
+                {formatDuration(slowestWorkload.totalWorkloadDurationMs)} for{" "}
+                {slowestWorkload.modelName}. Cost and quality candidates still
+                need a response-time threshold, although this two-batch run
+                should not be treated as a controlled latency test.
+              </li>
+            )}
+          </ul>
+          <p>
+            The useful unit is the cost of an accepted outcome delivered in
+            acceptable time. A token rate can estimate that unit only after the
+            application measures usage, reliability, and latency on its own
+            work.
+          </p>
+        </AnalysisSection>
+
+        <AnalysisSection title="Why responses failed">
+          <p>
+            “Accuracy” here means contract compliance, not general intelligence
+            or writing quality. A response had to pass every check described
+            above. One response could fail more than one check, so the counts
+            below overlap.
+          </p>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            <FailureItem
+              label="Wrong classification"
+              value={failedChecks.classification ?? 0}
+            />
+            <FailureItem
+              label="Wrong escalation decision"
+              value={failedChecks.escalation ?? 0}
+            />
+            <FailureItem
+              label="Missing required policy terms"
+              value={failedChecks.required_terms ?? 0}
+            />
+            <FailureItem
+              label="Disallowed action"
+              value={failedChecks.action ?? 0}
+            />
+          </ul>
+          <p>
+            The most common miss was classification, followed by escalation.
+            Many failed responses were readable customer replies but made a
+            different policy decision than the fixed expected answer. This test
+            therefore measures reliable execution of a narrow support contract,
+            not whether one model writes more naturally or is broadly
+            “smarter.”
+          </p>
+          <p>
+            The failure types point to different application risks.
+            Classification and action misses mean the model chose a different
+            branch of the workflow. Escalation misses can send a routine ticket
+            to a human or leave a security case in an automated path. Missing
+            required terms means the policy decision may be right while the
+            customer-facing response omits a required fact. Invalid JSON means
+            the application cannot reliably parse the response at all.
+          </p>
+          <p>
+            Across {benchmark.modelCount * benchmark.ticketCount} responses,
+            valid JSON failed {failedChecks.valid_json ?? 0} times. That was
+            much less common than classification, which failed{" "}
+            {failedChecks.classification ?? 0} checks. Structured output alone
+            was therefore not the main separator. The larger difference was
+            whether the model mapped the ticket to the benchmark’s exact policy
+            decision.
+          </p>
+          <p>
+            A different prompt, clearer labels, tool calling, constrained
+            decoding, or a model-specific adapter could change these pass
+            rates. We intentionally held the request contract constant to
+            compare models through one application interface. The results
+            measure that interface as tested, not the highest score each model
+            could reach after individual tuning.
+          </p>
+        </AnalysisSection>
 
         <FeaturedAnalysisSection
           eyebrow="From token economics to operating practice"
@@ -904,65 +946,6 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
           </p>
         </AnalysisSection>
 
-        <AnalysisSection title="What we learned">
-          <p>
-            The cheapest rates did not produce the exact cheapest-workload
-            ranking. They produced a strong starting advantage. Models with low
-            rates filled the low-cost end of the table, but token volume changed
-            their order and pass rate changed it again.
-          </p>
-          <ul className="list-disc space-y-3 pl-5">
-            <li>
-              {rateLeader.modelName} had the lowest input{" "}
-              {rateLeaderAlsoHasLowestOutput ? "and output rates" : "rate"}, yet
-              finished #{rateLeaderWorkloadRank} by workload cost and #
-              {rateLeaderUsableRank} by cost per usable response.
-            </li>
-            <li>
-              {lowestWorkloadCost.modelName} had the lowest workload bill, but
-              its {(lowestWorkloadCost.passRate * 100).toFixed(0)}% pass rate
-              made each usable response more expensive than {leader.modelName}.
-            </li>
-            <li>
-              Output behavior created a {(
-                pricedOutputTokens(
-                  outputTokenRanking[outputTokenRanking.length - 1],
-                ) / pricedOutputTokens(outputTokenRanking[0])
-              ).toFixed(1)}
-              × token spread, compared with{" "}
-              {(
-                inputTokenRanking[inputTokenRanking.length - 1].inputTokens /
-                inputTokenRanking[0].inputTokens
-              ).toFixed(1)}
-              × for input tokens.
-            </li>
-            <li>
-              Open-weight models had the lower median dollar cost, but their
-              median pass rate was lower and their median token use per usable
-              response was higher in this task.
-            </li>
-            <li>
-              Qwen3.5 showed that a low listed rate can be overwhelmed by output
-              volume and parse failures.
-            </li>
-            {fastestWorkload && slowestWorkload && (
-              <li>
-                Observed workload time ranged from{" "}
-                {formatDuration(fastestWorkload.totalWorkloadDurationMs)} for{" "}
-                {fastestWorkload.modelName} to{" "}
-                {formatDuration(slowestWorkload.totalWorkloadDurationMs)} for{" "}
-                {slowestWorkload.modelName}. Cost and quality candidates still
-                need a response-time threshold, although this two-batch run
-                should not be treated as a controlled latency test.
-              </li>
-            )}
-          </ul>
-          <p>
-            The useful unit is the cost of an accepted outcome. A token rate can
-            estimate that unit only after the application measures how many
-            tokens the model consumes and how often the result works.
-          </p>
-        </AnalysisSection>
       </div>
     </article>
   );
@@ -1005,18 +988,32 @@ function MetricCard({
   model,
   value,
   detail,
+  tone = "best",
 }: {
   label: string;
   model: string;
   value: string;
   detail: string;
+  tone?: "best" | "worst";
 }) {
   return (
-    <div className="rounded-xl border border-ledger-border bg-ledger-panel/70 p-5">
+    <div
+      className={`rounded-xl border p-5 ${
+        tone === "worst"
+          ? "border-red-400/20 bg-red-400/[0.04]"
+          : "border-ledger-border bg-ledger-panel/70"
+      }`}
+    >
       <p className="text-xs uppercase tracking-[0.16em] text-ledger-muted">
         {label}
       </p>
-      <p className="mt-3 font-mono text-sm text-neon-green">{model}</p>
+      <p
+        className={`mt-3 font-mono text-sm ${
+          tone === "worst" ? "text-red-300" : "text-neon-green"
+        }`}
+      >
+        {model}
+      </p>
       <p className="mt-2 font-mono text-xl text-ledger-cream">{value}</p>
       <p className="mt-1 text-xs text-ledger-muted">{detail}</p>
     </div>
@@ -1028,6 +1025,51 @@ function FormulaBlock({ children }: { children: React.ReactNode }) {
     <p className="rounded-lg border border-ledger-border bg-[#090e0b] px-4 py-3 font-mono text-sm text-ledger-cream">
       {children}
     </p>
+  );
+}
+
+function TicketOutcome({
+  tone,
+  label,
+  ticket,
+  policy,
+  response,
+  why,
+}: {
+  tone: "pass" | "fail";
+  label: string;
+  ticket: string;
+  policy: string;
+  response: string;
+  why: string;
+}) {
+  const pass = tone === "pass";
+  return (
+    <figure
+      className={`rounded-xl border p-4 ${
+        pass
+          ? "border-neon-green/30 bg-neon-green/[0.04]"
+          : "border-red-400/25 bg-red-400/[0.04]"
+      }`}
+    >
+      <figcaption
+        className={`text-xs uppercase tracking-[0.16em] ${
+          pass ? "text-neon-green" : "text-red-300"
+        }`}
+      >
+        {label}
+      </figcaption>
+      <p className="mt-3 text-sm text-ledger-cream">
+        <span className="font-mono">{ticket}</span>
+      </p>
+      <p className="mt-1 text-xs leading-relaxed text-ledger-muted">
+        Policy: {policy}
+      </p>
+      <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-lg border border-ledger-border bg-[#090e0b] p-3 font-mono text-[11px] leading-5 text-ledger-cream/85">
+        {response}
+      </pre>
+      <p className="mt-3 text-sm leading-relaxed text-ledger-cream/75">{why}</p>
+    </figure>
   );
 }
 
