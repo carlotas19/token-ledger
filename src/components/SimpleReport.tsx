@@ -484,7 +484,7 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
               </p>
               <p>
                 The coding volume is an assumption, not a measurement from
-                Token Ledger. We model one substantial agent task per engineer
+                this benchmark. We model one substantial agent task per engineer
                 per workday at 1 million tokens per task, or 20 million tokens
                 per engineer per month. A{" "}
                 <a
@@ -559,14 +559,6 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
                   $150 to $250 per enterprise developer per month
                 </a>
                 , which is a useful external check on the order of magnitude.
-              </p>
-              <p>
-                This is not a forecast. It holds coding quality constant, does
-                not model caching or contracted discounts, and applies a token
-                mix that may differ by tool and repository. The two models also
-                had very different support pass rates in this run. A real
-                coding-agent decision should compare cost per accepted coding
-                task after tests pass, not raw token spend alone.
               </p>
             </FeaturedAnalysisSection>
           )}
