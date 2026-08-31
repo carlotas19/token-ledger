@@ -36,6 +36,39 @@ function formatDuration(milliseconds?: number | null) {
   return `${minutes}m ${(seconds % 60).toFixed(0)}s`;
 }
 
+const CODING_TOKENS_PER_ENGINEER_MONTH = 20_000_000;
+const CODING_INPUT_SHARE = 0.8;
+
+function estimatedMonthlyInferenceCost(
+  model: ModelAggregate,
+  engineerCount: number,
+) {
+  if (
+    model.inputPricePerMillionUsd == null ||
+    model.outputPricePerMillionUsd == null
+  ) {
+    return null;
+  }
+
+  const blendedPricePerMillion =
+    CODING_INPUT_SHARE * model.inputPricePerMillionUsd +
+    (1 - CODING_INPUT_SHARE) * model.outputPricePerMillionUsd;
+
+  return (
+    (CODING_TOKENS_PER_ENGINEER_MONTH / 1_000_000) *
+    blendedPricePerMillion *
+    engineerCount
+  );
+}
+
+function formatDollars(value: number) {
+  return value.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
+}
+
 export function SimpleReport({ benchmark }: SimpleReportProps) {
   const models = ranked(benchmark.aggregates);
   const top = models.slice(0, 3);
@@ -126,6 +159,18 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
   const qwenUsableRank = qwenOutlier
     ? models.findIndex((model) => model.modelId === qwenOutlier.modelId) + 1
     : null;
+  const thirdLowestCostModel = models[2];
+  const thirdHighestCostModel = models[models.length - 3];
+  const gptSol = benchmark.aggregates.find(
+    (model) => model.modelId === "gpt-5-6-sol",
+  );
+  const claudeFable = benchmark.aggregates.find(
+    (model) => model.modelId === "claude-fable-5",
+  );
+  const companyScenarios = [
+    { employees: 100, engineers: 50 },
+    { employees: 1000, engineers: 500 },
+  ];
 
   return (
     <article className="mx-auto max-w-4xl px-6 py-12 lg:px-0">
@@ -416,6 +461,116 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
       </section>
 
       <div className="mt-14 space-y-14">
+        {thirdLowestCostModel &&
+          thirdHighestCostModel &&
+          estimatedMonthlyInferenceCost(thirdLowestCostModel, 1) != null &&
+          estimatedMonthlyInferenceCost(thirdHighestCostModel, 1) != null && (
+            <FeaturedAnalysisSection
+              eyebrow="A scale thought experiment"
+              title="What model efficiency could mean for a software company"
+            >
+              <p>
+                How large can the model-choice line item become? This scenario
+                uses conservative positions from the benchmark rather than its
+                extremes:{" "}
+                <span className="font-mono text-neon-green">
+                  {thirdLowestCostModel.modelName}
+                </span>
+                , third lowest by cost per usable support response, and{" "}
+                <span className="font-mono text-red-300">
+                  {thirdHighestCostModel.modelName}
+                </span>
+                , third highest.
+              </p>
+              <p>
+                The coding volume is an assumption, not a measurement from
+                Token Ledger. We model one substantial agent task per engineer
+                per workday at 1 million tokens per task, or 20 million tokens
+                per engineer per month. A{" "}
+                <a
+                  href="https://www.microsoft.com/en-us/research/publication/how-do-ai-agents-spend-your-money-analyzing-and-predicting-token-consumption-in-agentic-coding-tasks/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neon-green underline decoration-neon-green/30 underline-offset-4"
+                >
+                  2026 study of coding agents on SWE-bench Verified
+                </a>{" "}
+                reported an average of 4.17 million tokens per task and up to
+                30× variation between runs of the same task. Our 1 million-token
+                assumption is deliberately lower.
+              </p>
+              <p>
+                We assume 80% input and 20% priced output tokens, no prompt-cache
+                discount, and published AI Gateway rates from this benchmark.
+                We also assume half of each company is made up of engineers and
+                every engineer uses a coding agent.
+              </p>
+              <FormulaBlock>
+                monthly tokens = engineers × 20 tasks × 1M tokens
+              </FormulaBlock>
+              <div className="grid gap-4 md:grid-cols-2">
+                {companyScenarios.map(({ employees, engineers }) => {
+                  const lowerCost = estimatedMonthlyInferenceCost(
+                    thirdLowestCostModel,
+                    engineers,
+                  );
+                  const higherCost = estimatedMonthlyInferenceCost(
+                    thirdHighestCostModel,
+                    engineers,
+                  );
+                  if (lowerCost == null || higherCost == null) return null;
+                  const savings = higherCost - lowerCost;
+
+                  return (
+                    <ScaleScenario
+                      key={employees}
+                      employees={employees}
+                      engineers={engineers}
+                      monthlyTokens={
+                        engineers * CODING_TOKENS_PER_ENGINEER_MONTH
+                      }
+                      lowerModel={thirdLowestCostModel.modelName}
+                      lowerCost={lowerCost}
+                      higherModel={thirdHighestCostModel.modelName}
+                      higherCost={higherCost}
+                      savings={savings}
+                    />
+                  );
+                })}
+              </div>
+              <p>
+                Under those assumptions, the model choice changes estimated
+                inference spend by{" "}
+                {(
+                  Number(
+                    estimatedMonthlyInferenceCost(thirdHighestCostModel, 1),
+                  ) /
+                  Number(
+                    estimatedMonthlyInferenceCost(thirdLowestCostModel, 1),
+                  )
+                ).toFixed(1)}
+                ×. Anthropic reports that Claude Code averages{" "}
+                <a
+                  href="https://code.claude.com/docs/en/costs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neon-green underline decoration-neon-green/30 underline-offset-4"
+                >
+                  $150 to $250 per enterprise developer per month
+                </a>
+                , which is a useful external check on the order of magnitude.
+              </p>
+              <p>
+                This is not a forecast. It holds coding quality constant, does
+                not model caching or contracted discounts, and applies a token
+                mix that may differ by tool and repository. The two models also
+                had very different support pass rates in this run. A real
+                coding-agent decision should compare cost per accepted coding
+                task after tests pass, not raw token spend alone.
+              </p>
+            </FeaturedAnalysisSection>
+          )}
+
         <AnalysisSection title="Open-weight and proprietary models">
           <p>
             Open-weight models had the lower median cost in this run. Their
@@ -478,6 +633,100 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
             group pattern.
           </p>
         </AnalysisSection>
+
+        {gptSol && claudeFable && (
+          <AnalysisSection title="Flagship comparison: GPT-5.6 Sol and Claude Fable 5">
+            <p>
+              OpenAI describes{" "}
+              <a
+                href="https://developers.openai.com/api/docs/models/gpt-5.6-sol"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neon-green underline decoration-neon-green/30 underline-offset-4"
+              >
+                GPT-5.6 Sol
+              </a>{" "}
+              as its flagship model for complex professional work. Anthropic
+              describes{" "}
+              <a
+                href="https://www.anthropic.com/claude/fable"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neon-green underline decoration-neon-green/30 underline-offset-4"
+              >
+                Claude Fable 5
+              </a>{" "}
+              as its highest-capability generally available model. Both were in
+              the 42-model run, so we can compare how they handled this narrow
+              support contract.
+            </p>
+            <div className="overflow-x-auto rounded-xl border border-ledger-border bg-ledger-panel/60">
+              <table className="w-full min-w-[620px] text-left text-sm">
+                <thead className="border-b border-ledger-border text-ledger-muted">
+                  <tr>
+                    <th className="px-4 py-3 font-normal">Metric</th>
+                    <th className="px-4 py-3 font-normal text-neon-green">
+                      GPT-5.6 Sol
+                    </th>
+                    <th className="px-4 py-3 font-normal text-yellow-300">
+                      Claude Fable 5
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-ledger-border font-mono text-ledger-cream">
+                  <FlagshipRow
+                    label="Responses passed"
+                    sol={`${gptSol.successes}/100`}
+                    fable={`${claudeFable.successes}/100`}
+                  />
+                  <FlagshipRow
+                    label="Total tokens"
+                    sol={gptSol.totalTokens.toLocaleString()}
+                    fable={claudeFable.totalTokens.toLocaleString()}
+                  />
+                  <FlagshipRow
+                    label="100-ticket cost"
+                    sol={`$${gptSol.totalCostUsd?.toFixed(6)}`}
+                    fable={`$${claudeFable.totalCostUsd?.toFixed(6)}`}
+                  />
+                  <FlagshipRow
+                    label="Cost per usable response"
+                    sol={`$${gptSol.costPerSuccessUsd?.toFixed(6)}`}
+                    fable={`$${claudeFable.costPerSuccessUsd?.toFixed(6)}`}
+                  />
+                  <FlagshipRow
+                    label="100-ticket time"
+                    sol={formatDuration(gptSol.totalWorkloadDurationMs)}
+                    fable={formatDuration(claudeFable.totalWorkloadDurationMs)}
+                  />
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Pass rate was nearly tied: 69/100 for Sol and 68/100 for Fable.
+              Sol used {gptSol.totalTokens.toLocaleString()} tokens, compared
+              with {claudeFable.totalTokens.toLocaleString()} for Fable. At the
+              AI Gateway prices captured for this run, Fable cost{" "}
+              {(
+                Number(claudeFable.costPerSuccessUsd) /
+                Number(gptSol.costPerSuccessUsd)
+              ).toFixed(1)}
+              × more per usable response and took{" "}
+              {(
+                Number(claudeFable.totalWorkloadDurationMs) /
+                Number(gptSol.totalWorkloadDurationMs)
+              ).toFixed(1)}
+              × as long to finish the workload.
+            </p>
+            <p>
+              Sol was the stronger economic result for this contract. That does
+              not establish that it is the better flagship model overall. The
+              grader tested JSON, policy decisions, and short support replies.
+              Long-horizon coding, research, tool use, or a model-specific
+              prompt could produce a different result.
+            </p>
+          </AnalysisSection>
+        )}
 
         <AnalysisSection title="Four questions behind “cheap”">
           <p>
@@ -1079,6 +1328,83 @@ function FailureItem({ label, value }: { label: string; value: number }) {
       <span className="text-sm text-ledger-cream/75">{label}</span>
       <span className="font-mono text-sm text-ledger-cream">{value}</span>
     </li>
+  );
+}
+
+function ScaleScenario({
+  employees,
+  engineers,
+  monthlyTokens,
+  lowerModel,
+  lowerCost,
+  higherModel,
+  higherCost,
+  savings,
+}: {
+  employees: number;
+  engineers: number;
+  monthlyTokens: number;
+  lowerModel: string;
+  lowerCost: number;
+  higherModel: string;
+  higherCost: number;
+  savings: number;
+}) {
+  return (
+    <div className="rounded-xl border border-ledger-border bg-[#090e0b] p-5">
+      <p className="text-xs uppercase tracking-[0.16em] text-ledger-muted">
+        {employees.toLocaleString()}-person software company
+      </p>
+      <p className="mt-2 font-mono text-sm text-ledger-cream">
+        {engineers.toLocaleString()} engineers ·{" "}
+        {(monthlyTokens / 1_000_000_000).toLocaleString()}B tokens/month
+      </p>
+      <dl className="mt-5 space-y-3 text-sm">
+        <div className="flex items-start justify-between gap-4">
+          <dt className="text-ledger-cream/70">{lowerModel}</dt>
+          <dd className="font-mono text-neon-green">
+            {formatDollars(lowerCost)}/month
+          </dd>
+        </div>
+        <div className="flex items-start justify-between gap-4">
+          <dt className="text-ledger-cream/70">{higherModel}</dt>
+          <dd className="font-mono text-red-300">
+            {formatDollars(higherCost)}/month
+          </dd>
+        </div>
+      </dl>
+      <div className="mt-5 border-t border-ledger-border pt-4">
+        <p className="text-xs uppercase tracking-[0.16em] text-ledger-muted">
+          Estimated difference
+        </p>
+        <p className="mt-2 font-mono text-2xl text-ledger-cream">
+          {formatDollars(savings)}/month
+        </p>
+        <p className="mt-1 font-mono text-sm text-ledger-muted">
+          {formatDollars(savings * 12)}/year
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function FlagshipRow({
+  label,
+  sol,
+  fable,
+}: {
+  label: string;
+  sol: string;
+  fable: string;
+}) {
+  return (
+    <tr>
+      <th className="px-4 py-3 font-sans font-normal text-ledger-cream/70">
+        {label}
+      </th>
+      <td className="px-4 py-3">{sol}</td>
+      <td className="px-4 py-3">{fable}</td>
+    </tr>
   );
 }
 
