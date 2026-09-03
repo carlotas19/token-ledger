@@ -1,8 +1,3 @@
-import type { BenchmarkSummary } from "@/lib/types";
-
-interface DetailedMethodologyProps {
-  benchmark: BenchmarkSummary;
-}
 
 const SYSTEM_PROMPT = `You are a support agent for a developer platform.
 Read the customer message, account context, and policy notes.
@@ -30,7 +25,7 @@ Production branch active. The gist is confirmed public.
 Policy notes:
 Treat this as a security incident. Recommend rotation and escalate.`;
 
-export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
+export function DetailedMethodology() {
   return (
     <article className="mx-auto max-w-4xl px-6 py-12 lg:px-0">
       <header>
@@ -165,19 +160,6 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
           </p>
         </Section>
 
-        <Section title="Request settings">
-          <ul className="list-disc space-y-2 pl-5">
-            <li>One request per ticket, 100 requests per model</li>
-            <li>Maximum output: 2,048 tokens</li>
-            <li>No temperature override, because some catalog models do not expose it</li>
-            <li>Chat Completions for compatible text models</li>
-            <li>OpenAI Responses API for models that require that endpoint</li>
-            <li>Provider-reported input, output, total, and reasoning tokens</li>
-            <li>Request latency recorded from send through final response</li>
-            <li>Transient 429 and 5xx responses retried with exponential backoff</li>
-          </ul>
-        </Section>
-
         <Section title="Timing">
           <p>
             Requests run sequentially within each model. The app reports the sum
@@ -214,39 +196,6 @@ export function DetailedMethodology({ benchmark }: DetailedMethodologyProps) {
             but are not broken out separately. Both products are divided by one
             million.
           </p>
-          <p>
-            AI Gateway inference is free during beta. Dollar values shown here use
-            the published prices and are not charges observed on a Neon invoice.
-          </p>
-        </Section>
-
-        <Section title="Reproducibility">
-          <dl className="grid gap-3 text-sm sm:grid-cols-[12rem_1fr]">
-            <dt className="text-ledger-muted">Current run</dt>
-            <dd className="font-mono">{benchmark.name}</dd>
-            <dt className="text-ledger-muted">Tickets</dt>
-            <dd>{benchmark.ticketCount}</dd>
-            <dt className="text-ledger-muted">Models and branches</dt>
-            <dd>{benchmark.modelCount}</dd>
-            <dt className="text-ledger-muted">Started</dt>
-            <dd>{new Date(benchmark.startedAt).toLocaleString()}</dd>
-            <dt className="text-ledger-muted">Catalog snapshot</dt>
-            <dd>{new Date(benchmark.catalogSnapshotAt).toLocaleString()}</dd>
-            {benchmark.pricingSnapshotAt && (
-              <>
-                <dt className="text-ledger-muted">Pricing verified</dt>
-                <dd>
-                  {new Date(benchmark.pricingSnapshotAt).toLocaleString()}
-                </dd>
-              </>
-            )}
-            {benchmark.gitCommit && (
-              <>
-                <dt className="text-ledger-muted">Git commit</dt>
-                <dd className="font-mono">{benchmark.gitCommit}</dd>
-              </>
-            )}
-          </dl>
         </Section>
 
         <Section title="Limits">

@@ -134,7 +134,7 @@ export function LedgerApp({ benchmark }: LedgerAppProps) {
         {activeTab === "results" && <SimpleLedger benchmark={benchmark} />}
         {activeTab === "report" && <SimpleReport benchmark={benchmark} />}
         {activeTab === "reproduce" && (
-          <DetailedMethodology benchmark={benchmark} />
+          <DetailedMethodology />
         )}
       </main>
 

@@ -181,6 +181,9 @@ export function SimpleReport({ benchmark }: SimpleReportProps) {
         <h2 className="mt-3 text-4xl font-light text-ledger-cream">
           The growing weight of token economics
         </h2>
+        <p className="mt-4 inline-flex rounded-full border border-neon-green/30 px-4 py-1.5 text-sm text-neon-green">
+          We’ll re-run this regularly with the latest models
+        </p>
         <div className="mt-5 max-w-3xl space-y-4 text-lg leading-relaxed text-ledger-cream/75">
           <p>
             Headcount is usually one of a company’s largest costs. As agents
